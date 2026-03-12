@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隐私政策 - 人生计算器</title>
+    <meta name="description" content="人生计算器隐私政策：我们如何收集、使用和保护您的个人信息。了解我们的数据保护措施和您的权利。">
+    <meta name="keywords" content="隐私政策,数据保护,个人信息,Cookie政策,用户权利,数据安全">
+    
+    <!-- 继承主站样式 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --primary-dark: #3a0ca3;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-muted: #b2bec3;
+            --border-color: #dfe6e9;
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --font-heading: 'Noto Serif SC', serif;
+            --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background-color: var(--bg-color);
+            line-height: 1.7;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部导航（简化版） */
+        .header {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 16px 0;
+            margin-bottom: 30px;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* 页面头部 */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+        
+        .page-header h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* 隐私政策内容 */
+        .privacy-content {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 60px;
+        }
+        
+        .policy-section {
+            margin-bottom: 40px;
+        }
+        
+        .policy-section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .policy-section h3 {
+            font-size: 1.3rem;
+            margin: 25px 0 15px;
+            color: var(--text-primary);
+        }
+        
+        .policy-section p {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+        
+        .policy-section ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .policy-section li {
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+        
+        .important-note {
+            background-color: rgba(67, 97, 238, 0.05);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 25px 0;
+        }
+        
+        .important-note h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .update-date {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-top: 40px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        /* 表格 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        
+        .data-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        /* 联系方式 */
+        .contact-info {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e8f0 100%);
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            margin-top: 40px;
+        }
+        
+        .contact-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .contact-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .contact-item i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-top: 3px;
+        }
+        
+        /* AdSense广告位 */
+        .ad-placeholder {
+            background-color: #f0f2f5;
+            border: 1px dashed #d1d5db;
+            border-radius: var(--radius-md);
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            margin: 40px 0;
+        }
+        
+        .ad-placeholder i {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: #2d3436;
+            color: #dfe6e9;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-links a {
+            color: #b2bec3;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b2bec3;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .privacy-content {
+                padding: 25px;
+            }
+            
+            .policy-section h2 {
+                font-size: 1.4rem;
+            }
+            
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .contact-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <span>人生计算器</span>
+            </a>
+            
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> 返回首页
+            </a>
+        </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="container">
+        <!-- 页面头部 -->
+        <section class="page-header">
+            <h1><i class="fas fa-shield-alt"></i> 隐私政策</h1>
+            <p>我们重视您的隐私，并致力于保护您的个人信息。本隐私政策说明了我们如何收集、使用、存储和保护您的数据。</p>
+        </section>
+        
+        <!-- AdSense广告位（顶部） -->
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i>
+            <p>Google AdSense 广告位 - 728x90 横幅广告</p>
+        </div>
+        
+        <!-- 隐私政策内容 -->
+        <div class="privacy-content">
+            <div class="update-date">
+                最后更新日期：2026年3月11日 | 生效日期：2026年3月11日
+            </div>
+            
+            <div class="policy-section">
+                <h2>1. 引言</h2>
+                <p>欢迎使用人生计算器（以下简称"我们"、"我们的"）。我们深知个人信息对您的重要性，并会尽全力保护您的个人信息安全可靠。我们致力于维持您对我们的信任，恪守以下原则，保护您的个人信息：权责一致原则、目的明确原则、选择同意原则、最少够用原则、确保安全原则、主体参与原则、公开透明原则等。</p>
+                <p>本隐私政策旨在帮助您了解以下内容：</p>
+                <ul>
+                    <li>我们如何收集和使用您的个人信息</li>
+                    <li>我们如何使用 Cookie 和同类技术</li>
+                    <li>我们如何共享、转让、公开披露您的个人信息</li>
+                    <li>我们如何保护您的个人信息</li>
+                    <li>您的权利</li>
+                    <li>我们如何处理儿童的个人信息</li>
+                    <li>您的个人信息如何在全球范围转移</li>
+                    <li>本政策如何更新</li>
+                    <li>如何联系我们</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <h2>2. 我们如何收集和使用您的个人信息</h2>
+                
+                <h3>2.1 我们提供的服务</h3>
+                <p>人生计算器是一个提供在线计算器和相关文章的网站。在使用我们的服务时，我们可能会收集以下信息：</p>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>信息类型</th>
+                            <th>收集目的</th>
+                            <th>收集方式</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>计算器输入数据</td>
+                            <td>为您提供计算结果，不保存这些数据</td>
+                            <td>您在使用计算器时主动输入</td>
+                        </tr>
+                        <tr>
+                            <td>设备信息</td>
+                            <td>优化网站性能和兼容性</td>
+                            <td>自动收集（浏览器类型、操作系统等）</td>
+                        </tr>
+                        <tr>
+                            <td>使用数据</td>
+                            <td>分析网站使用情况，改进服务</td>
+                            <td>通过Google Analytics等工具收集</td>
+                        </tr>
+                        <tr>
+                            <td>Cookie数据</td>
+                            <td>记住您的偏好设置，提供个性化体验</td>
+                            <td>通过浏览器Cookie收集</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="important-note">
+                    <h4>重要说明</h4>
+                    <p>请注意：所有计算器输入的数据仅在您的浏览器会话中处理，我们不会在服务器上存储您的个人计算数据。计算结果生成后，数据不会保留在我们的系统中。</p>
+                </div>
+                
+                <h3>2.2 第三方服务</h3>
+                <p>我们使用Google AdSense在我们的网站上展示广告。Google作为独立的第三方，可能会根据其隐私政策收集信息。我们建议您查看Google的隐私政策以了解更多信息。</p>
+            </div>
+            
+            <!-- AdSense广告位（中部） -->
+            <div class="ad-placeholder">
+                <i class="fas fa-ad"></i>
+                <p>Google AdSense 广告位 - 300x250 矩形广告</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>3. Cookie和同类技术</h2>
+                <h3>3.1 什么是Cookie？</h3>
+                <p>Cookie是包含字符串的小文件，会在您访问网站时发送到您的计算机上。当您再次访问网站时，Cookie使该网站能够识别您的浏览器。Cookie可能会存储用户偏好及其他信息。</p>
+                
+                <h3>3.2 我们如何使用Cookie？</h3>
+                <p>我们使用Cookie和类似技术的目的包括：</p>
+                <ul>
+                    <li><strong>必要Cookie</strong>：这些Cookie是网站运行所必需的，它们通常仅针对您所做的操作而设置，例如设置隐私偏好、登录等。</li>
+                    <li><strong>性能Cookie</strong>：这些Cookie使我们能够统计访问量和流量来源，以便衡量和改进我们网站的性能。</li>
+                    <li><strong>功能Cookie</strong>：这些Cookie用于增强网站的功能性和个性化，例如记住您的语言偏好。</li>
+                    <li><strong>广告Cookie</strong>：这些Cookie由我们的广告合作伙伴设置，用于建立您的兴趣档案并向您展示相关广告。</li>
+                </ul>
+                
+                <h3>3.3 如何控制Cookie？</h3>
+                <p>您可以通过浏览器设置控制Cookie。大多数浏览器都允许您拒绝接受Cookie或删除现有的Cookie。但是，如果您选择禁用Cookie，我们网站的某些部分可能无法正常工作。</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>4. 我们如何保护您的个人信息</h2>
+                <p>我们已采取符合业界标准的安全防护措施保护您提供的个人信息，防止数据遭到未经授权访问、公开披露、使用、修改、损坏或丢失。我们会采取一切合理可行的措施，保护您的个人信息。例如：</p>
+                <ul>
+                    <li>我们使用HTTPS加密传输数据</li>
+                    <li>我们定期审查信息收集、存储和处理实践，包括物理安全措施，以防止未经授权的访问</li>
+                    <li>我们仅允许有必要知晓这些信息的员工访问个人信息，并需要他们履行保密义务</li>
+                    <li>我们定期进行安全风险评估，确保我们的安全措施是最新的</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <h2>5. 您的权利</h2>
+                <p>按照相关的法律、法规、标准，我们保障您对自己的个人信息行使以下权利：</p>
+                
+                <h3>5.1 访问和更正您的个人信息</h3>
+                <p>您有权访问和更正您的个人信息，法律法规规定的例外情况除外。</p>
+                
+                <h3>5.2 删除个人信息</h3>
+                <p>在以下情形中，您可以向我们提出删除个人信息的请求：</p>
+                <ul>
+                    <li>如果我们处理个人信息的行为违反法律法规</li>
+                    <li>如果我们收集、使用您的个人信息，却未征得您的同意</li>
+                    <li>如果我们处理个人信息的行为违反了与您的约定</li>
+                    <li>如果您不再使用我们的产品或服务</li>
+                    <li>如果我们不再为您提供产品或服务</li>
+                </ul>
+                
+                <h3>5.3 撤回同意</h3>
+                <p>每个业务功能需要一些基本的个人信息才能得以完成。对于额外收集的个人信息的收集和使用，您可以随时给予或收回您的授权同意。</p>
+                
+                <h3>5.4 响应您的请求</h3>
+                <p>为保障安全，我们可能需要您提供书面请求，或以其他方式证明您的身份。我们将在15天内作出答复。</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>6. 我们如何处理儿童的个人信息</h2>
+                <p>我们的产品、网站和服务主要面向成人。如果没有父母或监护人的同意，儿童不应创建自己的个人信息主体账户。</p>
+                <p>对于经父母同意而收集儿童个人信息的情况，我们只会在受到法律允许、父母或监护人明确同意或者保护儿童所必要的情况下使用或公开披露此信息。</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>7. 本政策如何更新</h2>
+                <p>我们的隐私政策可能变更。未经您明确同意，我们不会削减您按照本隐私政策所应享有的权利。我们会在本页面上发布对本政策所做的任何变更。</p>
+                <p>对于重大变更，我们还会提供更为显著的通知（包括对于某些服务，我们会通过电子邮件发送通知，说明隐私政策的具体变更内容）。</p>
+                <p>本政策所指的重大变更包括但不限于：</p>
+                <ul>
+                    <li>我们的服务模式发生重大变化。如处理个人信息的目的、处理的个人信息类型、个人信息的使用方式等</li>
+                    <li>我们在所有权结构、组织架构等方面发生重大变化。如业务调整、破产并购等引起的所有者变更等</li>
+                    <li>个人信息共享、转让或公开披露的主要对象发生变化</li>
+                    <li>您参与个人信息处理方面的权利及其行使方式发生重大变化</li>
+                    <li>我们负责处理个人信息安全的责任部门、联络方式及投诉渠道发生变化时</li>
+                    <li>个人信息安全影响评估报告表明存在高风险时</li>
+                </ul>
+            </div>
+            
+            <!-- 联系方式 -->
+            <div class="contact-info">
+                <h3>8. 如何联系我们</h3>
+                <p>如果您对本隐私政策有任何疑问、意见或建议，可以通过以下方式与我们联系：</p>
+                
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>电子邮件</h4>
+                            <p>privacy@lifecalculator.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>处理时限</h4>
+                            <p>我们将在15个工作日内回复您的请求</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>运营主体</h4>
+                            <p>人生计算器网站运营团队</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 20px;">一般情况下，我们将在收到您的问题、意见或建议，并验证您的用户身份后的15个工作日内予以回复。</p>
+            </div>
+            
+            <div class="update-date">
+                感谢您花时间了解我们的隐私政策。我们承诺保护您的隐私，并会持续改进我们的隐私保护措施。
+            </div>
+        </div>
+        
+        <!-- AdSense广告位（底部） -->
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i>
+            <p>Google AdSense 广告位 - 728x90 横幅广告</p>
+        </div>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html">首页</a>
+                <a href="calculators.html">所有计算器</a>
+                <a href="articles.html">文章中心</a>
+                <a href="about.html">关于我们</a>
+                <a href="privacy.html">隐私政策</a>
+                <a href="terms.html">使用条款</a>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2026 人生计算器. 保留所有权利.</p>
+                <p style="margin-top: 8px; font-size: 0.8rem;">本网站已申请Google AdSense广告计划</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Cookie同意功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查是否已经同意Cookie
+            if (!getCookie('cookie_consent')) {
+                showCookieConsent();
+            }
+            
+            // 打印友好版本
+            const printBtn = document.createElement('button');
+            printBtn.innerHTML = '<i class="fas fa-print"></i> 打印本政策';
+            printBtn.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: var(--primary-color); color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; box-shadow: var(--shadow-md); z-index: 1000;';
+            printBtn.onclick = function() {
+                window.print();
+            };
+            document.body.appendChild(printBtn);
+        });
+        
+        // 显示Cookie同意横幅
+        function showCookieConsent() {
+            const consentBanner = document.createElement('div');
+            consentBanner.id = 'cookie-consent-banner';
+            consentBanner.style.cssText = `
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(45, 52, 54, 0.95);
+                color: white;
+                padding: 20px;
+                z-index: 9999;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px;
+            `;
+            
+            consentBanner.innerHTML = `
+                <div style="flex: 1; min-width: 300px;">
+                    <p style="margin: 0; font-size: 0.95rem;">
+                        我们使用Cookie来改善您的浏览体验、展示个性化广告、分析网站流量。继续使用本网站即表示您同意我们使用Cookie。
+                        <a href="privacy.html#cookie" style="color: #4895ef; text-decoration: underline;">了解更多</a>
+                    </p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button id="accept-cookies" style="padding: 10px 20px; background: #4361ee; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                        接受所有Cookie
+                    </button>
+                    <button id="reject-cookies" style="padding: 10px 20px; background: transparent; color: white; border: 1px solid white; border-radius: 5px; cursor: pointer;">
+                        仅必要Cookie
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(consentBanner);
+            
+            // 添加事件监听器
+            document.getElementById('accept-cookies').addEventListener('click', function() {
+                setCookie('cookie_consent', 'all', 365);
+                document.getElementById('cookie-consent-banner').remove();
+            });
+            
+            document.getElementById('reject-cookies').addEventListener('click', function() {
+                setCookie('cookie_consent', 'necessary', 365);
+                document.getElementById('cookie-consent-banner').remove();
+            });
+        }
+        
+        // Cookie操作函数
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+        
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+        
+        // 模拟AdSense广告加载
+        window.addEventListener('load', function() {
+            console.log('隐私政策页面加载完成，准备加载AdSense广告');
+        });
+        
+        // 政策章节导航
+        const policyHeadings = document.querySelectorAll('.policy-section h2');
+        const toc = document.createElement('div');
+        toc.className = 'table-of-contents';
+        toc.style.cssText = `
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+        `;
+        
+        toc.innerHTML = '<h3 style="margin-bottom: 15px; color: var(--primary-color);"><i class="fas fa-list"></i> 政策目录</h3>';
+        
+        policyHeadings.forEach((heading, index) => {
+            const id = `section-${index + 1}`;
+            heading.id = id;
+            
+            const link = document.createElement('a');
+            link.href = `#${id}`;
+            link.textContent = heading.textContent.replace(/^\d+\.\s*/, '');
+            link.style.cssText = `
+                display: block;
+                padding: 8px 0;
+                color: var(--text-secondary);
+                text-decoration: none;
+                border-bottom: 1px solid var(--border-color);
+                transition: color 0.2s;
+            `;
+            link.addEventListener('mouseover', () => link.style.color = 'var(--primary-color)');
+            link.addEventListener('mouseout', () => link.style.color = 'var(--text-secondary)');
+            
+            toc.appendChild(link);
+        });
+        
+        // 将目录插入到页面头部后
+        const pageHeader = document.querySelector('.page-header');
+        if (pageHeader) {
+            pageHeader.parentNode.insertBefore(toc, pageHeader.nextSibling);
+        }
+    </script>
+</body>
+</html>

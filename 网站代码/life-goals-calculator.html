@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生活目标管理计算器 - 人生计算器</title>
+    <meta name="description" content="免费在线生活目标管理计算器：设定和追踪人生目标，包括职业发展、学习成长、健康生活、人际关系、财务目标等，提供科学的进度管理和实现路径。">
+    <meta name="keywords" content="目标管理,生活规划,人生目标,SMART目标,目标设定,目标追踪,职业发展,学习成长,健康目标,财务目标">
+    
+    <!-- 继承主站样式 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --primary-dark: #3a0ca3;
+            --career-color: #ff6b6b;
+            --learning-color: #1dd1a1;
+            --health-color: #54a0ff;
+            --relationship-color: #f368e0;
+            --finance-color: #ff9f43;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-muted: #b2bec3;
+            --border-color: #dfe6e9;
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --font-heading: 'Noto Serif SC', serif;
+            --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部导航 */
+        .header {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 16px 0;
+            margin-bottom: 30px;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 计算器主区域 */
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 输入区域 */
+        .input-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        /* 目标类别选择 */
+        .goal-categories {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 480px) {
+            .goal-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .category-card {
+            background-color: #f8f9fa;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .category-card.active {
+            border-color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.05);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .category-career .category-icon { background-color: var(--career-color); }
+        .category-learning .category-icon { background-color: var(--learning-color); }
+        .category-health .category-icon { background-color: var(--health-color); }
+        .category-relationship .category-icon { background-color: var(--relationship-color); }
+        .category-finance .category-icon { background-color: var(--finance-color); }
+        .category-other .category-icon { background-color: var(--primary-color); }
+        
+        .category-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .category-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 输入组 */
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .textarea-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s ease;
+        }
+        
+        .textarea-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .select-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .date-input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        /* 优先级选择 */
+        .priority-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .priority-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background-color: white;
+            font-family: var(--font-body);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .priority-btn.active {
+            border-color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .priority-low {
+            color: var(--learning-color);
+        }
+        
+        .priority-medium {
+            color: var(--finance-color);
+        }
+        
+        .priority-high {
+            color: var(--career-color);
+        }
+        
+        .priority-urgent {
+            color: var(--relationship-color);
+        }
+        
+        /* 进度管理 */
+        .progress-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .progress-slider {
+            flex: 1;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #e9ecef, var(--primary-color));
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .progress-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .progress-value {
+            width: 60px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        /* 结果区域 */
+        .result-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* 目标卡片 */
+        .goal-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            border-left: 6px solid var(--primary-color);
+        }
+        
+        .goal-card.career { border-left-color: var(--career-color); }
+        .goal-card.learning { border-left-color: var(--learning-color); }
+        .goal-card.health { border-left-color: var(--health-color); }
+        .goal-card.relationship { border-left-color: var(--relationship-color); }
+        .goal-card.finance { border-left-color: var(--finance-color); }
+        
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .goal-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .goal-category {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .goal-category.career {
+            background-color: rgba(255, 107, 107, 0.1);
+            color: var(--career-color);
+        }
+        
+        .goal-category.learning {
+            background-color: rgba(29, 209, 161, 0.1);
+            color: var(--learning-color);
+        }
+        
+        .goal-category.health {
+            background-color: rgba(84, 160, 255, 0.1);
+            color: var(--health-color);
+        }
+        
+        .goal-category.relationship {
+            background-color: rgba(243, 104, 224, 0.1);
+            color: var(--relationship-color);
+        }
+        
+        .goal-category.finance {
+            background-color: rgba(255, 159, 67, 0.1);
+            color: var(--finance-color);
+        }
+        
+        .goal-priority {
+            font-size: 0.9rem;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+        
+        .priority-badge-low {
+            background-color: rgba(29, 209, 161, 0.1);
+            color: var(--learning-color);
+        }
+        
+        .priority-badge-medium {
+            background-color: rgba(255, 159, 67, 0.1);
+            color: var(--finance-color);
+        }
+        
+        .priority-badge-high {
+            background-color: rgba(255, 107, 107, 0.1);
+            color: var(--career-color);
+        }
+        
+        .priority-badge-urgent {
+            background-color: rgba(243, 104, 224, 0.1);
+            color: var(--relationship-color);
+        }
+        
+        .goal-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        /* 进度条 */
+        .goal-progress {
+            margin: 20px 0;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-percent {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill.career { background: linear-gradient(90deg, var(--career-color), #ff9f43); }
+        .progress-fill.learning { background: linear-gradient(90deg, var(--learning-color), #00b894); }
+        .progress-fill.health { background: linear-gradient(90deg, var(--health-color), #54a0ff); }
+        .progress-fill.relationship { background: linear-gradient(90deg, var(--relationship-color), #f368e0); }
+        .progress-fill.finance { background: linear-gradient(90deg, var(--finance-color), #ff9f43); }
+        
+        /* 时间线 */
+        .timeline {
+            margin-top: 20px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--border-color);
+        }
+        
+        .timeline-date {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* 行动建议 */
+        .action-plan {
+            background-color: #e8f4fd;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-light);
+        }
+        
+        .action-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-list {
+            list-style: none;
+        }
+        
+        .action-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+        
+        .action-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        /* 按钮 */
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
+        }
+        
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .reset-btn:hover {
+            background-color: #f8f9fa;
+            border-color: var(--text-muted);
+        }
+        
+        /* 信息卡片 */
+        .info-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 25px;
+            margin-top: 40px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .info-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-content {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        .info-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .info-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+        
+        .info-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: var(--card-bg);
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .footer-section h3 {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* AdSense占位符 */
+        .adsense-placeholder {
+            background-color: #f5f5f5;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+            color: #666;
+        }
+        
+        .placeholder-content {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        /* 目标列表 */
+        .goals-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+        
+        .goals-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .goals-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .goals-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+        
+        .no-goals {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+        
+        .no-goals i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <span>人生计算器</span>
+            </a>
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                返回首页
+            </a>
+        </div>
+    </header>
+
+    <!-- 页面内容 -->
+    <div class="container">
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">生活目标管理计算器</h1>
+            <p class="page-subtitle">设定和追踪人生目标，包括职业发展、学习成长、健康生活、人际关系、财务目标等，提供科学的进度管理和实现路径</p>
+        </div>
+
+        <!-- 计算器主区域 -->
+        <div class="calculator-container">
+            <!-- 输入区域 -->
+            <div class="input-section">
+                <h2 class="section-title">设定新目标</h2>
+                
+                <!-- 目标类别选择 -->
+                <div class="goal-categories">
+                    <div class="category-card category-career active" data-category="career">
+                        <div class="category-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="category-title">职业发展</div>
+                        <div class="category-description">晋升、加薪、转行等</div>
+                    </div>
+                    
+                    <div class="category-card category-learning" data-category="learning">
+                        <div class="category-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="category-title">学习成长</div>
+                        <div class="category-description">技能提升、证书考试等</div>
+                    </div>
+                    
+                    <div class="category-card category-health" data-category="health">
+                        <div class="category-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="category-title">健康生活</div>
+                        <div class="category-description">健身、饮食、作息等</div>
+                    </div>
+                    
+                    <div class="category-card category-relationship" data-category="relationship">
+                        <div class="category-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="category-title">人际关系</div>
+                        <div class="category-description">家庭、朋友、社交等</div>
+                    </div>
+                    
+                    <div class="category-card category-finance" data-category="finance">
+                        <div class="category-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="category-title">财务目标</div>
+                        <div class="category-description">储蓄、投资、理财等</div>
+                    </div>
+                    
+                    <div class="category-card category-other" data-category="other">
+                        <div class="category-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="category-title">其他目标</div>
+                        <div class="category-description">兴趣爱好、旅行等</div>
+                    </div>
+                </div>
+                
+                <!-- 目标信息输入 -->
+                <div class="input-group">
+                    <label class="input-label">目标名称</label>
+                    <input type="text" id="goalName" class="input-field" placeholder="例如：三个月内掌握Python编程" maxlength="50">
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">目标描述</label>
+                    <textarea id="goalDescription" class="textarea-field" placeholder="详细描述您的目标，为什么重要，如何衡量成功..."></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">目标期限</label>
+                    <div class="date-input-group">
+                        <div>
+                            <label style="font-size: 0.9rem; color: var(--text-secondary); display: block; margin-bottom: 5px;">开始日期</label>
+                            <input type="date" id="startDate" class="input-field">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.9rem; color: var(--text-secondary); display: block; margin-bottom: 5px;">截止日期</label>
+                            <input type="date" id="endDate" class="input-field">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">优先级</label>
+                    <div class="priority-buttons">
+                        <button class="priority-btn priority-low" data-priority="low">低</button>
+                        <button class="priority-btn priority-medium active" data-priority="medium">中</button>
+                        <button class="priority-btn priority-high" data-priority="high">高</button>
+                        <button class="priority-btn priority-urgent" data-priority="urgent">紧急</button>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">当前进度</label>
+                    <div class="progress-input">
+                        <input type="range" id="progressSlider" class="progress-slider" min="0" max="100" value="0">
+                        <div class="progress-value" id="progressValue">0%</div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">关键里程碑</label>
+                    <textarea id="milestones" class="textarea-field" placeholder="列出实现目标的关键步骤和里程碑..."></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">潜在障碍</label>
+                    <textarea id="obstacles" class="textarea-field" placeholder="可能遇到的困难和挑战，以及应对策略..."></textarea>
+                </div>
+                
+                <button class="calculate-btn" id="addGoalBtn">
+                    <i class="fas fa-plus-circle"></i>
+                    添加目标
+                </button>
+                
+                <button class="reset-btn" id="clearGoalsBtn">
+                    <i class="fas fa-trash-alt"></i>
+                    清除所有目标
+                </button>
+            </div>
+            
+            <!-- 结果区域 -->
+            <div class="result-section">
+                <h2 class="section-title">目标管理面板</h2>
+                
+                <!-- 目标列表 -->
+                <div class="goals-list" id="goalsList">
+                    <div class="no-goals" id="noGoalsMessage">
+                        <i class="fas fa-bullseye"></i>
+                        <p>尚未设定任何目标</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">在左侧设定您的第一个生活目标</p>
+                    </div>
+                </div>
+                
+                <!-- 目标统计 -->
+                <div class="info-card" style="margin-top: 0;">
+                    <h3 class="info-title" style="font-size: 1.1rem;">
+                        <i class="fas fa-chart-pie"></i>
+                        目标统计
+                    </h3>
+                    <div id="goalStats">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                            <div>
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">0</div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">总目标数</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--learning-color);">0%</div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">平均进度</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 建议区域 -->
+                <h3 class="section-title" style="font-size: 1.2rem; margin-top: 30px;">目标管理建议</h3>
+                
+                <div id="recommendations">
+                    <div class="action-plan">
+                        <div class="action-title">
+                            <i class="fas fa-lightbulb"></i>
+                            SMART目标原则
+                        </div>
+                        <ul class="action-list">
+                            <li><strong>S</strong>pecific - 目标要具体明确</li>
+                            <li><strong>M</strong>easurable - 进度要可衡量</li>
+                            <li><strong>A</strong>chievable - 目标要切实可行</li>
+                            <li><strong>R</strong>elevant - 目标要与人生相关</li>
+                            <li><strong>T</strong>ime-bound - 要有明确时间限制</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AdSense广告位（顶部横幅） -->
+        <div class="adsense-placeholder" id="adsense-top-banner">
+            <div class="placeholder-content">
+                <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>Google AdSense 广告位 - 728x90 横幅广告</p>
+            </div>
+        </div>
+        
+        <!-- 信息卡片 -->
+        <div class="info-card">
+            <h2 class="info-title">
+                <i class="fas fa-info-circle"></i>
+                目标管理的重要性
+            </h2>
+            <div class="info-content">
+                <p>有效的生活目标管理可以帮助您：</p>
+                <ul class="info-list">
+                    <li><strong>明确方向</strong>：清楚知道自己想要什么，避免盲目努力</li>
+                    <li><strong>提高效率</strong>：集中时间和精力在最重要的事情上</li>
+                    <li><strong>增强动力</strong>：看到进步会激发持续努力的决心</li>
+                    <li><strong>减少焦虑</strong>：有计划地行动比盲目应对更让人安心</li>
+                    <li><strong>提升成就感</strong>：每达成一个目标都是自我价值的实现</li>
+                </ul>
+                <p style="margin-top: 15px; color: var(--text-muted); font-style: italic;">
+                    研究表明：将目标写下来的人，实现目标的可能性比不写下来的人高出42%。
+                </p>
+            </div>
+        </div>
+        
+        <!-- AdSense广告位（中部矩形） -->
+        <div class="adsense-placeholder" id="adsense-middle-rectangle">
+            <div class="placeholder-content">
+                <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>Google AdSense 广告位 - 300x250 矩形广告</p>
+            </div>
+        </div>
+        
+        <!-- 相关工具推荐 -->
+        <div class="info-card">
+            <h2 class="info-title">
+                <i class="fas fa-calculator"></i>
+                更多实用工具
+            </h2>
+            <div class="info-content">
+                <p>探索我们提供的其他生活规划工具：</p>
+                <ul class="info-list">
+                    <li><a href="time-calculator.html" style="color: var(--primary-color);">时间与年龄计算器</a> - 精确计算日期和时间</li>
+                    <li><a href="health-lifespan-calculator.html" style="color: var(--primary-color);">健康与寿命评估计算器</a> - 科学预测健康寿命</li>
+                    <li><a href="financial-calculator.html" style="color: var(--primary-color);">财务规划计算器</a> - 个人财务规划和管理</li>
+                    <li><a href="retirement-calculator.html" style="color: var(--primary-color);">退休规划计算器</a> - 退休储蓄和收入规划</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>人生计算器</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 15px;">提供全面的生活规划工具，帮助您更好地管理时间、健康、财务和生活目标。</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">网站首页</a></li>
+                        <li><a href="articles.html">文章中心</a></li>
+                        <li><a href="time-calculator.html">时间计算器</a></li>
+                        <li><a href="life-goals-calculator.html">生活目标管理</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>法律信息</h3>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">隐私政策</a></li>
+                        <li><a href="terms.html">使用条款</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                        <li><a href="contact.html">联系我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2025 人生计算器 版权所有 | 本网站已申请Google AdSense广告计划</p>
+                <p style="margin-top: 5px; font-size: 0.85rem;">免责声明：本工具提供的信息仅供参考，旨在帮助用户更好地规划生活目标。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 元素引用
+            const categoryCards = document.querySelectorAll('.category-card');
+            const priorityButtons = document.querySelectorAll('.priority-btn');
+            const progressSlider = document.getElementById('progressSlider');
+            const progressValue = document.getElementById('progressValue');
+            const addGoalBtn = document.getElementById('addGoalBtn');
+            const clearGoalsBtn = document.getElementById('clearGoalsBtn');
+            const goalsList = document.getElementById('goalsList');
+            const noGoalsMessage = document.getElementById('noGoalsMessage');
+            const goalStats = document.getElementById('goalStats');
+            const recommendations = document.getElementById('recommendations');
+            
+            let currentCategory = 'career';
+            let currentPriority = 'medium';
+            let goals = JSON.parse(localStorage.getItem('lifeGoals')) || [];
+            
+            // 类别选择
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    categoryCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.getAttribute('data-category');
+                });
+            });
+            
+            // 优先级选择
+            priorityButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    priorityButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentPriority = this.getAttribute('data-priority');
+                });
+            });
+            
+            // 进度条
+            progressSlider.addEventListener('input', function() {
+                progressValue.textContent = this.value + '%';
+            });
+            
+            // 设置默认日期
+            const today = new Date();
+            const threeMonthsLater = new Date(today);
+            threeMonthsLater.setMonth(today.getMonth() + 3);
+            
+            document.getElementById('startDate').valueAsDate = today;
+            document.getElementById('endDate').valueAsDate = threeMonthsLater;
+            
+            // 渲染目标列表
+            function renderGoals() {
+                goalsList.innerHTML = '';
+                
+                if (goals.length === 0) {
+                    noGoalsMessage.style.display = 'block';
+                    updateStats();
+                    return;
+                }
+                
+                noGoalsMessage.style.display = 'none';
+                
+                // 按优先级和创建时间排序
+                const priorityOrder = { 'urgent': 0, 'high': 1, 'medium': 2, 'low': 3 };
+                goals.sort((a, b) => {
+                    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+                        return priorityOrder[a.priority] - priorityOrder[b.priority];
+                    }
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+                
+                goals.forEach((goal, index) => {
+                    const goalCard = createGoalCard(goal, index);
+                    goalsList.appendChild(goalCard);
+                });
+                
+                updateStats();
+            }
+            
+            // 创建目标卡片
+            function createGoalCard(goal, index) {
+                const card = document.createElement('div');
+                card.className = `goal-card ${goal.category}`;
+                
+                // 计算时间信息
+                const startDate = new Date(goal.startDate);
+                const endDate = new Date(goal.endDate);
+                const today = new Date();
+                const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                const elapsedDays = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
+                const remainingDays = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+                
+                const timeStatus = remainingDays < 0 ? '已过期' : 
+                                 remainingDays === 0 ? '今天截止' : 
+                                 `剩余${remainingDays}天`;
+                
+                const timeColor = remainingDays < 0 ? '#d63031' : 
+                                remainingDays < 7 ? '#e17055' : 
+                                remainingDays < 30 ? '#fdcb6e' : '#00b894';
+                
+                // 创建时间线项目
+                let timelineHTML = '';
+                if (goal.milestones) {
+                    const milestones = goal.milestones.split('\n').filter(m => m.trim());
+                    milestones.forEach((milestone, i) => {
+                        if (i < 3) { // 只显示前3个里程碑
+                            timelineHTML += `
+                                <div class="timeline-item">
+                                    <div class="timeline-date">里程碑 ${i + 1}</div>
+                                    <div class="timeline-content">${milestone}</div>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+                
+                // 创建行动建议
+                let actionHTML = '';
+                if (goal.obstacles) {
+                    const obstacles = goal.obstacles.split('\n').filter(o => o.trim());
+                    if (obstacles.length > 0) {
+                        actionHTML = `
+                            <div class="action-plan">
+                                <div class="action-title">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    应对策略
+                                </div>
+                                <ul class="action-list">
+                                    ${obstacles.map(obstacle => `<li>${obstacle}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                }
+                
+                card.innerHTML = `
+                    <div class="goal-header">
+                        <div>
+                            <div class="goal-title">${goal.name}</div>
+                            <div class="goal-category ${goal.category}">
+                                <i class="fas ${getCategoryIcon(goal.category)}"></i>
+                                ${getCategoryName(goal.category)}
+                            </div>
+                        </div>
+                        <div class="goal-priority priority-badge-${goal.priority}">
+                            ${getPriorityName(goal.priority)}
+                        </div>
+                    </div>
+                    
+                    <div class="goal-description">${goal.description || '暂无详细描述'}</div>
+                    
+                    <div class="goal-progress">
+                        <div class="progress-info">
+                            <span>进度: ${goal.progress}%</span>
+                            <span class="progress-percent">${timeStatus}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill ${goal.category}" style="width: ${goal.progress}%"></div>
+                        </div>
+                    </div>
+                    
+                    ${timelineHTML ? `<div class="timeline">${timelineHTML}</div>` : ''}
+                    
+                    ${actionHTML}
+                    
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
+                        <button class="update-progress-btn" data-index="${index}" style="padding: 6px 12px; background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                            <i class="fas fa-edit"></i> 更新进度
+                        </button>
+                        <button class="delete-goal-btn" data-index="${index}" style="padding: 6px 12px; background-color: #ffeaa7; border: 1px solid #fdcb6e; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                            <i class="fas fa-trash"></i> 删除
+                        </button>
+                    </div>
+                `;
+                
+                // 添加事件监听器
+                const updateBtn = card.querySelector('.update-progress-btn');
+                const deleteBtn = card.querySelector('.delete-goal-btn');
+                
+                updateBtn.addEventListener('click', function() {
+                    const idx = parseInt(this.getAttribute('data-index'));
+                    updateGoalProgress(idx);
+                });
+                
+                deleteBtn.addEventListener('click', function() {
+                    const idx = parseInt(this.getAttribute('data-index'));
+                    deleteGoal(idx);
+                });
+                
+                return card;
+            }
+            
+            // 获取类别图标
+            function getCategoryIcon(category) {
+                const icons = {
+                    'career': 'fa-briefcase',
+                    'learning': 'fa-graduation-cap',
+                    'health': 'fa-heartbeat',
+                    'relationship': 'fa-users',
+                    'finance': 'fa-chart-line',
+                    'other': 'fa-star'
+                };
+                return icons[category] || 'fa-star';
+            }
+            
+            // 获取类别名称
+            function getCategoryName(category) {
+                const names = {
+                    'career': '职业发展',
+                    'learning': '学习成长',
+                    'health': '健康生活',
+                    'relationship': '人际关系',
+                    'finance': '财务目标',
+                    'other': '其他目标'
+                };
+                return names[category] || '其他目标';
+            }
+            
+            // 获取优先级名称
+            function getPriorityName(priority) {
+                const names = {
+                    'low': '低优先级',
+                    'medium': '中优先级',
+                    'high': '高优先级',
+                    'urgent': '紧急'
+                };
+                return names[priority] || '中优先级';
+            }
+            
+            // 更新统计信息
+            function updateStats() {
+                if (goals.length === 0) {
+                    goalStats.innerHTML = `
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                            <div>
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">0</div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">总目标数</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--learning-color);">0%</div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">平均进度</div>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const totalGoals = goals.length;
+                const totalProgress = goals.reduce((sum, goal) => sum + parseInt(goal.progress), 0);
+                const avgProgress = Math.round(totalProgress / totalGoals);
+                
+                const highPriorityGoals = goals.filter(g => g.priority === 'high' || g.priority === 'urgent').length;
+                const nearingDeadline = goals.filter(g => {
+                    const endDate = new Date(g.endDate);
+                    const today = new Date();
+                    const remainingDays = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+                    return remainingDays >= 0 && remainingDays <= 7;
+                }).length;
+                
+                goalStats.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(2, 2fr); gap: 15px;">
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">${totalGoals}</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">总目标数</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--learning-color);">${avgProgress}%</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">平均进度</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--career-color);">${highPriorityGoals}</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">高优先级</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 700; color: ${nearingDeadline > 0 ? '#e17055' : '#00b894'};">${nearingDeadline}</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">本周截止</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 添加目标
+            addGoalBtn.addEventListener('click', function() {
+                const goalName = document.getElementById('goalName').value.trim();
+                const goalDescription = document.getElementById('goalDescription').value.trim();
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const progress = parseInt(progressSlider.value);
+                const milestones = document.getElementById('milestones').value.trim();
+                const obstacles = document.getElementById('obstacles').value.trim();
+                
+                // 验证输入
+                if (!goalName) {
+                    alert('请填写目标名称');
+                    return;
+                }
+                
+                if (!startDate || !endDate) {
+                    alert('请选择开始和截止日期');
+                    return;
+                }
+                
+                if (new Date(startDate) > new Date(endDate)) {
+                    alert('开始日期不能晚于截止日期');
+                    return;
+                }
+                
+                // 创建新目标
+                const newGoal = {
+                    id: Date.now(),
+                    name: goalName,
+                    description: goalDescription,
+                    category: currentCategory,
+                    priority: currentPriority,
+                    startDate: startDate,
+                    endDate: endDate,
+                    progress: progress,
+                    milestones: milestones,
+                    obstacles: obstacles,
+                    createdAt: new Date().toISOString()
+                };
+                
+                goals.push(newGoal);
+                localStorage.setItem('lifeGoals', JSON.stringify(goals));
+                
+                // 重置表单
+                document.getElementById('goalName').value = '';
+                document.getElementById('goalDescription').value = '';
+                document.getElementById('milestones').value = '';
+                document.getElementById('obstacles').value = '';
+                progressSlider.value = 0;
+                progressValue.textContent = '0%';
+                
+                // 重新渲染
+                renderGoals();
+                
+                // 显示成功消息
+                showNotification('目标已成功添加！', 'success');
+            });
+            
+            // 更新目标进度
+            function updateGoalProgress(index) {
+                const goal = goals[index];
+                const newProgress = prompt(`更新"${goal.name}"的进度 (0-100):`, goal.progress);
+                
+                if (newProgress !== null) {
+                    const progressNum = parseInt(newProgress);
+                    if (isNaN(progressNum) || progressNum < 0 || progressNum > 100) {
+                        alert('请输入0-100之间的数字');
+                        return;
+                    }
+                    
+                    goals[index].progress = progressNum;
+                    localStorage.setItem('lifeGoals', JSON.stringify(goals));
+                    renderGoals();
+                    showNotification('进度已更新！', 'success');
+                }
+            }
+            
+            // 删除目标
+            function deleteGoal(index) {
+                if (confirm('确定要删除这个目标吗？')) {
+                    goals.splice(index, 1);
+                    localStorage.setItem('lifeGoals', JSON.stringify(goals));
+                    renderGoals();
+                    showNotification('目标已删除', 'info');
+                }
+            }
+            
+            // 清除所有目标
+            clearGoalsBtn.addEventListener('click', function() {
+                if (goals.length === 0) {
+                    alert('当前没有目标可以清除');
+                    return;
+                }
+                
+                if (confirm('确定要清除所有目标吗？此操作不可恢复。')) {
+                    goals = [];
+                    localStorage.removeItem('lifeGoals');
+                    renderGoals();
+                    showNotification('所有目标已清除', 'info');
+                }
+            });
+            
+            // 显示通知
+            function showNotification(message, type) {
+                // 创建通知元素
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 20px;
+                    background-color: ${type === 'success' ? '#00b894' : '#0984e3'};
+                    color: white;
+                    border-radius: var(--radius-md);
+                    box-shadow: var(--shadow-lg);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                    font-weight: 600;
+                `;
+                
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                // 3秒后移除
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+                
+                // 添加CSS动画
+                if (!document.querySelector('#notification-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'notification-styles';
+                    style.textContent = `
+                        @keyframes slideIn {
+                            from { transform: translateX(100%); opacity: 0; }
+                            to { transform: translateX(0); opacity: 1; }
+                        }
+                        @keyframes slideOut {
+                            from { transform: translateX(0); opacity: 1; }
+                            to { transform: translateX(100%); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+            
+            // 生成个性化建议
+            function generateRecommendations() {
+                let recHTML = '';
+                
+                if (goals.length === 0) {
+                    recHTML = `
+                        <div class="action-plan">
+                            <div class="action-title">
+                                <i class="fas fa-lightbulb"></i>
+                                开始设定目标
+                            </div>
+                            <ul class="action-list">
+                                <li>从最重要的1-3个目标开始</li>
+                                <li>确保目标符合SMART原则</li>
+                                <li>为每个目标设定明确的截止日期</li>
+                                <li>分解大目标为可执行的小步骤</li>
+                                <li>定期检查和调整目标进度</li>
+                            </ul>
+                        </div>
+                    `;
+                } else {
+                    const highPriorityGoals = goals.filter(g => g.priority === 'high' || g.priority === 'urgent');
+                    const lowProgressGoals = goals.filter(g => g.progress < 30);
+                    const nearingDeadlineGoals = goals.filter(g => {
+                        const endDate = new Date(g.endDate);
+                        const today = new Date();
+                        const remainingDays = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+                        return remainingDays >= 0 && remainingDays <= 7;
+                    });
+                    
+                    if (highPriorityGoals.length > 3) {
+                        recHTML += `
+                            <div class="action-plan">
+                                <div class="action-title">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    优先级管理建议
+                                </div>
+                                <ul class="action-list">
+                                    <li>您有${highPriorityGoals.length}个高优先级目标，建议集中精力在最重要的2-3个</li>
+                                    <li>考虑将部分目标优先级调整为中等</li>
+                                    <li>为每个高优先级目标分配专门的时间块</li>
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    
+                    if (lowProgressGoals.length > 0) {
+                        recHTML += `
+                            <div class="action-plan">
+                                <div class="action-title">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    进度管理建议
+                                </div>
+                                <ul class="action-list">
+                                    <li>有${lowProgressGoals.length}个目标进度低于30%，需要关注</li>
+                                    <li>检查是否存在障碍或需要调整计划</li>
+                                    <li>考虑将目标分解为更小的步骤</li>
+                                    <li>设定每周检查点追踪进度</li>
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    
+                    if (nearingDeadlineGoals.length > 0) {
+                        recHTML += `
+                            <div class="action-plan">
+                                <div class="action-title">
+                                    <i class="fas fa-clock"></i>
+                                    时间管理建议
+                                </div>
+                                <ul class="action-list">
+                                    <li>有${nearingDeadlineGoals.length}个目标本周截止</li>
+                                    <li>优先处理这些目标或调整截止日期</li>
+                                    <li>考虑是否可以委托他人或寻求帮助</li>
+                                    <li>完成后及时庆祝成就</li>
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    
+                    if (recHTML === '') {
+                        recHTML = `
+                            <div class="action-plan">
+                                <div class="action-title">
+                                    <i class="fas fa-check-circle"></i>
+                                    目标管理良好
+                                </div>
+                                <ul class="action-list">
+                                    <li>您的目标管理状况良好！继续保持</li>
+                                    <li>建议每周花30分钟回顾目标进度</li>
+                                    <li>庆祝每一个小成就，保持动力</li>
+                                    <li>定期调整目标以适应变化</li>
+                                </ul>
+                            </div>
+                        `;
+                    }
+                }
+                
+                recommendations.innerHTML = recHTML;
+            }
+            
+            // 初始化
+            renderGoals();
+            generateRecommendations();
+            
+            // 定期更新建议
+            setInterval(generateRecommendations, 60000); // 每分钟更新一次
+            
+            // 模拟AdSense广告加载
+            window.addEventListener('load', function() {
+                console.log('生活目标管理计算器页面加载完成，准备加载AdSense广告');
+            });
+        });
+    </script>
+</body>
+</html>

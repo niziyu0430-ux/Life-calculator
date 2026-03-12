@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人生计算器 - 时间管理、健康评估、财务规划一站式工具</title>
+    <meta name="description" content="人生计算器提供全面的生活规划工具：时间管理、健康评估、财务规划、退休计算、寿命预测等。免费在线工具，帮助您更好地规划人生各个阶段。">
+    <meta name="keywords" content="人生计算器,时间管理,财务规划,健康评估,退休计算,寿命预测,生活规划,倒计时工具">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="人生计算器 - 您的人生规划助手">
+    <meta property="og:description" content="一站式生活规划工具平台，帮助您管理时间、健康、财务和生活目标">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lifecalculator.com">
+    <meta property="og:image" content="https://lifecalculator.com/images/og-image.jpg">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="人生计算器 - 您的人生规划助手">
+    <meta name="twitter:description" content="一站式生活规划工具平台，帮助您管理时间、健康、财务和生活目标">
+    
+    <!-- 字体和样式 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* 主色调 */
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --primary-dark: #3a0ca3;
+            
+            /* 辅助色 */
+            --secondary-color: #4cc9f0;
+            --accent-color: #f72585;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            
+            /* 中性色 */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-muted: #b2bec3;
+            --border-color: #dfe6e9;
+            
+            /* 阴影 */
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            
+            /* 圆角 */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            /* 字体 */
+            --font-heading: 'Noto Serif SC', serif;
+            --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 25%, #f0f2f5 50%, #e8edf5 75%, #f5f7fa 100%);
+            background-size: 400% 400%;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部导航 */
+        .header {
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 16px 0;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            font-family: var(--font-heading);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+            border-radius: 1px;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* 计算器功能展示 */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .calculator-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .calculator-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+        
+        .calculator-image {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .calculator-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0));
+            z-index: 1;
+        }
+        
+        .calculator-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* 不同计算器的背景颜色 */
+        .time-bg {
+            background: linear-gradient(135deg, #4361ee, #4895ef);
+        }
+        
+        .health-bg {
+            background: linear-gradient(135deg, #4cc9f0, #38b2ac);
+        }
+        
+        .finance-bg {
+            background: linear-gradient(135deg, #f72585, #b5179e);
+        }
+        
+        .goals-bg {
+            background: linear-gradient(135deg, #7209b7, #560bad);
+        }
+        
+        .retirement-bg {
+            background: linear-gradient(135deg, #f8961e, #f9844a);
+        }
+        
+        .calculator-content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .calculator-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        
+        .calculator-content p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            flex-grow: 1;
+            line-height: 1.6;
+        }
+        
+        .calculator-content .btn {
+            align-self: flex-start;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            margin-top: auto;
+        }
+        
+        /* 文章和博客区域 */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .article-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .article-image {
+            height: 180px;
+            background-color: var(--primary-light);
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .article-content {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .article-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .article-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+        
+        .article-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        /* 统计和信任标志 */
+        .stats {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .stat-item p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: #2d3436;
+            color: #dfe6e9;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+            font-family: var(--font-heading);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #b2bec3;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b2bec3;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--card-bg);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: var(--shadow-md);
+                gap: 20px;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .calculator-grid,
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* AdSense广告位占位符 */
+        .ad-placeholder {
+            background-color: #f0f2f5;
+            border: 1px dashed #d1d5db;
+            border-radius: var(--radius-md);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            margin: 40px 0;
+        }
+        
+        .ad-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <span>人生计算器</span>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="active">首页</a>
+                <a href="calculators.html">计算器</a>
+                <a href="articles.html">文章</a>
+                <a href="about.html">关于</a>
+                <a href="privacy.html">隐私</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero fade-in-up">
+        <div class="container hero-content">
+            <h1>人生计算器：您的一站式生活规划助手</h1>
+            <p>免费在线工具帮助您管理时间、健康、财务和生活目标。从生日计算到退休规划，我们提供全面的数据分析和个人化建议。</p>
+            <div class="cta-buttons">
+                <a href="#calculators" class="btn btn-primary">
+                    <i class="fas fa-play-circle"></i> 开始计算
+                </a>
+                <a href="articles.html" class="btn btn-secondary">
+                    <i class="fas fa-book-open"></i> 阅读文章
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- AdSense广告位（顶部） -->
+    <div class="container">
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i>
+            <p>Google AdSense 广告位 - 728x90 横幅广告</p>
+        </div>
+    </div>
+
+    <!-- 计算器功能展示 -->
+    <section class="section" id="calculators">
+        <div class="container">
+                <div class="section-title fade-in-up">
+                    <h2>5个核心生活计算工具</h2>
+                    <p>我们提供5个专业计算器，涵盖人生的关键方面，帮助您做出更明智的决策。</p>
+                </div>
+            
+            <div class="calculator-grid">
+                <div class="calculator-card fade-in-up">
+                    <div class="calculator-image time-bg">
+                        <div class="calculator-icon">
+                            <i class="fas fa-birthday-cake"></i>
+                        </div>
+                    </div>
+                    <div class="calculator-content">
+                        <h3>时间与年龄计算器</h3>
+                        <p>计算您活了多久、距离下个生日还有多少天，纪念日倒计时，重要事件时间管理。</p>
+                        <a href="time-calculator.html" class="btn btn-primary">立即使用</a>
+                    </div>
+                </div>
+                
+                <div class="calculator-card fade-in-up">
+                    <div class="calculator-image health-bg">
+                        <div class="calculator-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                    </div>
+                    <div class="calculator-content">
+                        <h3>健康与寿命评估计算器</h3>
+                        <p>基于生活习惯预测预期寿命，评估健康风险，制定个性化的健康改善计划。</p>
+                        <a href="health-lifespan-calculator.html" class="btn btn-primary">开始评估</a>
+                    </div>
+                </div>
+                
+                <div class="calculator-card fade-in-up">
+                    <div class="calculator-image finance-bg">
+                        <div class="calculator-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="calculator-content">
+                        <h3>财务规划计算器</h3>
+                        <p>退休需要多少钱？储蓄目标如何达成？贷款和投资回报计算，助您实现财务自由。</p>
+                        <a href="financial-calculator.html" class="btn btn-primary">财务规划</a>
+                    </div>
+                </div>
+                
+                <div class="calculator-card fade-in-up">
+                    <div class="calculator-image goals-bg">
+                        <div class="calculator-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                    </div>
+                    <div class="calculator-content">
+                        <h3>生活目标管理计算器</h3>
+                        <p>设定人生目标，制定实现计划，跟踪进度，获取个性化建议和调整策略。</p>
+                        <a href="life-goals-calculator.html" class="btn btn-primary">设定目标</a>
+                    </div>
+                </div>
+                
+                <div class="calculator-card fade-in-up">
+                    <div class="calculator-image retirement-bg">
+                        <div class="calculator-icon">
+                            <i class="fas fa-umbrella-beach"></i>
+                        </div>
+                    </div>
+                    <div class="calculator-content">
+                        <h3>退休规划计算器</h3>
+                        <p>计算退休所需资金，规划退休收入来源，评估退休生活质量，确保安享晚年。</p>
+                        <a href="retirement-calculator.html" class="btn btn-primary">退休规划</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 推荐文章 -->
+    <section class="section" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="section-title fade-in-up">
+                <h2>最新文章与指南</h2>
+                <p>阅读我们的专业文章，获取人生规划、时间管理和健康生活的实用建议。</p>
+            </div>
+            
+            <div class="articles-grid">
+                <div class="article-card fade-in-up">
+                    <div class="article-image" style="background-color: #4cc9f0;"></div>
+                    <div class="article-content">
+                        <span class="article-category">时间管理</span>
+                        <h3>高效利用碎片时间的10个实用技巧</h3>
+                        <p>在现代快节奏生活中，如何有效利用零散时间提升生产力和生活质量？本文分享10个经过验证的技巧。</p>
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> 2026-03-10</span>
+                            <span><i class="far fa-clock"></i> 8分钟阅读</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="article-card fade-in-up">
+                    <div class="article-image" style="background-color: #4361ee;"></div>
+                    <div class="article-content">
+                        <span class="article-category">财务规划</span>
+                        <h3>30岁应该有多少存款？各年龄段财务健康标准</h3>
+                        <p>不同年龄段的财务健康标准是什么？如何制定适合自己情况的储蓄和投资计划？本文提供详细指南。</p>
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> 2026-03-08</span>
+                            <span><i class="far fa-clock"></i> 12分钟阅读</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="article-card fade-in-up">
+                    <div class="article-image" style="background-color: #f72585;"></div>
+                    <div class="article-content">
+                        <span class="article-category">健康生活</span>
+                        <h3>延长寿命的7个科学习惯：基于最新研究</h3>
+                        <p>科学研究发现了哪些真正能够延长寿命的习惯？本文基于最新医学研究，分享7个被证实的健康习惯。</p>
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> 2026-03-05</span>
+                            <span><i class="far fa-clock"></i> 10分钟阅读</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="articles.html" class="btn btn-secondary">查看更多文章</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- AdSense广告位（中部） -->
+    <div class="container">
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i>
+            <p>Google AdSense 广告位 - 300x250 矩形广告</p>
+        </div>
+    </div>
+
+    <!-- 统计数据 -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in-up">
+                    <h3>50,000+</h3>
+                    <p>月活跃用户</p>
+                </div>
+                <div class="stat-item fade-in-up">
+                    <h3>5+</h3>
+                    <p>专业计算工具</p>
+                </div>
+                <div class="stat-item fade-in-up">
+                    <h3>6+</h3>
+                    <p>原创文章</p>
+                </div>
+                <div class="stat-item fade-in-up">
+                    <h3>98%</h3>
+                    <p>用户满意度</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>人生计算器</h4>
+                    <p style="color: #b2bec3; margin-bottom: 20px;">一站式生活规划工具平台，帮助您更好地管理时间、健康、财务和生活目标。</p>
+                    <div style="display: flex; gap: 16px;">
+                        <a href="#" style="color: #b2bec3; font-size: 1.2rem;"><i class="fab fa-weixin"></i></a>
+                        <a href="#" style="color: #b2bec3; font-size: 1.2rem;"><i class="fab fa-weibo"></i></a>
+                        <a href="#" style="color: #b2bec3; font-size: 1.2rem;"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>快速链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="calculators.html">所有计算器</a></li>
+                        <li><a href="articles.html">文章中心</a></li>
+                        <li><a href="topics.html">专题系列</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>热门工具</h4>
+                    <ul class="footer-links">
+                        <li><a href="time-calculator.html">时间与年龄计算器</a></li>
+                        <li><a href="health-calculator.html">健康与寿命评估</a></li>
+                        <li><a href="finance-calculator.html">财务规划计算器</a></li>
+                        <li><a href="goals-calculator.html">生活目标管理</a></li>
+                        <li><a href="retirement-calculator.html">退休规划计算器</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>法律信息</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">隐私政策</a></li>
+                        <li><a href="terms.html">使用条款</a></li>
+                        <li><a href="disclaimer.html">免责声明</a></li>
+                        <li><a href="contact.html">联系我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2026 人生计算器. 保留所有权利. 本网站提供的信息仅供参考，不构成专业建议.</p>
+                <p style="margin-top: 8px; font-size: 0.8rem;">本网站已申请Google AdSense广告计划</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+        
+        // 关闭菜单当点击链接时（移动端）
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+        
+        // 滚动动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in-up');
+            
+            const fadeInOnScroll = function() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('active');
+                    }
+                });
+            };
+            
+            // 初始检查
+            fadeInOnScroll();
+            
+            // 滚动时检查
+            window.addEventListener('scroll', fadeInOnScroll);
+        });
+        
+        // 模拟AdSense广告加载
+        window.addEventListener('load', function() {
+            console.log('页面加载完成，准备加载AdSense广告');
+            // 这里可以添加实际的AdSense代码
+        });
+    </script>
+</body>
+</html>

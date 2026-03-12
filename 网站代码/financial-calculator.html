@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>财务规划计算器 - 人生计算器</title>
+    <meta name="description" content="免费在线财务规划计算器：个人财务规划、储蓄目标、投资回报、退休规划、债务管理一体化工具，帮助您实现财务自由。">
+    <meta name="keywords" content="财务计算器,理财规划,储蓄计算,投资回报,退休规划,债务管理,财务自由,个人理财,财务目标">
+    
+    <!-- 继承主站样式 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --primary-dark: #3a0ca3;
+            --finance-color: #00b894;
+            --investment-color: #0984e3;
+            --debt-color: #d63031;
+            --savings-color: #00cec9;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-muted: #b2bec3;
+            --border-color: #dfe6e9;
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --font-heading: 'Noto Serif SC', serif;
+            --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部导航 */
+        .header {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 16px 0;
+            margin-bottom: 30px;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--finance-color), var(--investment-color));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 计算器标签页 */
+        .tabs {
+            display: flex;
+            background-color: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 5px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tab:hover:not(.active) {
+            background-color: #f8f9fa;
+        }
+        
+        /* 标签内容 */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 计算器主区域 */
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 输入区域 */
+        .input-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            padding-right: 40px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .select-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        /* 结果区域 */
+        .result-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .result-value {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--finance-color);
+            margin-bottom: 5px;
+        }
+        
+        .result-subvalue {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        /* 财务指标卡片 */
+        .metric-card {
+            background-color: white;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .metric-card.good {
+            border-left-color: var(--finance-color);
+        }
+        
+        .metric-card.warning {
+            border-left-color: var(--debt-color);
+        }
+        
+        .metric-card.info {
+            border-left-color: var(--investment-color);
+        }
+        
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .metric-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .metric-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .metric-good {
+            color: var(--finance-color);
+        }
+        
+        .metric-warning {
+            color: var(--debt-color);
+        }
+        
+        .metric-info {
+            color: var(--investment-color);
+        }
+        
+        .metric-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* 进度条 */
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--finance-color), var(--savings-color));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        /* 时间线图表 */
+        .timeline-container {
+            margin-top: 20px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-year {
+            width: 60px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .timeline-bar {
+            flex: 1;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 15px;
+        }
+        
+        .timeline-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--investment-color), var(--savings-color));
+            border-radius: 10px;
+        }
+        
+        .timeline-amount {
+            width: 100px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--finance-color);
+        }
+        
+        /* 建议区域 */
+        .recommendation {
+            background-color: #e8f4fd;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-light);
+        }
+        
+        .recommendation-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .recommendation-content {
+            color: var(--text-secondary);
+        }
+        
+        /* 按钮 */
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--finance-color), var(--investment-color));
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 184, 148, 0.3);
+        }
+        
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .reset-btn:hover {
+            background-color: #f8f9fa;
+            border-color: var(--text-muted);
+        }
+        
+        /* 信息卡片 */
+        .info-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 25px;
+            margin-top: 40px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .info-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-content {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        .info-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .info-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+        
+        .info-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: var(--card-bg);
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .footer-section h3 {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* AdSense占位符 */
+        .adsense-placeholder {
+            background-color: #f5f5f5;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+            color: #666;
+        }
+        
+        .placeholder-content {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <span>人生计算器</span>
+            </a>
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                返回首页
+            </a>
+        </div>
+    </header>
+
+    <!-- 页面内容 -->
+    <div class="container">
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">财务规划计算器</h1>
+            <p class="page-subtitle">个人财务规划、储蓄目标、投资回报、退休规划一体化工具，帮助您实现财务自由</p>
+        </div>
+
+        <!-- 标签页导航 -->
+        <div class="tabs">
+            <div class="tab active" data-tab="savings">储蓄目标</div>
+            <div class="tab" data-tab="investment">投资回报</div>
+            <div class="tab" data-tab="retirement">退休规划</div>
+            <div class="tab" data-tab="debt">债务管理</div>
+        </div>
+
+        <!-- 计算器主区域 -->
+        <div class="calculator-container">
+            <!-- 输入区域 -->
+            <div class="input-section">
+                <!-- 储蓄目标标签 -->
+                <div id="savings-tab" class="tab-content active">
+                    <h2 class="section-title">储蓄目标计算</h2>
+                    
+                    <div class="input-group">
+                        <label class="input-label">目标金额（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="savingsGoal" class="input-field" value="100000" min="1000" step="1000">
+                            <i class="fas fa-bullseye input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">当前已有储蓄（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="currentSavings" class="input-field" value="20000" min="0" step="1000">
+                            <i class="fas fa-piggy-bank input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">每月可储蓄金额（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="monthlySavings" class="input-field" value="3000" min="100" step="100">
+                            <i class="fas fa-calendar-alt input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">年化收益率（%）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="savingsRate" class="input-field" value="3" min="0" max="20" step="0.1">
+                            <i class="fas fa-percentage input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">目标达成时间（年）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="targetYears" class="input-field" value="5" min="1" max="50" step="1">
+                            <i class="fas fa-clock input-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 投资回报标签 -->
+                <div id="investment-tab" class="tab-content">
+                    <h2 class="section-title">投资回报计算</h2>
+                    
+                    <div class="input-group">
+                        <label class="input-label">初始投资金额（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="initialInvestment" class="input-field" value="50000" min="1000" step="1000">
+                            <i class="fas fa-money-bill-wave input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">每月追加投资（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="monthlyInvestment" class="input-field" value="2000" min="0" step="100">
+                            <i class="fas fa-plus-circle input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">预期年收益率（%）</label>
+                        <select id="expectedReturn" class="select-field">
+                            <option value="3">保守型: 3% (存款/货币基金)</option>
+                            <option value="5">稳健型: 5% (债券/平衡基金)</option>
+                            <option value="8" selected>平衡型: 8% (混合投资)</option>
+                            <option value="12">成长型: 12% (股票基金)</option>
+                            <option value="15">进取型: 15% (股票/高风险)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">投资年限</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="investmentYears" class="input-field" value="10" min="1" max="50" step="1">
+                            <i class="fas fa-calendar input-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 退休规划标签 -->
+                <div id="retirement-tab" class="tab-content">
+                    <h2 class="section-title">退休规划计算</h2>
+                    
+                    <div class="input-group">
+                        <label class="input-label">当前年龄</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="currentAge" class="input-field" value="35" min="18" max="80" step="1">
+                            <i class="fas fa-user input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">计划退休年龄</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="retirementAge" class="input-field" value="60" min="40" max="80" step="1">
+                            <i class="fas fa-umbrella-beach input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">当前储蓄（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="retirementSavings" class="input-field" value="100000" min="0" step="1000">
+                            <i class="fas fa-piggy-bank input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">每月可储蓄金额（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="retirementMonthlySave" class="input-field" value="4000" min="100" step="100">
+                            <i class="fas fa-calendar-alt input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">期望退休后月收入（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="retirementIncome" class="input-field" value="8000" min="1000" step="500">
+                            <i class="fas fa-hand-holding-usd input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">预期寿命</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="lifeExpectancy" class="input-field" value="85" min="60" max="120" step="1">
+                            <i class="fas fa-heart input-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 债务管理标签 -->
+                <div id="debt-tab" class="tab-content">
+                    <h2 class="section-title">债务管理计算</h2>
+                    
+                    <div class="input-group">
+                        <label class="input-label">债务总额（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="totalDebt" class="input-field" value="200000" min="1000" step="1000">
+                            <i class="fas fa-credit-card input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">年利率（%）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="interestRate" class="input-field" value="6" min="0" max="50" step="0.1">
+                            <i class="fas fa-percentage input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">每月还款能力（元）</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="monthlyPayment" class="input-field" value="5000" min="100" step="100">
+                            <i class="fas fa-money-bill-alt input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">债务类型</label>
+                        <select id="debtType" class="select-field">
+                            <option value="credit">信用卡债务</option>
+                            <option value="mortgage" selected>房贷</option>
+                            <option value="car">车贷</option>
+                            <option value="personal">个人贷款</option>
+                            <option value="student">学生贷款</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="calculate-btn" id="calculateBtn">
+                    <i class="fas fa-calculator"></i>
+                    计算财务规划
+                </button>
+                
+                <button class="reset-btn" id="resetBtn">
+                    <i class="fas fa-redo"></i>
+                    重置数据
+                </button>
+            </div>
+            
+            <!-- 结果区域 -->
+            <div class="result-section">
+                <h2 class="section-title" id="resultTitle">储蓄目标结果</h2>
+                
+                <div class="result-card">
+                    <div class="result-title" id="resultMainTitle">达成目标所需时间</div>
+                    <div class="result-value" id="resultMainValue">--</div>
+                    <div class="result-subvalue" id="resultSubValue">--</div>
+                </div>
+                
+                <!-- 进度条 -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-label">
+                        <span>当前进度</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <!-- 财务指标 -->
+                <h3 class="section-title" style="font-size: 1.2rem;">财务指标</h3>
+                
+                <div id="financialMetrics">
+                    <!-- 财务指标将通过JavaScript动态生成 -->
+                </div>
+                
+                <!-- 时间线 -->
+                <div class="timeline-container" id="timelineContainer">
+                    <h3 class="section-title" style="font-size: 1.2rem; margin-top: 30px;">时间线预测</h3>
+                    <!-- 时间线将通过JavaScript动态生成 -->
+                </div>
+                
+                <!-- 建议区域 -->
+                <h3 class="section-title" style="font-size: 1.2rem; margin-top: 30px;">个性化建议</h3>
+                
+                <div id="recommendations">
+                    <!-- 建议将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- AdSense广告位（顶部横幅） -->
+        <div class="adsense-placeholder" id="adsense-top-banner">
+            <div class="placeholder-content">
+                <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>Google AdSense 广告位 - 728x90 横幅广告</p>
+            </div>
+        </div>
+        
+        <!-- 信息卡片 -->
+        <div class="info-card">
+            <h2 class="info-title">
+                <i class="fas fa-info-circle"></i>
+                财务规划基本原则
+            </h2>
+            <div class="info-content">
+                <p>有效的财务规划应遵循以下基本原则：</p>
+                <ul class="info-list">
+                    <li><strong>紧急备用金</strong>：准备3-6个月的生活费作为应急资金</li>
+                    <li><strong>债务管理</strong>：优先偿还高息债务，保持健康的负债比例</li>
+                    <li><strong>长期投资</strong>：通过复利效应实现财富增长，时间是最好的朋友</li>
+                    <li><strong>风险分散</strong>：不要把所有鸡蛋放在一个篮子里，分散投资</li>
+                    <li><strong>定期调整</strong>：根据生活阶段和市场变化调整财务计划</li>
+                </ul>
+                <p style="margin-top: 15px; color: var(--text-muted); font-style: italic;">
+                    注意：本工具提供的是基于数学模型的预测，实际投资存在风险，建议咨询专业财务顾问。
+                </p>
+            </div>
+        </div>
+        
+        <!-- AdSense广告位（中部矩形） -->
+        <div class="adsense-placeholder" id="adsense-middle-rectangle">
+            <div class="placeholder-content">
+                <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>Google AdSense 广告位 - 300x250 矩形广告</p>
+            </div>
+        </div>
+        
+        <!-- 相关工具推荐 -->
+        <div class="info-card">
+            <h2 class="info-title">
+                <i class="fas fa-calculator"></i>
+                更多实用工具
+            </h2>
+            <div class="info-content">
+                <p>探索我们提供的其他生活规划工具：</p>
+                <ul class="info-list">
+                    <li><a href="time-calculator.html" style="color: var(--primary-color);">时间与年龄计算器</a> - 精确计算日期和时间</li>
+                    <li><a href="health-lifespan-calculator.html" style="color: var(--primary-color);">健康与寿命评估计算器</a> - 科学预测健康寿命</li>
+                    <li><a href="life-goals-calculator.html" style="color: var(--primary-color);">生活目标管理计算器</a> - 设定和追踪生活目标</li>
+                    <li><a href="retirement-calculator.html" style="color: var(--primary-color);">退休规划计算器</a> - 退休储蓄和收入规划</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>人生计算器</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 15px;">提供全面的生活规划工具，帮助您更好地管理时间、健康、财务和生活目标。</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">网站首页</a></li>
+                        <li><a href="articles.html">文章中心</a></li>
+                        <li><a href="time-calculator.html">时间计算器</a></li>
+                        <li><a href="financial-calculator.html">财务规划计算器</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>法律信息</h3>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">隐私政策</a></li>
+                        <li><a href="terms.html">使用条款</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                        <li><a href="contact.html">联系我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2025 人生计算器 版权所有 | 本网站已申请Google AdSense广告计划</p>
+                <p style="margin-top: 5px; font-size: 0.85rem;">免责声明：本工具提供的信息仅供参考，不构成财务或投资建议。投资有风险，决策需谨慎。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 元素引用
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultMainTitle = document.getElementById('resultMainTitle');
+            const resultMainValue = document.getElementById('resultMainValue');
+            const resultSubValue = document.getElementById('resultSubValue');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressFill = document.getElementById('progressFill');
+            const financialMetrics = document.getElementById('financialMetrics');
+            const timelineContainer = document.getElementById('timelineContainer');
+            const recommendations = document.getElementById('recommendations');
+            
+            let currentTab = 'savings';
+            
+            // 标签页切换
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // 更新当前标签
+                    currentTab = tabId;
+                    
+                    // 更新标签样式
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 更新内容
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}-tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // 更新结果标题
+                    updateResultTitle();
+                    
+                    // 重置结果
+                    resetResults();
+                });
+            });
+            
+            // 更新结果标题
+            function updateResultTitle() {
+                const titles = {
+                    savings: '储蓄目标结果',
+                    investment: '投资回报结果',
+                    retirement: '退休规划结果',
+                    debt: '债务管理结果'
+                };
+                resultTitle.textContent = titles[currentTab] || '计算结果';
+            }
+            
+            // 重置结果
+            function resetResults() {
+                resultMainValue.textContent = '--';
+                resultSubValue.textContent = '--';
+                financialMetrics.innerHTML = '';
+                timelineContainer.innerHTML = '<h3 class="section-title" style="font-size: 1.2rem; margin-top: 30px;">时间线预测</h3>';
+                recommendations.innerHTML = '';
+                progressFill.style.width = '0%';
+                progressPercent.textContent = '0%';
+            }
+            
+            // 创建财务指标卡片
+            function createMetricCard(title, value, description, type = 'info') {
+                let valueClass = 'metric-info';
+                let cardClass = 'metric-card info';
+                
+                if (type === 'good') {
+                    valueClass = 'metric-good';
+                    cardClass = 'metric-card good';
+                } else if (type === 'warning') {
+                    valueClass = 'metric-warning';
+                    cardClass = 'metric-card warning';
+                }
+                
+                return `
+                    <div class="${cardClass}">
+                        <div class="metric-header">
+                            <div class="metric-title">
+                                <i class="fas fa-chart-bar"></i>
+                                ${title}
+                            </div>
+                            <div class="metric-value ${valueClass}">${value}</div>
+                        </div>
+                        <div class="metric-description">${description}</div>
+                    </div>
+                `;
+            }
+            
+            // 创建时间线项目
+            function createTimelineItem(year, amount, progress) {
+                return `
+                    <div class="timeline-item">
+                        <div class="timeline-year">${year}年</div>
+                        <div class="timeline-bar">
+                            <div class="timeline-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="timeline-amount">${formatCurrency(amount)}</div>
+                    </div>
+                `;
+            }
+            
+            // 创建建议卡片
+            function createRecommendation(title, content) {
+                return `
+                    <div class="recommendation">
+                        <div class="recommendation-title">
+                            <i class="fas fa-lightbulb"></i>
+                            ${title}
+                        </div>
+                        <div class="recommendation-content">${content}</div>
+                    </div>
+                `;
+            }
+            
+            // 格式化货币
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('zh-CN', {
+                    style: 'currency',
+                    currency: 'CNY',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(amount);
+            }
+            
+            // 计算储蓄目标
+            function calculateSavingsGoal() {
+                const goal = parseFloat(document.getElementById('savingsGoal').value);
+                const current = parseFloat(document.getElementById('currentSavings').value);
+                const monthly = parseFloat(document.getElementById('monthlySavings').value);
+                const rate = parseFloat(document.getElementById('savingsRate').value) / 100;
+                const targetYears = parseFloat(document.getElementById('targetYears').value);
+                
+                // 计算月利率
+                const monthlyRate = Math.pow(1 + rate, 1/12) - 1;
+                
+                // 计算达成目标所需月数
+                let months = 0;
+                let balance = current;
+                
+                while (balance < goal && months < 600) { // 最多50年
+                    balance = balance * (1 + monthlyRate) + monthly;
+                    months++;
+                }
+                
+                const years = months / 12;
+                
+                // 计算按给定年限的最终金额
+                const finalAmount = current * Math.pow(1 + rate, targetYears) + 
+                                  monthly * 12 * (Math.pow(1 + rate, targetYears) - 1) / rate;
+                
+                // 显示结果
+                if (years >= 50) {
+                    resultMainValue.textContent = '超过50年';
+                    resultMainTitle.textContent = '达成目标所需时间';
+                    resultSubValue.textContent = '当前计划难以达成目标';
+                } else {
+                    resultMainValue.textContent = years.toFixed(1);
+                    resultMainTitle.textContent = '达成目标所需时间';
+                    resultSubValue.textContent = `约${Math.ceil(years * 12)}个月`;
+                }
+                
+                // 进度条
+                const progress = Math.min((current / goal) * 100, 100);
+                progressFill.style.width = `${progress}%`;
+                progressPercent.textContent = `${progress.toFixed(1)}%`;
+                
+                // 财务指标
+                let metricsHTML = '';
+                metricsHTML += createMetricCard(
+                    '目标达成率',
+                    `${((current / goal) * 100).toFixed(1)}%`,
+                    '当前储蓄占目标金额的比例',
+                    current >= goal ? 'good' : 'info'
+                );
+                
+                metricsHTML += createMetricCard(
+                    '最终金额预测',
+                    formatCurrency(finalAmount),
+                    `按当前计划${targetYears}年后的总金额`,
+                    finalAmount >= goal ? 'good' : 'warning'
+                );
+                
+                metricsHTML += createMetricCard(
+                    '月储蓄占收入比',
+                    '建议20-30%',
+                    '健康的储蓄比例有助于财务稳定',
+                    'info'
+                );
+                
+                financialMetrics.innerHTML = metricsHTML;
+                
+                // 时间线
+                let timelineHTML = '';
+                for (let i = 1; i <= Math.min(10, Math.ceil(years)); i++) {
+                    const yearlyAmount = current * Math.pow(1 + rate, i) + 
+                                       monthly * 12 * (Math.pow(1 + rate, i) - 1) / rate;
+                    const progress = Math.min((yearlyAmount / goal) * 100, 100);
+                    timelineHTML += createTimelineItem(i, yearlyAmount, progress);
+                }
+                
+                const timelineContent = timelineContainer.querySelector('.section-title') ? 
+                    timelineContainer.querySelector('.section-title').outerHTML + timelineHTML :
+                    '<h3 class="section-title" style="font-size: 1.2rem; margin-top: 30px;">时间线预测</h3>' + timelineHTML;
+                timelineContainer.innerHTML = timelineContent;
+                
+                // 建议
+                let recHTML = '';
+                
+                if (years > targetYears) {
+                    recHTML += createRecommendation(
+                        '增加储蓄额度',
+                        `当前计划需要${years.toFixed(1)}年才能达成目标，建议每月增加储蓄${Math.ceil((goal - current) / (targetYears * 12) - monthly)}元。`
+                    );
+                }
+                
+                if (rate < 0.03) {
+                    recHTML += createRecommendation(
+                        '提高收益率',
+                        '当前收益率较低，考虑稳健型投资如债券基金、货币基金等，将收益率提升至3-5%范围。'
+                    );
+                }
+                
+                if (monthly < 2000) {
+                    recHTML += createRecommendation(
+                        '建立储蓄习惯',
+                        '建议每月强制储蓄，建立"先储蓄后消费"的习惯，可将储蓄比例设定为收入的20%。'
+                    );
+                }
+                
+                if (recHTML === '') {
+                    recHTML = createRecommendation(
+                        '保持良好计划',
+                        '您的储蓄计划合理！继续保持，定期检查进度，适当时候可以调高储蓄目标。'
+                    );
+                }
+                
+                recommendations.innerHTML = recHTML;
+            }
+            
+            // 计算投资回报
+            function calculateInvestment() {
+                const initial = parseFloat(document.getElementById('initialInvestment').value);
+                const monthly = parseFloat(document.getElementById('monthlyInvestment').value);
+                const rate = parseFloat(document.getElementById('expectedReturn').value) / 100;
+                const years = parseFloat(document.getElementById('investmentYears').value);
+                
+                // 计算最终金额
+                const finalAmount = initial * Math.pow(1 + rate, years) + 
+                                  monthly * 12 * (Math.pow(1 + rate, years) - 1) / rate;
+                
+                const totalInvested = initial + monthly * 12 * years;
+                const profit = finalAmount - totalInvested;
+                const profitPercentage = (profit / totalInvested) * 100;
+                
+                // 显示结果
+                resultMainValue.textContent = formatCurrency(finalAmount);
+                resultMainTitle.textContent = '最终投资价值';
+                resultSubValue.textContent = `总收益: ${formatCurrency(profit)} (${profitPercentage.toFixed(1)}%)`;
+                
+                // 进度条（基于投资年限）
+                const maxYears = 30;
+                const progress = Math.min((years / maxYears) * 100, 100);
+                progressFill.style.width = `${progress}%`;
+                progressPercent.textContent = `${years}年/${maxYears}年`;
+                
+                // 财务指标
+                let metricsHTML = '';
+                metricsHTML += createMetricCard(
+                    '总投资金额',
+                    formatCurrency(totalInvested),
+                    '您投入的本金总额',
+                    'info'
+                );
+                
+                metricsHTML += createMetricCard(
+                    '投资回报率',
+                    `${profitPercentage.toFixed(1)}%`,
+                    '总收益占投资本金的百分比',
+                    profitPercentage > 0 ? 'good' : 'warning'
+                );
+                
+                metricsHTML += createMetricCard(
+                    '年化收益率',
+                    `${(rate * 100).toFixed(1)}%`,
+                    '预期的年化投资回报率',
+                    'info'
+                );
+                
+                financialMetrics.innerHTML = metricsHTML;
+                
+                // 时间线
+                let timelineHTML = '';
+                for (let i = 1; i <= Math.min(10, years); i++) {
+                    const yearlyAmount = initial * Math.pow(1 + rate, i) + 
+                                       monthly * 12 * (Math.pow(1 + rate, i) - 1) / rate;
+                    const progress = (i / years) * 100;
+                    timelineHTML += createTimelineItem(i, yearlyAmount, progress);
+                }
+                
+                const timelineContent = timelineContainer.querySelector('.section-title') ? 
+                    timelineContainer.querySelector('.section-title').outerHTML + timelineHTML :
+                    '<h3 class="section-title" style="font-size: 1.2rem; margin-top: 30px;">时间线预测</h3>' + timelineHTML;
+                timelineContainer.innerHTML = timelineContent;
+                
+                // 建议
+                let recHTML = '';
+                
+                if (rate > 0.1) {
+                    recHTML += createRecommendation(
+                        '注意投资风险',
+                        '高收益伴随高风险，建议分散投资，不要将所有资金投入高风险产品。'
+                    );
+                }
+                
+                if (monthly === 0) {
+                    recHTML += createRecommendation(
+                        '考虑定期投资',
+                        '定期定额投资可以平摊成本、降低风险，建议每月投入固定金额。'
+                    );
+                }
+                
+                if (years < 5) {
+                    recHTML += createRecommendation(
+                        '延长投资期限',
+                        '投资时间越长，复利效应越明显。建议考虑5年以上的长期投资计划。'
+                    );
+                }
+                
+                if (recHTML === '') {
+                    recHTML = createRecommendation(
+                        '合理的投资计划',
+                        '您的投资计划较为均衡！坚持长期投资，定期评估投资组合。'
+                    );
+                }
+                
+                recommendations.innerHTML = recHTML;
+            }
+            
+            // 计算退休规划
+            function calculateRetirement() {
+                const currentAge = parseFloat(document.getElementById('currentAge').value);
+                const retirementAge = parseFloat(document.getElementById('retirementAge').value);
+                const currentSavings = parseFloat(document.getElementById('retirementSavings').value);
+                const monthlySave = parseFloat(document.getElementById('retirementMonthlySave').value);
+                const desiredIncome = parseFloat(document.getElementById('retirementIncome').value);
+                const lifeExpectancy = parseFloat(document.getElementById('lifeExpectancy').value);
+                
+                const workingYears = retirementAge - currentAge;
+                const retirementYears = lifeExpectancy - retirementAge;
+                
+                // 假设投资回报率5%，通货膨胀率2%
+                const investmentRate = 0.05;
+                const inflationRate = 0.02;
+                
+                // 计算退休时需要的总金额（4%取款规则）
+                const requiredAmount = desiredIncome * 12 * (1 / 0.04);
+                
+                // 计算退休时的储蓄金额
+                const retirementSavings = currentSavings * Math.pow(1 + investmentRate, workingYears) + 
+                                        monthlySave * 12 * (Math.pow(1 + investmentRate, workingYears) - 1) / investmentRate;
+                
+                // 计算缺口
+                const gap = requiredAmount - retirementSavings;
+                const gapPercentage = (gap / requiredAmount) * 100;
+                
+                // 显示结果
+                resultMainValue.textContent = formatCurrency(retirementSavings);
+                resultMainTitle.textContent = '退休时预计储蓄';
+                resultSubValue.textContent = `目标: ${formatCurrency(requiredAmount)} | 缺口: ${formatCurrency(gap)}`;
+                
+                // 进度条
+                const progress = Math.min((retirementSavings / requiredAmount) * 100, 100);
+                progressFill.style.width = `${progress}%`;
+                progressPercent.textContent = `${progress.toFixed(1)}%`;
+                
+                // 财务指标
+                let metricsHTML = '';
+                metricsHTML += createMetricCard(
+                    '退休资金缺口',
+                    `${gapPercentage.toFixed(1)}%`,
+                    gap > 0 ? '需要增加储蓄或延长工作年限' : '资金充足，提前退休可考虑',
+                    gap > 0 ? 'warning' : 'good'
+                );
+                
+                metricsHTML += createMetricCard(
+                    '每月储蓄需求',
+                    formatCurrency(Math.max(0, gap / (workingYears * 12))),
+                    '为弥补缺口建议每月增加的储蓄额',
+                    'info'
+                );
+                
+                metricsHTML += createMetricCard(
+                    '退休生活年限',
+                    `${retirementYears}年`,
+                    '预计需要维持退休收入的年限',
+                    'info'
+                );
+                
+                financialMetrics.innerHTML = metricsHTML;
+                
+                // 时间线
+                let timelineHTML = '';
+                for (let i = 1; i <= Math.min(10, workingYears); i++) {
+                    const yearlyAmount = currentSavings * Math.pow(1 + investmentRate, i) + 
+                                       monthlySave * 12 * (Math.pow(1 + investmentRate, i) - 1) / investmentRate;
+                    const progress = Math.min((yearlyAmount / requiredAmount) * 100, 100);
+                    timelineHTML += createTimelineItem(i, yearlyAmount, progress);
+                }
+                
+                const timelineContent = timelineContainer.querySelector('.section-title') ? 
+                    timelineContainer.querySelector('.section-title').outerHTML + timelineHTML :
+                    '<h3 class="section-title" style="font-size: 1.2rem; margin-top: 30px;">时间线预测</h3>' + timelineHTML;
+                timelineContainer.innerHTML = timelineContent;
+                
+                // 建议
+                let recHTML = '';
+                
+                if (gap > 0) {
+                    recHTML += createRecommendation(
+                        '增加退休储蓄',
+                        `退休资金缺口${formatCurrency(gap)}，建议每月增加储蓄${formatCurrency(Math.ceil(gap / (workingYears * 12)))}元。`
+                    );
+                }
+                
+                if (retirementYears > 30) {
+                    recHTML += createRecommendation(
+                        '延长工作年限',
+                        `预计退休生活${retirementYears}年，考虑延长工作至${retirementAge + 5}岁以增加储蓄。`
+                    );
+                }
+                
+                if (desiredIncome > monthlySave * 3) {
+                    recHTML += createRecommendation(
+                        '调整退休期望',
+                        '期望退休收入是当前月储蓄的3倍以上，可能需要调整退休生活标准或增加储蓄率。'
+                    );
+                }
+                
+                if (recHTML === '') {
+                    recHTML = createRecommendation(
+                        '退休规划良好',
+                        '您的退休规划合理！继续保持储蓄习惯，定期检查投资组合。'
+                    );
+                }
+                
+                recommendations.innerHTML = recHTML;
+            }
+            
+            // 计算债务管理
+            function calculateDebt() {
+                const totalDebt = parseFloat(document.getElementById('totalDebt').value);
+                const interestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+                const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
+                
+                // 计算还款月数
+                const monthlyRate = interestRate / 12;
+                let months = 0;
+                let remainingDebt = totalDebt;
+                let totalInterest = 0;
+                
+                while (remainingDebt > 0 && months < 600) { // 最多50年
+                    const interest = remainingDebt * monthlyRate;
+                    const principal = monthlyPayment - interest;
+                    
+                    if (principal <= 0) {
+                        // 月供不够支付利息，债务会增加
+                        break;
+                    }
+                    
+                    remainingDebt -= principal;
+                    totalInterest += interest;
+                    months++;
+                }
+                
+                const years = months / 12;
+                const totalPaid = totalDebt + totalInterest;
+                
+                // 显示结果
+                if (months >= 600 || remainingDebt > 0) {
+                    resultMainValue.textContent = '无法还清';
+                    resultMainTitle.textContent = '还款情况';
+                    resultSubValue.textContent = '月供不足以支付利息，债务会增长';
+                } else {
+                    resultMainValue.textContent = `${years.toFixed(1)}年`;
+                    resultMainTitle.textContent = '还清债务所需时间';
+                    resultSubValue.textContent = `总还款: ${formatCurrency(totalPaid)}`;
+                }
+                
+                // 进度条（基于还款能力）
+                const requiredPayment = totalDebt * monthlyRate * 1.1; // 最低还款额（利息+10%本金）
+                const paymentRatio = monthlyPayment / requiredPayment;
+                const progress = Math.min(paymentRatio * 100, 100);
+                progressFill.style.width = `${progress}%`;
+                progressPercent.textContent = `还款能力: ${paymentRatio.toFixed(1)}倍最低还款`;
+                
+                // 财务指标
+                let metricsHTML = '';
+                metricsHTML += createMetricCard(
+                    '总利息支出',
+                    formatCurrency(totalInterest),
+                    '需要支付的利息总额',
+                    totalInterest > totalDebt * 0.5 ? 'warning' : 'info'
+                );
+                
+                metricsHTML += createMetricCard(
+                    '债务收入比',
+                    `${((monthlyPayment * 12) / (monthlyPayment * 12 * 3)).toFixed(1)}%`,
+                    '建议月还款不超过月收入的30%',
+                    monthlyPayment > 0 ? 'info' : 'warning'
+                );
+                
+                metricsHTML += createMetricCard(
+                    '利息占比',
+                    `${((totalInterest / totalPaid) * 100).toFixed(1)}%`,
+                    '利息占总还款的比例',
+                    'info'
+                );
+                
+                financialMetrics.innerHTML = metricsHTML;
+                
+                // 时间线
+                let timelineHTML = '';
+                let tempDebt = totalDebt;
+                
+                for (let i = 1; i <= Math.min(10, Math.ceil(years)); i++) {
+                    let yearlyInterest = 0;
+                    for (let m = 0; m < 12 && tempDebt > 0; m++) {
+                        const interest = tempDebt * monthlyRate;
+                        const principal = monthlyPayment - interest;
+                        
+                        if (principal <= 0) break;
+                        
+                        tempDebt -= principal;
+                        yearlyInterest += interest;
+                    }
+                    const remaining = Math.max(0, tempDebt);
+                    const progress = ((totalDebt - remaining) / totalDebt) * 100;
+                    timelineHTML += createTimelineItem(i, remaining, progress);
+                    
+                    if (remaining <= 0) break;
+                }
+                
+                const timelineContent = timelineContainer.querySelector('.section-title') ? 
+                    timelineContainer.querySelector('.section-title').outerHTML + timelineHTML :
+                    '<h3 class="section-title" style="font-size: 1.2rem; margin-top: 30px;">时间线预测</h3>' + timelineHTML;
+                timelineContainer.innerHTML = timelineContent;
+                
+                // 建议
+                let recHTML = '';
+                
+                if (months >= 600 || remainingDebt > 0) {
+                    recHTML += createRecommendation(
+                        '增加月供',
+                        '当前月供不足以支付利息，债务会越滚越大。必须增加收入或减少支出以提高还款能力。'
+                    );
+                }
+                
+                if (interestRate > 0.1) {
+                    recHTML += createRecommendation(
+                        '债务重组',
+                        '利率较高，考虑申请低息贷款整合债务，或与债权人协商降低利率。'
+                    );
+                }
+                
+                if (totalInterest > totalDebt * 0.5) {
+                    recHTML += createRecommendation(
+                        '提前还款',
+                        '利息支出过高，尽可能提前还款可以减少总利息支出。'
+                    );
+                }
+                
+                if (recHTML === '') {
+                    recHTML = createRecommendation(
+                        '债务管理良好',
+                        '您的还款计划合理！坚持按时还款，避免新增高息债务。'
+                    );
+                }
+                
+                recommendations.innerHTML = recHTML;
+            }
+            
+            // 计算按钮事件
+            calculateBtn.addEventListener('click', function() {
+                switch (currentTab) {
+                    case 'savings':
+                        calculateSavingsGoal();
+                        break;
+                    case 'investment':
+                        calculateInvestment();
+                        break;
+                    case 'retirement':
+                        calculateRetirement();
+                        break;
+                    case 'debt':
+                        calculateDebt();
+                        break;
+                }
+                
+                // 平滑滚动到结果
+                document.querySelector('.result-section').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+            
+            // 重置按钮
+            resetBtn.addEventListener('click', function() {
+                // 根据当前标签重置
+                switch (currentTab) {
+                    case 'savings':
+                        document.getElementById('savingsGoal').value = '100000';
+                        document.getElementById('currentSavings').value = '20000';
+                        document.getElementById('monthlySavings').value = '3000';
+                        document.getElementById('savingsRate').value = '3';
+                        document.getElementById('targetYears').value = '5';
+                        break;
+                    case 'investment':
+                        document.getElementById('initialInvestment').value = '50000';
+                        document.getElementById('monthlyInvestment').value = '2000';
+                        document.getElementById('expectedReturn').value = '8';
+                        document.getElementById('investmentYears').value = '10';
+                        break;
+                    case 'retirement':
+                        document.getElementById('currentAge').value = '35';
+                        document.getElementById('retirementAge').value = '60';
+                        document.getElementById('retirementSavings').value = '100000';
+                        document.getElementById('retirementMonthlySave').value = '4000';
+                        document.getElementById('retirementIncome').value = '8000';
+                        document.getElementById('lifeExpectancy').value = '85';
+                        break;
+                    case 'debt':
+                        document.getElementById('totalDebt').value = '200000';
+                        document.getElementById('interestRate').value = '6';
+                        document.getElementById('monthlyPayment').value = '5000';
+                        document.getElementById('debtType').value = 'mortgage';
+                        break;
+                }
+                
+                resetResults();
+            });
+            
+            // 初始化
+            updateResultTitle();
+            
+            // 模拟AdSense广告加载
+            window.addEventListener('load', function() {
+                console.log('财务规划计算器页面加载完成，准备加载AdSense广告');
+            });
+        });
+    </script>
+</body>
+</html>

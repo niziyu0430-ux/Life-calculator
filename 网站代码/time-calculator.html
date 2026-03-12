@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间与年龄计算器 - 人生计算器</title>
+    <meta name="description" content="免费在线时间与年龄计算器：计算您活了多久、距离下个生日天数、纪念日倒计时、重要事件时间管理。精确到毫秒的日期计算工具。">
+    <meta name="keywords" content="时间计算器,年龄计算器,生日计算,纪念日倒计时,日期计算,活了多久,距离生日天数">
+    
+    <!-- 继承主站样式 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --primary-dark: #3a0ca3;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-muted: #b2bec3;
+            --border-color: #dfe6e9;
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --font-heading: 'Noto Serif SC', serif;
+            --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部导航（简化版） */
+        .header {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 16px 0;
+            margin-bottom: 30px;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* 计算器主区域 */
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .calculator-header h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        
+        .calculator-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .calculator-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 输入区域 */
+        .input-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .input-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-section h2 i {
+            color: var(--primary-color);
+        }
+        
+        .input-group {
+            margin-bottom: 24px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background-color: white;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            margin-top: 12px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--bg-color);
+        }
+        
+        /* 结果区域 */
+        .result-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .result-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .result-section h2 i {
+            color: var(--primary-color);
+        }
+        
+        .result-placeholder {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+        
+        .result-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--border-color);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .result-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-family: var(--font-heading);
+        }
+        
+        .result-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* 信息卡片 */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .info-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .info-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-card h3 i {
+            color: var(--primary-color);
+        }
+        
+        .info-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* AdSense广告位 */
+        .ad-placeholder {
+            background-color: #f0f2f5;
+            border: 1px dashed #d1d5db;
+            border-radius: var(--radius-md);
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            margin: 40px 0;
+        }
+        
+        .ad-placeholder i {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: #2d3436;
+            color: #dfe6e9;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-links a {
+            color: #b2bec3;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b2bec3;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <span>人生计算器</span>
+            </a>
+            
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> 返回首页
+            </a>
+        </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="container">
+        <div class="calculator-header">
+            <h1><i class="fas fa-birthday-cake"></i> 时间与年龄计算器</h1>
+            <p>精确计算您活了多久、距离重要日期还有多少天。支持生日、纪念日、自定义日期等多种计算模式。</p>
+        </div>
+        
+        <!-- AdSense广告位（顶部） -->
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i>
+            <p>Google AdSense 广告位 - 728x90 横幅广告</p>
+        </div>
+        
+        <div class="calculator-wrapper">
+            <!-- 输入区域 -->
+            <section class="input-section">
+                <h2><i class="fas fa-cog"></i> 计算设置</h2>
+                
+                <div class="input-group">
+                    <label for="calculationType">计算类型</label>
+                    <select id="calculationType">
+                        <option value="birthday">生日计算（活了多久）</option>
+                        <option value="anniversary">纪念日计算（相恋/入职/开学）</option>
+                        <option value="countdown">倒计时（未来事件）</option>
+                        <option value="duration">时间段计算（两个日期之间）</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="dateInput">选择日期</label>
+                    <input type="date" id="dateInput" value="1990-01-01">
+                </div>
+                
+                <div class="input-group" id="endDateGroup" style="display: none;">
+                    <label for="endDateInput">结束日期</label>
+                    <input type="date" id="endDateInput">
+                </div>
+                
+                <div class="input-group">
+                    <label for="eventName">事件名称（可选）</label>
+                    <input type="text" id="eventName" placeholder="例如：我的生日、考研日期、结婚纪念日">
+                </div>
+                
+                <div class="input-group">
+                    <label for="includeTime">时间精度</label>
+                    <select id="includeTime">
+                        <option value="days">精确到天数</option>
+                        <option value="seconds">精确到秒</option>
+                        <option value="milliseconds">精确到毫秒</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary" id="calculateBtn">
+                    <i class="fas fa-calculator"></i> 开始计算
+                </button>
+                
+                <button class="btn btn-secondary" id="resetBtn">
+                    <i class="fas fa-redo"></i> 重置数据
+                </button>
+            </section>
+            
+            <!-- 结果区域 -->
+            <section class="result-section">
+                <h2><i class="fas fa-chart-bar"></i> 计算结果</h2>
+                
+                <div id="resultContainer" class="result-placeholder">
+                    <i class="fas fa-chart-pie"></i>
+                    <p>输入日期并点击"开始计算"按钮查看结果</p>
+                </div>
+                
+                <div id="shareSection" style="display: none;">
+                    <h3 style="margin-top: 30px; margin-bottom: 15px; font-size: 1.2rem;">分享结果</h3>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" style="flex: 1; min-width: 120px;" id="copyBtn">
+                            <i class="far fa-copy"></i> 复制结果
+                        </button>
+                        <button class="btn btn-secondary" style="flex: 1; min-width: 120px;" id="saveBtn">
+                            <i class="far fa-save"></i> 保存图片
+                        </button>
+                        <button class="btn btn-secondary" style="flex: 1; min-width: 120px;" id="shareBtn">
+                            <i class="fas fa-share-alt"></i> 分享
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- AdSense广告位（中部） -->
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i>
+            <p>Google AdSense 广告位 - 300x250 矩形广告</p>
+        </div>
+        
+        <!-- 信息卡片 -->
+        <div class="info-cards">
+            <div class="info-card">
+                <h3><i class="far fa-lightbulb"></i> 使用技巧</h3>
+                <p>1. 生日计算：输入出生日期，计算您已经活了多少天，距离下个生日还有多久。</p>
+                <p>2. 纪念日计算：记录重要纪念日，查看已经过去了多少天，距离下次纪念日还有多久。</p>
+                <p>3. 倒计时功能：为未来重要事件设置倒计时，如考试、旅行、项目截止日等。</p>
+            </div>
+            
+            <div class="info-card">
+                <h3><i class="fas fa-history"></i> 时间管理建议</h3>
+                <p>• 平均人类寿命约28,000天，每一天都值得珍惜和规划。</p>
+                <p>• 定期回顾重要纪念日，强化人际关系和成就感。</p>
+                <p>• 为长期目标设置里程碑，分解为可管理的时间段。</p>
+            </div>
+            
+            <div class="info-card">
+                <h3><i class="fas fa-question-circle"></i> 常见问题</h3>
+                <p><strong>Q: 计算是否考虑闰年？</strong><br>A: 是的，我们的计算器会精确考虑闰年和不同月份的天数差异。</p>
+                <p><strong>Q: 时区如何处理？</strong><br>A: 使用您设备的本地时区，确保计算结果的准确性。</p>
+                <p><strong>Q: 可以计算两个日期之间的工作日吗？</strong><br>A: 未来版本将添加工作日计算功能。</p>
+            </div>
+        </div>
+        
+        <!-- AdSense广告位（底部） -->
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i>
+            <p>Google AdSense 广告位 - 728x90 横幅广告</p>
+        </div>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html">首页</a>
+                <a href="calculators.html">所有计算器</a>
+                <a href="articles.html">文章</a>
+                <a href="privacy.html">隐私政策</a>
+                <a href="terms.html">使用条款</a>
+                <a href="contact.html">联系我们</a>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2026 人生计算器. 本工具仅供参考，不构成专业建议.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // DOM元素
+        const calculationType = document.getElementById('calculationType');
+        const dateInput = document.getElementById('dateInput');
+        const endDateGroup = document.getElementById('endDateGroup');
+        const endDateInput = document.getElementById('endDateInput');
+        const eventName = document.getElementById('eventName');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const shareSection = document.getElementById('shareSection');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        // 设置今天为默认日期
+        const today = new Date();
+        const todayFormatted = today.toISOString().split('T')[0];
+        dateInput.value = todayFormatted;
+        dateInput.max = todayFormatted; // 对于生日和纪念日，不能选择未来日期
+        
+        // 计算类型变化时显示/隐藏结束日期
+        calculationType.addEventListener('change', function() {
+            if (this.value === 'duration') {
+                endDateGroup.style.display = 'block';
+                dateInput.max = ''; // 允许选择未来日期
+            } else {
+                endDateGroup.style.display = 'none';
+                if (this.value === 'birthday' || this.value === 'anniversary') {
+                    dateInput.max = todayFormatted; // 不能选择未来日期
+                } else {
+                    dateInput.max = ''; // 允许选择未来日期
+                }
+            }
+        });
+        
+        // 计算函数
+        function calculateDateDifference() {
+            const startDate = new Date(dateInput.value);
+            let endDate;
+            
+            if (calculationType.value === 'duration') {
+                endDate = new Date(endDateInput.value);
+                if (!endDateInput.value || endDate <= startDate) {
+                    alert('请选择有效的结束日期（晚于开始日期）');
+                    return;
+                }
+            } else {
+                endDate = new Date(); // 当前日期
+            }
+            
+            // 计算差异（毫秒）
+            const diffMs = endDate - startDate;
+            const diffSeconds = Math.floor(diffMs / 1000);
+            const diffMinutes = Math.floor(diffSeconds / 60);
+            const diffHours = Math.floor(diffMinutes / 60);
+            const diffDays = Math.floor(diffHours / 24);
+            const diffMonths = Math.floor(diffDays / 30.44); // 近似值
+            const diffYears = Math.floor(diffDays / 365.25); // 考虑闰年
+            
+            // 计算下一个纪念日/生日
+            let nextOccurrence = '';
+            let nextOccurrenceDays = 0;
+            
+            if (calculationType.value === 'birthday' || calculationType.value === 'anniversary') {
+                const nextDate = new Date(startDate);
+                nextDate.setFullYear(endDate.getFullYear());
+                
+                if (nextDate < endDate) {
+                    nextDate.setFullYear(nextDate.getFullYear() + 1);
+                }
+                
+                nextOccurrenceDays = Math.ceil((nextDate - endDate) / (1000 * 60 * 60 * 24));
+                nextOccurrence = nextDate.toISOString().split('T')[0];
+            }
+            
+            // 根据时间精度格式化时间差
+            function formatTimeDifference(ms, includeTime) {
+                const absMs = Math.abs(ms);
+                const sign = ms < 0 ? '-' : '';
+                
+                const days = Math.floor(absMs / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((absMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((absMs % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((absMs % (1000 * 60)) / 1000);
+                const milliseconds = absMs % 1000;
+                
+                if (includeTime === 'days') {
+                    return {
+                        value: days + ' 天',
+                        description: `${days} 天`,
+                        full: `${days} 天`
+                    };
+                } else if (includeTime === 'seconds') {
+                    return {
+                        value: days + ' 天 ' + hours + ' 小时 ' + minutes + ' 分钟 ' + seconds + ' 秒',
+                        description: `${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒`,
+                        full: `${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒`
+                    };
+                } else { // milliseconds
+                    return {
+                        value: days + ' 天 ' + hours + ' 小时 ' + minutes + ' 分钟 ' + seconds + ' 秒 ' + milliseconds + ' 毫秒',
+                        description: `${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒 ${milliseconds} 毫秒`,
+                        full: `${sign}${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒 ${milliseconds} 毫秒`
+                    };
+                }
+            }
+            
+            const timePrecision = includeTime.value;
+            const formattedTime = formatTimeDifference(diffMs, timePrecision);
+            const absFormattedTime = formatTimeDifference(Math.abs(diffMs), timePrecision);
+            
+            // 生成结果HTML
+            let resultHTML = '';
+            
+            if (calculationType.value === 'birthday') {
+                const eventTitle = eventName.value || '生日';
+                resultHTML = `
+                    <div class="result-card">
+                        <div class="result-title">${eventTitle}</div>
+                        <div class="result-value">${formattedTime.value}</div>
+                        <div class="result-description">您已经在这个世界上度过了 ${diffYears} 年 ${diffMonths % 12} 个月 ${diffDays % 30} 天</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-title">距离下一个${eventTitle}</div>
+                        <div class="result-value">${nextOccurrenceDays} 天</div>
+                        <div class="result-description">下一个${eventTitle}是 ${nextOccurrence}，届时您将 ${diffYears + 1} 岁</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-title">毫秒级时间统计</div>
+                        <div class="result-value">${diffMs.toLocaleString()} 毫秒</div>
+                        <div class="result-description">相当于 ${diffSeconds.toLocaleString()} 秒，${diffMinutes.toLocaleString()} 分钟，${diffHours.toLocaleString()} 小时</div>
+                    </div>
+                `;
+            } else if (calculationType.value === 'anniversary') {
+                const eventTitle = eventName.value || '纪念日';
+                resultHTML = `
+                    <div class="result-card">
+                        <div class="result-title">${eventTitle}</div>
+                        <div class="result-value">${formattedTime.value}</div>
+                        <div class="result-description">这个重要的日子已经过去了 ${diffYears} 年 ${diffMonths % 12} 个月 ${diffDays % 30} 天</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-title">距离下一个${eventTitle}</div>
+                        <div class="result-value">${nextOccurrenceDays} 天</div>
+                        <div class="result-description">下一个${eventTitle}是 ${nextOccurrence}，届时将满 ${diffYears + 1} 周年</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-title">精确时间统计</div>
+                        <div class="result-value">${diffMs.toLocaleString()} 毫秒</div>
+                        <div class="result-description">相当于 ${Math.floor(diffDays/100)} 个百日，${Math.floor(diffYears)} 个周年纪念日</div>
+                    </div>
+                `;
+            } else if (calculationType.value === 'countdown') {
+                const eventTitle = eventName.value || '重要事件';
+                const isPast = diffMs < 0;
+                
+                resultHTML = `
+                    <div class="result-card">
+                        <div class="result-title">${eventTitle}</div>
+                        <div class="result-value">${isPast ? '已过去' : '还有'} ${absFormattedTime.value}</div>
+                        <div class="result-description">${isPast ? '这个事件已经过去了' : '距离这个事件还有'} ${absFormattedTime.description}</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-title">详细时间分解</div>
+                        <div class="result-value">${Math.floor(Math.abs(diffDays)/7)} 周 ${Math.abs(diffDays)%7} 天</div>
+                        <div class="result-description">相当于 ${Math.abs(diffHours).toLocaleString()} 小时，${Math.abs(diffMinutes).toLocaleString()} 分钟，${Math.abs(diffSeconds).toLocaleString()} 秒</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-title">毫秒级精度</div>
+                        <div class="result-value">${Math.abs(diffMs).toLocaleString()} 毫秒</div>
+                        <div class="result-description">${getDayOfWeek(startDate)}，${getSeason(startDate)}，${getChineseZodiac(startDate.getFullYear())}年</div>
+                    </div>
+                `;
+            } else if (calculationType.value === 'duration') {
+                const durationMs = endDate - startDate;
+                const durationFormatted = formatTimeDifference(durationMs, timePrecision);
+                const durationDays = Math.abs(diffDays);
+                const durationMonths = Math.floor(durationDays / 30.44);
+                const durationYears = Math.floor(durationDays / 365.25);
+                
+                resultHTML = `
+                    <div class="result-card">
+                        <div class="result-title">时间段长度</div>
+                        <div class="result-value">${durationFormatted.value}</div>
+                        <div class="result-description">从 ${startDate.toISOString().split('T')[0]} 到 ${endDate.toISOString().split('T')[0]}</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-title">时间分解</div>
+                        <div class="result-value">${durationYears} 年 ${durationMonths % 12} 个月</div>
+                        <div class="result-description">相当于 ${Math.floor(durationDays/7)} 周，${durationDays*24} 小时</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-title">毫秒级精确统计</div>
+                        <div class="result-value">${durationMs.toLocaleString()} 毫秒</div>
+                        <div class="result-description">精确到毫秒的时间差计算</div>
+                    </div>
+                `;
+            }
+            
+            resultContainer.innerHTML = resultHTML;
+            shareSection.style.display = 'block';
+            
+            // 保存计算结果到全局变量以便分享
+            window.calculationResult = {
+                type: calculationType.value,
+                startDate: dateInput.value,
+                endDate: calculationType.value === 'duration' ? endDateInput.value : todayFormatted,
+                eventName: eventName.value,
+                diffDays: diffDays,
+                diffYears: diffYears,
+                diffMonths: diffMonths,
+                resultHTML: resultHTML
+            };
+        }
+        
+        // 辅助函数：获取星期几
+        function getDayOfWeek(date) {
+            const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            return days[date.getDay()];
+        }
+        
+        // 辅助函数：获取季节
+        function getSeason(date) {
+            const month = date.getMonth() + 1;
+            if (month >= 3 && month <= 5) return '春季';
+            if (month >= 6 && month <= 8) return '夏季';
+            if (month >= 9 && month <= 11) return '秋季';
+            return '冬季';
+        }
+        
+        // 辅助函数：获取生肖
+        function getChineseZodiac(year) {
+            const zodiacs = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
+            return zodiacs[(year - 4) % 12];
+        }
+        
+        // 复制结果到剪贴板
+        function copyResultsToClipboard() {
+            if (!window.calculationResult) {
+                alert('请先进行计算');
+                return;
+            }
+            
+            const result = window.calculationResult;
+            let text = `【人生计算器 - 时间计算结果】\n\n`;
+            text += `计算类型：${result.type === 'birthday' ? '生日计算' : result.type === 'anniversary' ? '纪念日计算' : result.type === 'countdown' ? '倒计时' : '时间段计算'}\n`;
+            text += `开始日期：${result.startDate}\n`;
+            if (result.type === 'duration') {
+                text += `结束日期：${result.endDate}\n`;
+            }
+            if (result.eventName) {
+                text += `事件名称：${result.eventName}\n`;
+            }
+            text += `\n计算结果：\n`;
+            text += `• 总计天数：${result.diffDays} 天\n`;
+            text += `• 约合：${result.diffYears} 年 ${result.diffMonths % 12} 个月\n`;
+            text += `\n生成时间：${new Date().toLocaleString()}\n`;
+            text += `更多工具请访问：人生计算器`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('结果已复制到剪贴板！');
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制结果');
+            });
+        }
+        
+        // 重置表单
+        function resetForm() {
+            calculationType.value = 'birthday';
+            dateInput.value = todayFormatted;
+            endDateInput.value = '';
+            endDateGroup.style.display = 'none';
+            eventName.value = '';
+            resultContainer.innerHTML = `
+                <i class="fas fa-chart-pie"></i>
+                <p>输入日期并点击"开始计算"按钮查看结果</p>
+            `;
+            shareSection.style.display = 'none';
+            window.calculationResult = null;
+        }
+        
+        // 事件监听
+        calculateBtn.addEventListener('click', calculateDateDifference);
+        resetBtn.addEventListener('click', resetForm);
+        copyBtn.addEventListener('click', copyResultsToClipboard);
+        
+        // 初始加载时，如果是时间段计算，显示结束日期字段
+        if (calculationType.value === 'duration') {
+            endDateGroup.style.display = 'block';
+        }
+        
+        // 模拟AdSense广告加载
+        window.addEventListener('load', function() {
+            console.log('时间计算器页面加载完成，准备加载AdSense广告');
+        });
+    </script>
+</body>
+</html>

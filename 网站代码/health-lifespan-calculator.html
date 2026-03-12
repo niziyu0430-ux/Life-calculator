@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康与寿命评估计算器 - 人生计算器</title>
+    <meta name="description" content="免费在线健康与寿命评估计算器：基于科学研究的寿命预测工具，评估您的健康状况、生活习惯对预期寿命的影响，提供个性化健康建议。">
+    <meta name="keywords" content="寿命计算器,健康评估,寿命预测,健康寿命,预期寿命,健康风险,生活习惯评估,健康建议">
+    
+    <!-- 继承主站样式 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --primary-dark: #3a0ca3;
+            --health-color: #4caf50;
+            --risk-color: #f44336;
+            --neutral-color: #ff9800;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-muted: #b2bec3;
+            --border-color: #dfe6e9;
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --font-heading: 'Noto Serif SC', serif;
+            --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部导航 */
+        .header {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 16px 0;
+            margin-bottom: 30px;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--health-color), #8bc34a);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 计算器主区域 */
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 输入区域 */
+        .input-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            padding-right: 40px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .select-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        /* 健康因素评分 */
+        .health-factor {
+            background-color: #f8f9fa;
+            border-radius: var(--radius-md);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .health-factor.good {
+            border-left-color: var(--health-color);
+            background-color: rgba(76, 175, 80, 0.05);
+        }
+        
+        .health-factor.poor {
+            border-left-color: var(--risk-color);
+            background-color: rgba(244, 67, 54, 0.05);
+        }
+        
+        .health-factor.neutral {
+            border-left-color: var(--neutral-color);
+            background-color: rgba(255, 152, 0, 0.05);
+        }
+        
+        .factor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .factor-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .factor-score {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .score-good {
+            color: var(--health-color);
+        }
+        
+        .score-poor {
+            color: var(--risk-color);
+        }
+        
+        .score-neutral {
+            color: var(--neutral-color);
+        }
+        
+        .factor-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        .factor-tip {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+        
+        /* 结果区域 */
+        .result-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .result-value {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .result-unit {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .result-comparison {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        
+        .comparison-item {
+            text-align: center;
+        }
+        
+        .comparison-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .comparison-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 建议区域 */
+        .recommendation {
+            background-color: #e8f4fd;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-light);
+        }
+        
+        .recommendation-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .recommendation-content {
+            color: var(--text-secondary);
+        }
+        
+        /* 按钮 */
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--health-color), #8bc34a);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+        }
+        
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .reset-btn:hover {
+            background-color: #f8f9fa;
+            border-color: var(--text-muted);
+        }
+        
+        /* 信息卡片 */
+        .info-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 25px;
+            margin-top: 40px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .info-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-content {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        .info-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .info-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+        
+        .info-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: var(--card-bg);
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .footer-section h3 {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* AdSense占位符 */
+        .adsense-placeholder {
+            background-color: #f5f5f5;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+            color: #666;
+        }
+        
+        .placeholder-content {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <span>人生计算器</span>
+            </a>
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                返回首页
+            </a>
+        </div>
+    </header>
+
+    <!-- 页面内容 -->
+    <div class="container">
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">健康与寿命评估计算器</h1>
+            <p class="page-subtitle">基于科学研究的寿命预测工具，评估您的健康状况和生活习惯对预期寿命的影响</p>
+        </div>
+
+        <!-- 计算器主区域 -->
+        <div class="calculator-container">
+            <!-- 输入区域 -->
+            <div class="input-section">
+                <h2 class="section-title">基本信息</h2>
+                
+                <div class="input-group">
+                    <label class="input-label">出生日期</label>
+                    <div class="input-with-icon">
+                        <input type="date" id="birthdate" class="input-field" value="1990-01-01">
+                        <i class="fas fa-calendar input-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">性别</label>
+                    <select id="gender" class="select-field">
+                        <option value="male">男性</option>
+                        <option value="female">女性</option>
+                    </select>
+                </div>
+                
+                <h2 class="section-title" style="margin-top: 30px;">生活习惯评估</h2>
+                
+                <div class="input-group">
+                    <label class="input-label">吸烟情况</label>
+                    <select id="smoking" class="select-field">
+                        <option value="none">不吸烟</option>
+                        <option value="former">已戒烟</option>
+                        <option value="light">轻度吸烟（每天<10支）</option>
+                        <option value="heavy">重度吸烟（每天≥10支）</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">饮酒频率</label>
+                    <select id="alcohol" class="select-field">
+                        <option value="none">不饮酒</option>
+                        <option value="light">偶尔饮酒（每周<3次）</option>
+                        <option value="moderate">适度饮酒（每周3-7次）</option>
+                        <option value="heavy">经常饮酒（每天饮酒）</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">每周运动时间</label>
+                    <select id="exercise" class="select-field">
+                        <option value="none">几乎不运动</option>
+                        <option value="light">轻度运动（每周1-2小时）</option>
+                        <option value="moderate">中度运动（每周3-5小时）</option>
+                        <option value="heavy">积极运动（每周>5小时）</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">饮食习惯</label>
+                    <select id="diet" class="select-field">
+                        <option value="poor">不规律，高油高盐</option>
+                        <option value="average">一般，偶尔健康饮食</option>
+                        <option value="good">比较健康，注重营养</option>
+                        <option value="excellent">非常健康，均衡膳食</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">睡眠质量</label>
+                    <select id="sleep" class="select-field">
+                        <option value="poor">经常失眠，质量差</option>
+                        <option value="average">一般，偶尔失眠</option>
+                        <option value="good">较好，基本规律</option>
+                        <option value="excellent">非常好，深度睡眠充足</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">压力水平</label>
+                    <select id="stress" class="select-field">
+                        <option value="high">高压，经常感到焦虑</option>
+                        <option value="moderate">适度压力</option>
+                        <option value="low">压力较小，心态平和</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">BMI指数（体重kg/身高m²）</label>
+                    <div class="input-with-icon">
+                        <input type="number" id="bmi" class="input-field" value="22" min="15" max="40" step="0.1">
+                        <i class="fas fa-weight input-icon"></i>
+                    </div>
+                    <small style="color: var(--text-muted); display: block; margin-top: 5px;">正常范围：18.5-24.9</small>
+                </div>
+                
+                <button class="calculate-btn" id="calculateBtn">
+                    <i class="fas fa-calculator"></i>
+                    评估我的健康寿命
+                </button>
+                
+                <button class="reset-btn" id="resetBtn">
+                    <i class="fas fa-redo"></i>
+                    重置数据
+                </button>
+            </div>
+            
+            <!-- 结果区域 -->
+            <div class="result-section">
+                <h2 class="section-title">评估结果</h2>
+                
+                <div class="result-card">
+                    <div class="result-title">您的预期健康寿命</div>
+                    <div class="result-value" id="lifespanResult">--</div>
+                    <div class="result-unit" id="lifespanUnit">岁</div>
+                    
+                    <div class="result-comparison">
+                        <div class="comparison-item">
+                            <div class="comparison-value" id="currentAge">--</div>
+                            <div class="comparison-label">当前年龄</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-value" id="remainingYears">--</div>
+                            <div class="comparison-label">剩余年限</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="section-title" style="font-size: 1.2rem;">健康因素评分</h3>
+                
+                <div id="healthFactors">
+                    <!-- 健康因素评分将通过JavaScript动态生成 -->
+                </div>
+                
+                <h3 class="section-title" style="font-size: 1.2rem; margin-top: 30px;">个性化建议</h3>
+                
+                <div id="recommendations">
+                    <!-- 建议将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- AdSense广告位（顶部横幅） -->
+        <div class="adsense-placeholder" id="adsense-top-banner">
+            <div class="placeholder-content">
+                <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>Google AdSense 广告位 - 728x90 横幅广告</p>
+            </div>
+        </div>
+        
+        <!-- 信息卡片 -->
+        <div class="info-card">
+            <h2 class="info-title">
+                <i class="fas fa-info-circle"></i>
+                关于寿命评估的科学依据
+            </h2>
+            <div class="info-content">
+                <p>本计算器基于世界卫生组织（WHO）、中国疾病预防控制中心等权威机构的统计数据，结合以下因素进行科学评估：</p>
+                <ul class="info-list">
+                    <li><strong>基础寿命</strong>：基于中国人口平均预期寿命（2023年：男性77.4岁，女性81.9岁）</li>
+                    <li><strong>生活习惯</strong>：吸烟、饮酒、运动、饮食对寿命的影响权重</li>
+                    <li><strong>健康指标</strong>：BMI指数与各种慢性疾病风险的关系</li>
+                    <li><strong>心理因素</strong>：压力水平对健康的长期影响</li>
+                </ul>
+                <p style="margin-top: 15px; color: var(--text-muted); font-style: italic;">
+                    注意：本工具提供的是基于统计数据的预测，仅供参考。实际寿命受遗传、医疗条件、意外事件等多种因素影响。
+                </p>
+            </div>
+        </div>
+        
+        <!-- AdSense广告位（中部矩形） -->
+        <div class="adsense-placeholder" id="adsense-middle-rectangle">
+            <div class="placeholder-content">
+                <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>Google AdSense 广告位 - 300x250 矩形广告</p>
+            </div>
+        </div>
+        
+        <!-- 相关工具推荐 -->
+        <div class="info-card">
+            <h2 class="info-title">
+                <i class="fas fa-calculator"></i>
+                更多实用工具
+            </h2>
+            <div class="info-content">
+                <p>探索我们提供的其他生活规划工具：</p>
+                <ul class="info-list">
+                    <li><a href="time-calculator.html" style="color: var(--primary-color);">时间与年龄计算器</a> - 精确计算日期和时间</li>
+                    <li><a href="financial-calculator.html" style="color: var(--primary-color);">财务规划计算器</a> - 个人财务规划和管理</li>
+                    <li><a href="life-goals-calculator.html" style="color: var(--primary-color);">生活目标管理计算器</a> - 设定和追踪生活目标</li>
+                    <li><a href="retirement-calculator.html" style="color: var(--primary-color);">退休规划计算器</a> - 退休储蓄和收入规划</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>人生计算器</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 15px;">提供全面的生活规划工具，帮助您更好地管理时间、健康、财务和生活目标。</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">网站首页</a></li>
+                        <li><a href="articles.html">文章中心</a></li>
+                        <li><a href="time-calculator.html">时间计算器</a></li>
+                        <li><a href="health-lifespan-calculator.html">健康寿命评估</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>法律信息</h3>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">隐私政策</a></li>
+                        <li><a href="terms.html">使用条款</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                        <li><a href="contact.html">联系我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2025 人生计算器 版权所有 | 本网站已申请Google AdSense广告计划</p>
+                <p style="margin-top: 5px; font-size: 0.85rem;">免责声明：本工具提供的信息仅供参考，不构成医疗或财务建议。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const lifespanResult = document.getElementById('lifespanResult');
+            const lifespanUnit = document.getElementById('lifespanUnit');
+            const currentAge = document.getElementById('currentAge');
+            const remainingYears = document.getElementById('remainingYears');
+            const healthFactors = document.getElementById('healthFactors');
+            const recommendations = document.getElementById('recommendations');
+            
+            // 基础预期寿命数据（中国2023年）
+            const baseLifeExpectancy = {
+                male: 77.4,
+                female: 81.9
+            };
+            
+            // 生活习惯对寿命的影响（年）
+            const lifestyleFactors = {
+                smoking: {
+                    none: 0,
+                    former: -1,
+                    light: -3,
+                    heavy: -8
+                },
+                alcohol: {
+                    none: 0,
+                    light: 0,
+                    moderate: -1,
+                    heavy: -4
+                },
+                exercise: {
+                    none: -2,
+                    light: 0,
+                    moderate: +2,
+                    heavy: +4
+                },
+                diet: {
+                    poor: -3,
+                    average: 0,
+                    good: +2,
+                    excellent: +4
+                },
+                sleep: {
+                    poor: -2,
+                    average: 0,
+                    good: +1,
+                    excellent: +2
+                },
+                stress: {
+                    high: -3,
+                    moderate: 0,
+                    low: +2
+                }
+            };
+            
+            // BMI对寿命的影响
+            function getBMIFactor(bmi) {
+                if (bmi < 18.5) return -1; // 过轻
+                if (bmi >= 18.5 && bmi <= 24.9) return 0; // 正常
+                if (bmi >= 25 && bmi <= 29.9) return -1; // 超重
+                return -3; // 肥胖
+            }
+            
+            // 计算年龄
+            function calculateAge(birthdate) {
+                const birthDate = new Date(birthdate);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            }
+            
+            // 健康因素评分模板
+            function createHealthFactor(title, score, description, tip) {
+                let scoreClass = 'score-neutral';
+                let factorClass = 'health-factor neutral';
+                
+                if (score > 0) {
+                    scoreClass = 'score-good';
+                    factorClass = 'health-factor good';
+                } else if (score < 0) {
+                    scoreClass = 'score-poor';
+                    factorClass = 'health-factor poor';
+                }
+                
+                return `
+                    <div class="${factorClass}">
+                        <div class="factor-header">
+                            <span class="factor-title">${title}</span>
+                            <span class="factor-score ${scoreClass}">${score > 0 ? '+' : ''}${score}年</span>
+                        </div>
+                        <div class="factor-description">${description}</div>
+                        <div class="factor-tip">${tip}</div>
+                    </div>
+                `;
+            }
+            
+            // 建议模板
+            function createRecommendation(title, content) {
+                return `
+                    <div class="recommendation">
+                        <div class="recommendation-title">
+                            <i class="fas fa-lightbulb"></i>
+                            ${title}
+                        </div>
+                        <div class="recommendation-content">${content}</div>
+                    </div>
+                `;
+            }
+            
+            // 计算预期寿命
+            calculateBtn.addEventListener('click', function() {
+                // 获取输入值
+                const birthdate = document.getElementById('birthdate').value;
+                const gender = document.getElementById('gender').value;
+                const smoking = document.getElementById('smoking').value;
+                const alcohol = document.getElementById('alcohol').value;
+                const exercise = document.getElementById('exercise').value;
+                const diet = document.getElementById('diet').value;
+                const sleep = document.getElementById('sleep').value;
+                const stress = document.getElementById('stress').value;
+                const bmi = parseFloat(document.getElementById('bmi').value);
+                
+                // 计算当前年龄
+                const age = calculateAge(birthdate);
+                
+                // 基础预期寿命
+                let lifeExpectancy = baseLifeExpectancy[gender];
+                
+                // 计算生活习惯影响
+                let totalAdjustment = 0;
+                let factorsHTML = '';
+                
+                // 吸烟
+                const smokingEffect = lifestyleFactors.smoking[smoking];
+                totalAdjustment += smokingEffect;
+                factorsHTML += createHealthFactor(
+                    '吸烟习惯',
+                    smokingEffect,
+                    smoking === 'none' ? '不吸烟是健康的最佳选择' : 
+                    smoking === 'former' ? '已戒烟，对健康有积极影响' : 
+                    '吸烟对寿命有明显负面影响',
+                    smoking === 'heavy' ? '建议咨询专业医生制定戒烟计划' : '继续保持良好的习惯'
+                );
+                
+                // 饮酒
+                const alcoholEffect = lifestyleFactors.alcohol[alcohol];
+                totalAdjustment += alcoholEffect;
+                factorsHTML += createHealthFactor(
+                    '饮酒习惯',
+                    alcoholEffect,
+                    alcohol === 'none' ? '不饮酒有利于健康' : 
+                    alcohol === 'light' ? '适度饮酒影响较小' : 
+                    '过量饮酒对寿命有负面影响',
+                    '建议男性每日酒精摄入不超过25克，女性不超过15克'
+                );
+                
+                // 运动
+                const exerciseEffect = lifestyleFactors.exercise[exercise];
+                totalAdjustment += exerciseEffect;
+                factorsHTML += createHealthFactor(
+                    '运动习惯',
+                    exerciseEffect,
+                    exercise === 'none' ? '缺乏运动影响健康' : 
+                    exercise === 'heavy' ? '积极运动显著延长寿命' : 
+                    '适量运动对健康有益',
+                    '建议每周至少150分钟中等强度有氧运动'
+                );
+                
+                // 饮食
+                const dietEffect = lifestyleFactors.diet[diet];
+                totalAdjustment += dietEffect;
+                factorsHTML += createHealthFactor(
+                    '饮食习惯',
+                    dietEffect,
+                    diet === 'poor' ? '不健康饮食影响寿命' : 
+                    diet === 'excellent' ? '健康饮食显著延长寿命' : 
+                    '饮食习惯对健康有重要影响',
+                    '建议多吃蔬菜水果，减少高油高盐食物'
+                );
+                
+                // 睡眠
+                const sleepEffect = lifestyleFactors.sleep[sleep];
+                totalAdjustment += sleepEffect;
+                factorsHTML += createHealthFactor(
+                    '睡眠质量',
+                    sleepEffect,
+                    sleep === 'poor' ? '睡眠质量差影响健康' : 
+                    sleep === 'excellent' ? '优质睡眠延长寿命' : 
+                    '睡眠对健康恢复至关重要',
+                    '建议每晚7-9小时高质量睡眠'
+                );
+                
+                // 压力
+                const stressEffect = lifestyleFactors.stress[stress];
+                totalAdjustment += stressEffect;
+                factorsHTML += createHealthFactor(
+                    '压力水平',
+                    stressEffect,
+                    stress === 'high' ? '长期高压影响健康' : 
+                    stress === 'low' ? '低压力有利于长寿' : 
+                    '适度压力是正常生活的一部分',
+                    '建议学习压力管理技巧，如冥想、运动'
+                );
+                
+                // BMI
+                const bmiEffect = getBMIFactor(bmi);
+                totalAdjustment += bmiEffect;
+                factorsHTML += createHealthFactor(
+                    '体重指数(BMI)',
+                    bmiEffect,
+                    bmi < 18.5 ? '体重过轻影响健康' : 
+                    bmi > 29.9 ? '肥胖显著增加健康风险' : 
+                    bmi >= 25 ? '超重需要关注' : 
+                    '体重在健康范围内',
+                    '保持BMI在18.5-24.9之间为最佳'
+                );
+                
+                // 最终预期寿命
+                const finalLifeExpectancy = lifeExpectancy + totalAdjustment;
+                
+                // 显示结果
+                lifespanResult.textContent = finalLifeExpectancy.toFixed(1);
+                lifespanUnit.textContent = '岁';
+                currentAge.textContent = age;
+                remainingYears.textContent = Math.max(0, Math.floor(finalLifeExpectancy - age));
+                
+                // 显示健康因素
+                healthFactors.innerHTML = factorsHTML;
+                
+                // 生成个性化建议
+                let recommendationsHTML = '';
+                
+                if (smoking !== 'none') {
+                    recommendationsHTML += createRecommendation(
+                        '戒烟建议',
+                        smoking === 'former' ? 
+                        '恭喜您已戒烟！继续保持，戒烟时间越长，健康获益越大。' : 
+                        '吸烟是危害健康的主要因素之一。建议制定戒烟计划，寻求专业帮助。'
+                    );
+                }
+                
+                if (exercise === 'none' || exercise === 'light') {
+                    recommendationsHTML += createRecommendation(
+                        '增加运动',
+                        '规律运动可以显著延长寿命。建议从每周3次、每次30分钟开始，逐渐增加运动量。'
+                    );
+                }
+                
+                if (diet === 'poor' || diet === 'average') {
+                    recommendationsHTML += createRecommendation(
+                        '改善饮食',
+                        '健康饮食应包含充足的蔬菜水果、全谷物和优质蛋白质。减少加工食品和高糖饮料的摄入。'
+                    );
+                }
+                
+                if (stress === 'high') {
+                    recommendationsHTML += createRecommendation(
+                        '压力管理',
+                        '长期高压影响身心健康。尝试冥想、深呼吸、瑜伽等放松技巧，建立工作生活平衡。'
+                    );
+                }
+                
+                if (bmi < 18.5 || bmi >= 25) {
+                    recommendationsHTML += createRecommendation(
+                        '体重管理',
+                        bmi < 18.5 ? 
+                        '体重过轻可能影响免疫力。建议增加营养摄入，适当进行力量训练增加肌肉。' :
+                        '超重增加多种慢性病风险。建议通过合理饮食和运动控制体重。'
+                    );
+                }
+                
+                if (recommendationsHTML === '') {
+                    recommendationsHTML = createRecommendation(
+                        '保持良好习惯',
+                        '您的各项指标都比较健康！继续保持现有的良好生活习惯，定期体检，享受健康长寿的生活。'
+                    );
+                }
+                
+                recommendations.innerHTML = recommendationsHTML;
+                
+                // 平滑滚动到结果
+                document.querySelector('.result-section').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+            
+            // 重置按钮
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('birthdate').value = '1990-01-01';
+                document.getElementById('gender').value = 'male';
+                document.getElementById('smoking').value = 'none';
+                document.getElementById('alcohol').value = 'none';
+                document.getElementById('exercise').value = 'light';
+                document.getElementById('diet').value = 'average';
+                document.getElementById('sleep').value = 'good';
+                document.getElementById('stress').value = 'moderate';
+                document.getElementById('bmi').value = '22';
+                
+                lifespanResult.textContent = '--';
+                currentAge.textContent = '--';
+                remainingYears.textContent = '--';
+                healthFactors.innerHTML = '';
+                recommendations.innerHTML = '';
+            });
+            
+            // 初始化时显示示例因素
+            healthFactors.innerHTML = createHealthFactor(
+                '示例因素',
+                0,
+                '填写信息后点击"评估"按钮查看详细分析',
+                '所有评估基于科学统计数据，仅供参考'
+            );
+            
+            recommendations.innerHTML = createRecommendation(
+                '开始评估',
+                '请填写左侧的健康信息，点击"评估我的健康寿命"按钮获取个性化分析。'
+            );
+            
+            // 设置默认出生日期为30年前
+            const defaultDate = new Date();
+            defaultDate.setFullYear(defaultDate.getFullYear() - 30);
+            document.getElementById('birthdate').valueAsDate = defaultDate;
+            
+            // 模拟AdSense广告加载
+            window.addEventListener('load', function() {
+                console.log('健康寿命评估页面加载完成，准备加载AdSense广告');
+            });
+        });
+    </script>
+</body>
+</html>

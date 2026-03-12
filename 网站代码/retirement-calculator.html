@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>退休规划计算器 - 人生计算器</title>
+    <meta name="description" content="免费在线退休规划计算器，计算退休所需资金、现有储蓄评估、月度储蓄建议、退休收入规划，助您安享晚年生活。">
+    <meta name="keywords" content="退休规划,养老金计算,退休储蓄,退休资金,养老计划,退休收入,财务规划,退休生活">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            color: #2c3e50;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        /* 计算器主要内容 */
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .input-section, .result-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        /* 输入表单样式 */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3en;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .range-value {
+            min-width: 60px;
+            text-align: center;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input[type="range"] {
+            padding: 0;
+            height: 8px;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn-reset {
+            background: #e74c3c;
+        }
+        
+        .btn-reset:hover {
+            background: #c0392b;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        /* 结果样式 */
+        .result-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2ecc71;
+            margin-bottom: 5px;
+        }
+        
+        .result-note {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+        
+        .warning {
+            border-left-color: #e74c3c;
+        }
+        
+        .warning .result-value {
+            color: #e74c3c;
+        }
+        
+        .success {
+            border-left-color: #2ecc71;
+        }
+        
+        .success .result-value {
+            color: #2ecc71;
+        }
+        
+        /* 图表容器 */
+        .chart-container {
+            height: 300px;
+            margin-top: 30px;
+        }
+        
+        /* 建议部分 */
+        .recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-top: 40px;
+        }
+        
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .recommendation-item i {
+            color: #3498db;
+            font-size: 1.2rem;
+            margin-top: 3px;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: #7f8c8d;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .input-section, .result-section, .recommendations {
+                padding: 20px;
+            }
+            
+            .result-value {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading i {
+            font-size: 2rem;
+            color: #3498db;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 工具提示 */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: #3498db;
+            margin-left: 5px;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            text-align: left;
+            padding: 10px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* 进度条 */
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #2ecc71;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-umbrella-beach"></i>
+                <div>
+                    <h1>退休规划计算器</h1>
+                    <p class="subtitle">精确计算退休所需资金，评估现有储蓄水平，制定个性化退休计划，助您安享晚年生活。</p>
+                </div>
+            </div>
+            
+            <div class="navbar">
+                <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> 返回首页</a>
+                <a href="calculators.html" class="nav-btn"><i class="fas fa-calculator"></i> 所有计算器</a>
+                <a href="articles.html" class="nav-btn"><i class="fas fa-newspaper"></i> 文章中心</a>
+                <a href="financial-calculator.html" class="nav-btn"><i class="fas fa-chart-line"></i> 财务规划</a>
+            </div>
+        </header>
+        
+        <main>
+            <div class="calculator-container">
+                <!-- 输入部分 -->
+                <section class="input-section">
+                    <h2><i class="fas fa-cog"></i> 退休规划参数</h2>
+                    
+                    <div class="form-group">
+                        <label>当前年龄 <span class="tooltip">?
+                            <span class="tooltiptext">您当前的年龄，用于计算距离退休还有多少年</span>
+                        </span></label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user-clock"></i>
+                            <input type="number" id="currentAge" min="18" max="70" value="35">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>计划退休年龄 <span class="tooltip">?
+                            <span class="tooltiptext">您计划退休的年龄，通常为55-70岁</span>
+                        </span></label>
+                        <div class="range-container">
+                            <div class="range-value" id="retirementAgeValue">60</div>
+                            <input type="range" id="retirementAge" min="55" max="75" value="60" step="1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>当前年收入 (元) <span class="tooltip">?
+                            <span class="tooltiptext">您当前的年度总收入，包括工资、奖金等</span>
+                        </span></label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <input type="number" id="currentIncome" min="0" value="200000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>退休后期望收入替代率 <span class="tooltip">?
+                            <span class="tooltiptext">退休后希望保持当前生活水平所需的收入比例，通常为60%-80%</span>
+                        </span></label>
+                        <div class="range-container">
+                            <div class="range-value" id="incomeReplacementValue">70%</div>
+                            <input type="range" id="incomeReplacement" min="50" max="100" value="70" step="5">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>当前退休储蓄 (元) <span class="tooltip">?
+                            <span class="tooltiptext">您已经为退休积累的储蓄总额</span>
+                        </span></label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                            <input type="number" id="currentSavings" min="0" value="50000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>每月储蓄金额 (元) <span class="tooltip">?
+                            <span class="tooltiptext">您目前每月为退休储蓄的金额</span>
+                        </span></label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-coins"></i>
+                            <input type="number" id="monthlySavings" min="0" value="2000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>预期年投资回报率 <span class="tooltip">?
+                            <span class="tooltiptext">您期望的年化投资收益率，通常为4%-8%</span>
+                        </span></label>
+                        <div class="range-container">
+                            <div class="range-value" id="investmentReturnValue">6%</div>
+                            <input type="range" id="investmentReturn" min="2" max="12" value="6" step="0.5">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>预期年通货膨胀率 <span class="tooltip">?
+                            <span class="tooltiptext">预期的平均年通货膨胀率，通常为2%-3%</span>
+                        </span></label>
+                        <div class="range-container">
+                            <div class="range-value" id="inflationRateValue">2.5%</div>
+                            <input type="range" id="inflationRate" min="1" max="5" value="2.5" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>预期退休寿命 <span class="tooltip">?
+                            <span class="tooltiptext">退休后预计生活的年数，通常为20-30年</span>
+                        </span></label>
+                        <div class="range-container">
+                            <div class="range-value" id="retirementYearsValue">25</div>
+                            <input type="range" id="retirementYears" min="15" max="40" value="25" step="1">
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="calculateBtn">
+                        <i class="fas fa-calculator"></i> 计算退休规划
+                    </button>
+                    
+                    <button class="btn btn-reset" id="resetBtn">
+                        <i class="fas fa-redo"></i> 重置所有参数
+                    </button>
+                </section>
+                
+                <!-- 结果部分 -->
+                <section class="result-section">
+                    <h2><i class="fas fa-chart-bar"></i> 计算结果</h2>
+                    
+                    <div class="loading" id="loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>正在计算中，请稍候...</p>
+                    </div>
+                    
+                    <div id="results">
+                        <div class="result-item warning">
+                            <div class="result-label">退休资金总需求</div>
+                            <div class="result-value" id="totalNeed">¥0</div>
+                            <div class="result-note">根据通货膨胀调整后，您退休时需要的资金总额</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="needProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">当前储蓄未来价值</div>
+                            <div class="result-value" id="futureSavings">¥0</div>
+                            <div class="result-note">您现有储蓄到退休时的预计价值（含投资收益）</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="savingsProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-item success">
+                            <div class="result-label">资金缺口/盈余</div>
+                            <div class="result-value" id="gapAmount">¥0</div>
+                            <div class="result-note" id="gapNote">计算结果将显示您需要额外储蓄多少资金</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="gapProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">建议每月储蓄额</div>
+                            <div class="result-value" id="recommendedMonthly">¥0</div>
+                            <div class="result-note">为实现退休目标，您每月需要储蓄的金额</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">退休后每月收入</div>
+                            <div class="result-value" id="retirementIncome">¥0</div>
+                            <div class="result-note">退休后您每月可支配的收入金额</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">退休储蓄进度</div>
+                            <div class="result-value" id="progressPercentage">0%</div>
+                            <div class="result-note">您当前退休准备的完成度</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="overallProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container" id="chartContainer">
+                        <canvas id="retirementChart"></canvas>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- 建议部分 -->
+            <section class="recommendations">
+                <h2><i class="fas fa-lightbulb"></i> 个性化退休规划建议</h2>
+                
+                <div class="recommendation-item">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <h3>增加储蓄率</h3>
+                        <p>根据计算结果，您需要将每月储蓄金额从 <span id="currentMonthlySavings">2000</span> 元增加到 <span id="newMonthlySavings">0</span> 元。建议将储蓄率提高到收入的15%-20%。</p>
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <i class="fas fa-university"></i>
+                    <div>
+                        <h3>优化投资组合</h3>
+                        <p>考虑将投资组合多元化，包括股票、债券、房地产和退休储蓄账户。长期来看，多元化的投资组合能提供更稳定的回报。</p>
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <div>
+                        <h3>延迟退休计划</h3>
+                        <p>每延迟退休一年，您的退休储蓄将增加一年的投资收益，同时减少一年的退休支出需求。如果可能，考虑将退休年龄推迟到65岁。</p>
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <i class="fas fa-home"></i>
+                    <div>
+                        <h3>减少退休后开支</h3>
+                        <p>评估退休后的生活方式，考虑缩小住房、减少不必要的开支。退休生活质量不仅取决于收入，也取决于合理的支出管理。</p>
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <h3>购买补充保险</h3>
+                        <p>考虑购买长期护理保险和补充医疗保险，以减少退休后大额医疗支出的风险。这些保险能提供额外的财务安全保障。</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <div class="footer-links">
+                <a href="index.html">首页</a>
+                <a href="calculators.html">所有计算器</a>
+                <a href="articles.html">文章中心</a>
+                <a href="about.html">关于我们</a>
+                <a href="privacy.html">隐私政策</a>
+                <a href="terms.html">使用条款</a>
+                <a href="contact.html">联系我们</a>
+            </div>
+            <p class="copyright">© 2026 人生计算器. 保留所有权利. 本工具仅供参考，不构成财务建议。</p>
+        </footer>
+    </div>
+    
+    <!-- 引入Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // DOM元素
+        const currentAge = document.getElementById('currentAge');
+        const retirementAge = document.getElementById('retirementAge');
+        const retirementAgeValue = document.getElementById('retirementAgeValue');
+        const currentIncome = document.getElementById('currentIncome');
+        const incomeReplacement = document.getElementById('incomeReplacement');
+        const incomeReplacementValue = document.getElementById('incomeReplacementValue');
+        const currentSavings = document.getElementById('currentSavings');
+        const monthlySavings = document.getElementById('monthlySavings');
+        const investmentReturn = document.getElementById('investmentReturn');
+        const investmentReturnValue = document.getElementById('investmentReturnValue');
+        const inflationRate = document.getElementById('inflationRate');
+        const inflationRateValue = document.getElementById('inflationRateValue');
+        const retirementYears = document.getElementById('retirementYears');
+        const retirementYearsValue = document.getElementById('retirementYearsValue');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const loading = document.getElementById('loading');
+        const results = document.getElementById('results');
+        
+        // 结果元素
+        const totalNeed = document.getElementById('totalNeed');
+        const futureSavings = document.getElementById('futureSavings');
+        const gapAmount = document.getElementById('gapAmount');
+        const gapNote = document.getElementById('gapNote');
+        const recommendedMonthly = document.getElementById('recommendedMonthly');
+        const retirementIncome = document.getElementById('retirementIncome');
+        const progressPercentage = document.getElementById('progressPercentage');
+        
+        // 建议元素
+        const currentMonthlySavings = document.getElementById('currentMonthlySavings');
+        const newMonthlySavings = document.getElementById('newMonthlySavings');
+        
+        // 进度条元素
+        const needProgress = document.getElementById('needProgress');
+        const savingsProgress = document.getElementById('savingsProgress');
+        const gapProgress = document.getElementById('gapProgress');
+        const overallProgress = document.getElementById('overallProgress');
+        
+        // 图表变量
+        let retirementChart = null;
+        
+        // 初始化事件监听器
+        function initEventListeners() {
+            // 范围滑块实时更新
+            retirementAge.addEventListener('input', function() {
+                retirementAgeValue.textContent = this.value;
+            });
+            
+            incomeReplacement.addEventListener('input', function() {
+                incomeReplacementValue.textContent = this.value + '%';
+            });
+            
+            investmentReturn.addEventListener('input', function() {
+                investmentReturnValue.textContent = this.value + '%';
+            });
+            
+            inflationRate.addEventListener('input', function() {
+                inflationRateValue.textContent = this.value + '%';
+            });
+            
+            retirementYears.addEventListener('input', function() {
+                retirementYearsValue.textContent = this.value;
+            });
+            
+            // 计算按钮
+            calculateBtn.addEventListener('click', calculateRetirement);
+            
+            // 重置按钮
+            resetBtn.addEventListener('click', resetForm);
+            
+            // 输入框变化时更新建议
+            monthlySavings.addEventListener('input', function() {
+                currentMonthlySavings.textContent = this.value;
+            });
+            
+            // 页面加载时计算一次
+            window.addEventListener('load', calculateRetirement);
+        }
+        
+        // 计算退休规划
+        function calculateRetirement() {
+            // 显示加载动画
+            loading.style.display = 'block';
+            results.style.opacity = '0.5';
+            
+            // 模拟计算延迟
+            setTimeout(() => {
+                // 获取输入值
+                const age = parseInt(currentAge.value);
+                const retireAge = parseInt(retirementAge.value);
+                const income = parseFloat(currentIncome.value);
+                const replacementRate = parseFloat(incomeReplacement.value) / 100;
+                const savings = parseFloat(currentSavings.value);
+                const monthlySave = parseFloat(monthlySavings.value);
+                const investmentRate = parseFloat(investmentReturn.value) / 100;
+                const inflation = parseFloat(inflationRate.value) / 100;
+                const yearsInRetirement = parseInt(retirementYears.value);
+                
+                // 计算退休前工作年数
+                const workingYears = retireAge - age;
+                
+                if (workingYears <= 0) {
+                    alert('退休年龄必须大于当前年龄！');
+                    loading.style.display = 'none';
+                    results.style.opacity = '1';
+                    return;
+                }
+                
+                // 计算退休第一年所需收入（根据当前收入调整）
+                const retirementIncomeFirstYear = income * replacementRate;
+                
+                // 计算退休时总资金需求（考虑通货膨胀）
+                // 使用退休后资金需求现值公式
+                const realReturnRate = (1 + investmentRate) / (1 + inflation) - 1;
+                
+                // 退休时所需资金总额（退休时点的现值）
+                let totalRequired = 0;
+                if (realReturnRate !== 0) {
+                    totalRequired = retirementIncomeFirstYear * (1 - Math.pow(1 + realReturnRate, -yearsInRetirement)) / realReturnRate;
+                } else {
+                    totalRequired = retirementIncomeFirstYear * yearsInRetirement;
+                }
+                
+                // 将总需求调整到退休时的名义价值
+                totalRequired = totalRequired * Math.pow(1 + inflation, workingYears);
+                
+                // 计算当前储蓄的未来价值
+                const futureValueOfSavings = savings * Math.pow(1 + investmentRate, workingYears);
+                
+                // 计算每月储蓄的未来价值（年金终值）
+                const monthsToRetire = workingYears * 12;
+                const monthlyInvestmentRate = Math.pow(1 + investmentRate, 1/12) - 1;
+                
+                let futureValueOfMonthlySavings = 0;
+                if (monthlyInvestmentRate !== 0) {
+                    futureValueOfMonthlySavings = monthlySave * (Math.pow(1 + monthlyInvestmentRate, monthsToRetire) - 1) / monthlyInvestmentRate;
+                } else {
+                    futureValueOfMonthlySavings = monthlySave * monthsToRetire;
+                }
+                
+                // 总未来储蓄价值
+                const totalFutureSavings = futureValueOfSavings + futureValueOfMonthlySavings;
+                
+                // 计算资金缺口/盈余
+                const gap = totalRequired - totalFutureSavings;
+                
+                // 计算建议每月储蓄额（如果需要填补缺口）
+                let recommendedMonthlySave = monthlySave;
+                if (gap > 0) {
+                    // 计算需要增加的每月储蓄额
+                    if (monthlyInvestmentRate !== 0) {
+                        recommendedMonthlySave = monthlySave + gap / ((Math.pow(1 + monthlyInvestmentRate, monthsToRetire) - 1) / monthlyInvestmentRate);
+                    } else {
+                        recommendedMonthlySave = monthlySave + gap / monthsToRetire;
+                    }
+                }
+                
+                // 计算退休储蓄进度百分比
+                const progressPercent = Math.min(100, Math.max(0, (totalFutureSavings / totalRequired) * 100));
+                
+                // 更新结果
+                updateResults(
+                    totalRequired, 
+                    totalFutureSavings, 
+                    gap, 
+                    recommendedMonthlySave,
+                    retirementIncomeFirstYear,
+                    progressPercent
+                );
+                
+                // 更新建议
+                newMonthlySavings.textContent = Math.round(recommendedMonthlySave);
+                
+                // 更新图表
+                updateChart(totalRequired, totalFutureSavings, gap);
+                
+                // 隐藏加载动画
+                loading.style.display = 'none';
+                results.style.opacity = '1';
+            }, 800);
+        }
+        
+        // 更新计算结果
+        function updateResults(totalReq, futureSave, gap, recommendedMonthlySave, retirementIncomeFirstYear, progressPercent) {
+            // 格式化数字为人民币格式
+            function formatCurrency(value) {
+                if (value >= 100000000) {
+                    return '¥' + (value / 100000000).toFixed(2) + '亿';
+                } else if (value >= 10000) {
+                    return '¥' + (value / 10000).toFixed(1) + '万';
+                } else {
+                    return '¥' + Math.round(value).toLocaleString();
+                }
+            }
+            
+            // 更新数值
+            totalNeed.textContent = formatCurrency(totalReq);
+            futureSavings.textContent = formatCurrency(futureSave);
+            gapAmount.textContent = formatCurrency(Math.abs(gap));
+            
+            // 更新缺口说明
+            if (gap > 0) {
+                gapAmount.parentElement.classList.remove('success');
+                gapAmount.parentElement.classList.add('warning');
+                gapNote.textContent = `您还需要额外储蓄 ${formatCurrency(gap)} 才能实现退休目标`;
+                gapAmount.textContent = '缺口: ' + formatCurrency(gap);
+            } else {
+                gapAmount.parentElement.classList.remove('warning');
+                gapAmount.parentElement.classList.add('success');
+                gapNote.textContent = `恭喜！您的退休储蓄超出目标 ${formatCurrency(Math.abs(gap))}`;
+                gapAmount.textContent = '盈余: ' + formatCurrency(Math.abs(gap));
+            }
+            
+            // 更新建议每月储蓄额
+            recommendedMonthly.textContent = formatCurrency(recommendedMonthlySave);
+            
+            // 更新退休后每月收入
+            retirementIncome.textContent = formatCurrency(retirementIncomeFirstYear / 12);
+            
+            // 更新进度百分比
+            progressPercentage.textContent = progressPercent.toFixed(1) + '%';
+            overallProgress.style.width = progressPercent + '%';
+            
+            // 更新进度条
+            const maxValue = Math.max(totalReq, futureSave);
+            needProgress.style.width = (totalReq / maxValue * 100) + '%';
+            savingsProgress.style.width = (futureSave / maxValue * 100) + '%';
+            
+            // 更新缺口进度条
+            if (gap > 0) {
+                gapProgress.style.width = (gap / totalReq * 100) + '%';
+            } else {
+                gapProgress.style.width = '0%';
+            }
+        }
+        
+        // 更新图表
+        function updateChart(totalReq, futureSave, gap) {
+            const ctx = document.getElementById('retirementChart').getContext('2d');
+            
+            // 如果图表已存在，销毁它
+            if (retirementChart) {
+                retirementChart.destroy();
+            }
+            
+            // 创建新图表
+            retirementChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['退休资金需求', '预计退休储蓄', '资金缺口/盈余'],
+                    datasets: [{
+                        label: '金额 (万元)',
+                        data: [
+                            totalReq / 10000,
+                            futureSave / 10000,
+                            gap / 10000
+                        ],
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            gap > 0 ? 'rgba(231, 76, 60, 0.7)' : 'rgba(46, 204, 113, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            gap > 0 ? 'rgba(231, 76, 60, 1)' : 'rgba(46, 204, 113, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '金额 (万元)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed.y.toFixed(1) + ' 万元';
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 重置表单
+        function resetForm() {
+            currentAge.value = 35;
+            retirementAge.value = 60;
+            retirementAgeValue.textContent = '60';
+            currentIncome.value = 200000;
+            incomeReplacement.value = 70;
+            incomeReplacementValue.textContent = '70%';
+            currentSavings.value = 50000;
+            monthlySavings.value = 2000;
+            currentMonthlySavings.textContent = '2000';
+            investmentReturn.value = 6;
+            investmentReturnValue.textContent = '6%';
+            inflationRate.value = 2.5;
+            inflationRateValue.textContent = '2.5%';
+            retirementYears.value = 25;
+            retirementYearsValue.textContent = '25';
+            
+            // 重新计算
+            calculateRetirement();
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initEventListeners();
+        });
+    </script>
+</body>
+</html>

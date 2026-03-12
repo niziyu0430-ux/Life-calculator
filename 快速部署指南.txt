@@ -1,0 +1,55 @@
+📦 人生计算器 - 快速部署指南
+
+本文件夹包含完整的人生计算器网站项目，可以直接上传到GitHub并启用GitHub Pages。
+
+📁 文件夹结构说明：
+- 网站代码/        - 所有HTML页面和网站文件
+- 项目文档/        - 项目规划和说明文档
+- 部署配置/        - Git和部署配置文件
+- assets/         - 资源文件（图片、样式等）
+
+🚀 快速部署步骤：
+
+1. 创建GitHub仓库
+   - 登录GitHub
+   - 新建仓库，名称：人生计算器
+   - 描述：专业的在线人生规划工具平台
+   - 公开仓库，不初始化README
+
+2. 上传文件
+   - 将本文件夹中的所有内容上传到GitHub仓库
+   - 可以拖拽上传或使用Git命令行
+
+3. 启用GitHub Pages
+   - 进入仓库Settings → Pages
+   - Source: Deploy from a branch
+   - Branch: main
+   - Folder: / (root)
+   - 点击Save
+
+4. 访问网站
+   - 等待几分钟
+   - 访问：https://[您的用户名].github.io/人生计算器/
+
+📋 部署检查清单：
+✅ 所有HTML文件上传完成
+✅ README.md文件存在
+✅ LICENSE文件存在
+✅ .gitignore文件配置正确
+✅ GitHub Pages已启用
+
+🔧 更多帮助：
+- 查看 README.md - 项目详细介绍
+- 查看 GitHub部署指南.md - 详细部署步骤
+- 运行 deploy.bat - 获取部署命令
+
+📞 如有问题：
+- 查看项目文档/文件夹中的详细说明
+- 检查GitHub Pages设置
+- 清除浏览器缓存后重试
+
+🎉 祝您部署顺利！
+
+---
+人生计算器项目组 © 2026
+网站地址：https://[您的用户名].github.io/人生计算器/

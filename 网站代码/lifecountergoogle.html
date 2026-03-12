@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>时间小卡片｜致时光</title>
+  <meta name="description" content="精致的时间数据卡片生成器" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    :root{
+      --bg: #fbf7f0;
+      --card-bg: rgba(255, 253, 248, 0.65);
+      --ink: #2b2b2b;
+      --muted: #8c8c8c;
+      --accent: #c97c5d;
+      --accent-hover: #b56b4d;
+      --accent2: #7aa08a;
+      --shadow-sm: 0 4px 12px rgba(60,40,20,0.03);
+      --shadow-lg: 0 16px 40px rgba(60,40,20,0.08);
+      --radius: 24px;
+      /* 字体栈：英文用圆润的 Nunito，中文标题用衬线体，正文用黑体 */
+      --font-serif: "Noto Serif SC", serif;
+      --font-sans: "Nunito", system-ui, -apple-system, sans-serif;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family: var(--font-sans);
+      color: var(--ink);
+      /* 更细腻的背景光晕 */
+      background:
+        radial-gradient(circle at 15% 15%, rgba(201,124,93,0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 10%, rgba(122,160,138,0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(201,124,93,0.05) 0%, transparent 50%),
+        var(--bg);
+      background-attachment: fixed; /* 背景固定，滚动时不跟随 */
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap{
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    /* 头部设计 */
+    header{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .brand{
+      display:flex; flex-direction:column; gap:4px;
+    }
+    .logo{
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 24px;
+      display: flex; align-items: center; gap: 12px;
+      color: #3d3d3d;
+    }
+    .dot{
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(201,124,93,0.15);
+    }
+    .tagline{
+      font-size: 13px; color: var(--muted); letter-spacing: 0.5px;
+      margin-left: 20px;
+    }
+
+    .date-pill{
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      background: rgba(255,255,255,0.5);
+      padding: 8px 16px; border-radius: 99px;
+      border: 1px solid rgba(0,0,0,0.03);
+      font-family: var(--font-serif);
+    }
+
+    /* 布局 Grid */
+    .grid{
+      display: grid;
+      grid-template-columns: 380px 1fr; /* 左侧固定宽度，右侧自适应 */
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    /* 通用面板样式 */
+    .panel{
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    /* 左侧输入区 */
+    .input-area{ padding: 32px; }
+    .input-area h2{
+      margin: 0 0 12px; font-family: var(--font-serif); font-size: 20px;
+    }
+    .input-area p{
+      margin: 0 0 28px; font-size: 13px; color: var(--muted); line-height: 1.6;
+    }
+
+    .field-group{ margin-bottom: 20px; }
+    label{
+      display: block; font-size: 12px; font-weight: 700; 
+      color: #888; text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    input, select{
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(200,200,200,0.3);
+      background: rgba(255,255,255,0.7);
+      font-size: 15px; color: var(--ink);
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+    }
+    input:focus, select:focus{
+      background: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(201,124,93,0.1);
+    }
+
+    /* 按钮组 */
+    .btns{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 32px; }
+    .btns.full-row { grid-template-columns: 1fr; }
+    
+    button{
+      padding: 14px; border-radius: 12px; border: none; cursor: pointer;
+      font-weight: 600; font-size: 14px; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-primary{
+      background: var(--accent); color: #fff;
+      box-shadow: 0 8px 20px rgba(201,124,93,0.25);
+    }
+    .btn-primary:hover{ background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-ghost{
+      background: rgba(255,255,255,0.5); color: var(--ink);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .btn-ghost:hover{ background: #fff; }
+
+    /* 右侧展示区 - 这里的 ID 用于截图 */
+    #captureArea {
+      background: transparent; /* 截图时透明，或者保留背景色 */
+      border-radius: var(--radius);
+    }
+    /* 为了截图好看，我们需要一个内部容器 */
+    .result-panel {
+      padding: 32px;
+    }
+
+    .result-header{
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 24px; padding-bottom: 16px;
+      border-bottom: 1px dashed rgba(0,0,0,0.06);
+    }
+    .result-header h3{ margin:0; font-family: var(--font-serif); font-size: 18px; }
+    .result-header span{ font-size: 12px; color: var(--muted); }
+
+    .cards-container{
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    /* 卡片设计升级 */
+    .card-item{
+      position: relative;
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1px solid rgba(255,255,255,1);
+    }
+    /* 纸张纹理效果 */
+    .card-item::before {
+        content: ""; position: absolute; inset:0; border-radius: 16px;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        pointer-events: none; opacity: 0.6; mix-blend-mode: multiply;
+    }
+
+    .card-item:hover{
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 24px rgba(60,40,20,0.08);
+      z-index: 10;
+    }
+
+    .card-label{ font-size: 12px; color: #999; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .card-value{
+      font-family: var(--font-serif);
+      font-size: 28px;
+      color: var(--ink);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .card-footer{
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px dashed #eee;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .tag{
+      font-size: 11px; padding: 4px 10px; border-radius: 20px;
+      background: #f4f0ec; color: #8a7a70;
+    }
+    .tag.highlight{ background: rgba(122,160,138,0.15); color: #4a6e5d; }
+
+    /* Footer */
+    footer{
+      margin-top: 40px; text-align: center;
+      font-size: 12px; color: var(--muted); opacity: 0.7;
+    }
+    
+    /* Toast */
+    .toast{
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px);
+      background: #333; color: #fff; padding: 10px 20px; border-radius: 50px;
+      font-size: 13px; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .toast.show{ transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* 隐藏截图时的额外元素 */
+    .screenshot-mode .no-capture { display: none !important; }
+    .screenshot-mode { background: #fbf7f0; } /* 截图时强制背景色，防止透明 */
+
+  </style>
+</head>
+
+<body>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo"><span class="dot"></span>时间小卡片</div>
+        <div class="tagline">把时间变成可收藏的数字卡片</div>
+      </div>
+      <div class="date-pill" id="todayDisplay">...</div>
+    </header>
+
+    <div class="grid">
+      <section class="panel input-area">
+        <h2>生成配置</h2>
+        <p>输入一个日期，计算活了多久、距离下个纪念日或今年的剩余进度。</p>
+        
+        <form id="calcForm">
+          <div class="field-group">
+            <label>卡片类型</label>
+            <select id="mode">
+              <option value="anniversary">纪念日（相恋/入职/开学）</option>
+              <option value="birthday">生日（年龄/倒计时）</option>
+              <option value="custom">自定义日期（倒计时）</option>
+            </select>
+          </div>
+          
+          <div class="field-group">
+            <label>标题名称</label>
+            <input type="text" id="name" placeholder="例如：我们、小王、考研" value="今天">
+          </div>
+
+          <div class="field-group">
+            <label>选择日期</label>
+            <input type="date" id="date">
+          </div>
+
+          <div class="btns">
+            <button type="button" class="btn-primary" id="btnCalc">生成卡片</button>
+            <button type="button" class="btn-ghost" id="btnReset">重置</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel" id="capturePanel">
+        <div class="result-panel" id="cardsResult">
+          <div class="result-header">
+            <h3>你的时光数据</h3>
+            <span id="cardDateLabel">2026-02-01</span>
+          </div>
+
+          <div class="cards-container" id="cardsBox">
+            <div class="card-item">
+              <div class="card-label">状态</div>
+              <div class="card-value" style="font-size:18px; color:#999;">等待生成...</div>
+              <div class="card-footer">
+                <span class="tag">输入左侧信息</span>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-top:20px; text-align:center; font-size:11px; color:#ccc; font-family:var(--font-serif);">
+            Designed by TimeCard
+          </div>
+        </div>
+
+        <div style="padding: 0 32px 32px 32px; display:flex; gap:12px;">
+           <button type="button" class="btn-primary" id="btnDownload" style="flex:1; background:var(--accent2);">
+             保存为图片
+           </button>
+           <button type="button" class="btn-ghost" id="btnCopyText" style="flex:1;">
+             复制文本
+           </button>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      © 2026 时间小卡片 · 治愈系设计
+    </footer>
+  </div>
+
+  <div class="toast" id="toast">已完成</div>
+
+<script>
+  // =========================
+  // 核心逻辑保持不变，增强渲染和截图功能
+  // =========================
+  const $ = (id) => document.getElementById(id);
+  const pad2 = (n) => String(n).padStart(2,'0');
+
+  // 初始化日期
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${pad2(today.getMonth()+1)}-${pad2(today.getDate())}`;
+  $("todayDisplay").textContent = todayStr.replace(/-/g, '.');
+  $("date").value = todayStr;
+
+  function getDiff(targetStr) {
+    const t = new Date(targetStr);
+    const n = new Date(todayStr); // Reset time to 00:00
+    const diffTime = t - n;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  }
+
+  function getNextBirthday(month, day) {
+    let y = today.getFullYear();
+    let next = new Date(y, month - 1, day);
+    if (next < new Date(todayStr)) { // 已经过了
+      next = new Date(y + 1, month - 1, day);
+    }
+    return next;
+  }
+
+  // 实时年龄更新功能
+  let realTimeUpdateInterval = null;
+  let currentBirthday = null;
+  
+  // 启动实时更新
+  function startRealTimeUpdate(targetDate, name) {
+    currentBirthday = { targetDate, name };
+    if (realTimeUpdateInterval) {
+      clearInterval(realTimeUpdateInterval);
+    }
+    
+    // 启动实时更新
+    realTimeUpdateInterval = setInterval(() => {
+      updateRealTimeAge();
+    }, 1000); // 每秒更新一次
+  }
+  
+  // 停止实时更新
+  function stopRealTimeUpdate() {
+    if (realTimeUpdateInterval) {
+      clearInterval(realTimeUpdateInterval);
+      realTimeUpdateInterval = null;
+    }
+    currentBirthday = null;
+  }
+  
+  // 更新实时年龄显示
+  function updateRealTimeAge() {
+    if (!currentBirthday) return;
+    
+    const now = new Date();
+    const diffMs = now.getTime() - currentBirthday.targetDate.getTime();
+    
+    // 转换为各种单位
+    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+    
+    // 更新第一张卡片的值显示
+    const cardElements = document.querySelectorAll('.card-value');
+    if (cardElements.length > 0) {
+      cardElements[0].textContent = `${days}天 ${hours}时 ${minutes}分 ${seconds}秒`;
+    }
+  }
+
+  // 生成核心数据模型
+  function buildModel() {
+    const mode = $("mode").value;
+    const name = $("name").value || "未命名";
+    const dateVal = $("date").value;
+    if(!dateVal) return null;
+
+    const targetDate = new Date(dateVal);
+    const dayDiff = getDiff(dateVal); // 目标 - 今天
+
+    // 年度计算
+    const startOfYear = new Date(today.getFullYear(), 0, 1);
+    const endOfYear = new Date(today.getFullYear(), 11, 31);
+    const daysInYear = (endOfYear - startOfYear) / (1000 * 3600 * 24) + 1;
+    const pastDays = Math.floor((new Date(todayStr) - startOfYear) / (1000 * 3600 * 24));
+    const yearProgress = Math.round((pastDays / daysInYear) * 100);
+    const yearLeft = Math.floor(daysInYear - pastDays);
+
+    let cards = [];
+
+    // Card 1: 主标题
+    if(mode === 'birthday') {
+       const birthYear = targetDate.getFullYear();
+       const age = today.getFullYear() - birthYear;
+       const nextB = getNextBirthday(targetDate.getMonth()+1, targetDate.getDate());
+       const dist = Math.ceil((nextB - new Date(todayStr)) / (86400000));
+       
+       cards.push({ label: `${name} 破壳日`, value: `${Math.abs(dayDiff)} 天`, tag: `已来到这个世界`, targetDate, name });
+       cards.push({ label: "距离下个生日", value: `${dist} 天`, tag: `${age + (dist===0?0:1)} 岁倒计时`, highlight:true });
+    } else if (mode === 'anniversary') {
+       const isFuture = dayDiff > 0;
+       cards.push({ label: `${name}`, value: isFuture ? `还有 ${dayDiff} 天` : `已 ${Math.abs(dayDiff)} 天`, tag: isFuture ? "倒计时" : "纪念日" });
+       
+       // 计算下个纪念日
+       const nextA = getNextBirthday(targetDate.getMonth()+1, targetDate.getDate());
+       const distA = Math.ceil((nextA - new Date(todayStr)) / (86400000));
+       cards.push({ label: "下个纪念日", value: `${distA} 天`, tag: "仪式感倒计时", highlight:true });
+    } else {
+       const isFuture = dayDiff > 0;
+       cards.push({ label: `${name}`, value: isFuture ? `${dayDiff} 天` : `${Math.abs(dayDiff)} 天`, tag: isFuture ? "距离目标" : "已过去" });
+    }
+
+    // Card 3 & 4: 通用数据
+    cards.push({ label: "今年剩余", value: `${yearLeft} 天`, tag: "光阴似箭" });
+    cards.push({ label: "年度进度", value: `${yearProgress}%`, tag: yearProgress > 80 ? "冲刺阶段" : "保持节奏" });
+
+    return { cards, dateStr: dateVal };
+  }
+
+  // 渲染函数
+  function render() {
+    const data = buildModel();
+    if(!data) return;
+
+    const container = $("cardsBox");
+    container.innerHTML = "";
+    $("cardDateLabel").innerText = data.dateStr;
+
+    data.cards.forEach((c, index) => {
+      const div = document.createElement("div");
+      div.className = "card-item";
+      // 加上简单的入场动画延迟
+      div.style.animation = `fadeIn 0.5s ease forwards ${index * 0.1}s`;
+      div.innerHTML = `
+        <div class="card-label">
+          <span>${c.label}</span>
+          <span style="opacity:0.3">#0${index+1}</span>
+        </div>
+        <div class="card-value">${c.value}</div>
+        <div class="card-footer">
+          <span class="tag ${c.highlight ? 'highlight' : ''}">${c.tag}</span>
+          <span style="font-size:16px; opacity:0.5; font-family:serif;">❄</span>
+        </div>
+      `;
+      container.appendChild(div);
+      
+      // 如果是生日卡片的第一项，启动实时更新
+      if (c.targetDate && c.name) {
+        startRealTimeUpdate(c.targetDate, c.name);
+      }
+    });
+    
+    // 如果不是生日模式，停止实时更新
+    const mode = $("mode").value;
+    if (mode !== 'birthday') {
+      stopRealTimeUpdate();
+    }
+    
+    showToast("卡片已更新");
+  }
+
+  // =========================
+  // 下载截图功能 (html2canvas)
+  // =========================
+  $("btnDownload").addEventListener("click", () => {
+    const element = $("capturePanel"); // 捕捉整个右侧面板（包含背景板，但不包含按钮）
+    const content = $("cardsResult"); // 实际内容区
+
+    showToast("正在生成图片...");
+
+    // 临时调整样式以获得更好的截图效果
+    content.style.borderRadius = "0"; 
+    // html2canvas 配置
+    html2canvas(content, {
+      scale: 3, // 3倍超采样，保证图片清晰度
+      useCORS: true,
+      backgroundColor: "#fbf7f0", // 强制背景色，避免透明
+      logging: false
+    }).then(canvas => {
+      // 恢复样式
+      content.style.borderRadius = "";
+      
+      // 创建下载链接
+      const link = document.createElement('a');
+      link.download = `时间卡片_${Date.now()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      showToast("图片已保存");
+    }).catch(err => {
+      console.error(err);
+      showToast("图片生成失败");
+    });
+  });
+
+  // 复制文本功能
+  $("btnCopyText").addEventListener("click", () => {
+    const data = buildModel();
+    if(!data) return;
+    let text = `【时间小卡片】\n----------------\n`;
+    data.cards.forEach(c => {
+      text += `${c.label}: ${c.value} (${c.tag})\n`;
+    });
+    text += `\n生成于: ${todayStr}`;
+    
+    navigator.clipboard.writeText(text).then(() => showToast("文本已复制"));
+  });
+
+  // 事件绑定
+  $("btnCalc").addEventListener("click", render);
+  $("btnReset").addEventListener("click", () => {
+    $("name").value = "";
+    $("date").value = todayStr;
+    stopRealTimeUpdate(); // 停止实时更新
+    render();
+  });
+
+  function showToast(msg) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=>t.classList.remove("show"), 2000);
+  }
+
+  // 初始运行一次
+  render();
+
+</script>
+</body>
+</html>
