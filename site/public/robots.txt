@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://life-counter-lab.handy-wood-8441.chatgpt.site/sitemap.xml
