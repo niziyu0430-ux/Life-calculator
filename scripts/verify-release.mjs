@@ -30,3 +30,4 @@ assert.ok(read('robots.txt').includes('Sitemap: '+origin+'/sitemap.xml'),'Wrong 
 assert.ok(fs.existsSync(path.join(docs,'.nojekyll')),'GitHub Pages must retain underscored assets');
 assert.ok(fs.existsSync(path.join(docs,'404.html')),'Missing static 404 page');
 console.log(JSON.stringify({result:'passed',pages:entries.length,internalLinksChecked:links,runtimeAssetReferencesChecked:assets,origin,checks:['canonical','language alternates','document language','sitemap targets','internal links and anchors','runtime assets','CNAME','ads.txt','robots','GitHub Pages assets','404 document']},null,2));
+

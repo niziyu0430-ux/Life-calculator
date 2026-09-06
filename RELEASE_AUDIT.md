@@ -50,3 +50,4 @@
 站主确认聚焦日期工具后，应为仍有等价页面的旧地址补迁移，例如 privacy.html 到 /privacy/；没有等价内容的旧页面保留真实 404，或先决定是否移植。浏览器视觉/交互、线上 HTTP 状态、Search Console 收录和 AdSense 审核都不在本次离线检查范围内。
 
 迁移参考：https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes
+
