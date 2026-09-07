@@ -9,7 +9,7 @@ const read=p=>fs.readFileSync(path.join(docs,p),'utf8');
 const resolveUrl=url=>{let p=decodeURIComponent(url.pathname).replace(/^\/+/, '');const direct=path.resolve(docs,p);assert.ok(direct===docs||direct.startsWith(docs+path.sep),'Path escapes release');if(fs.existsSync(direct)&&fs.statSync(direct).isFile())return direct;return path.join(direct,'index.html')};
 const xml=read('sitemap.xml');
 const entries=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
-assert.equal(entries.length,12,'Expected 12 substantive bilingual pages');
+assert.equal(entries.length,20,'Expected 20 substantive bilingual pages');
 assert.equal(new Set(entries).size,entries.length,'Duplicate sitemap URL');
 let links=0,assets=0;
 for(const entry of entries){
@@ -22,7 +22,7 @@ for(const entry of entries){
  const en=url.pathname.startsWith('/en');assert.ok(html.includes('<html lang="'+(en?'en':'zh-CN')+'"'),'Wrong document language: '+entry);
  for(const tag of html.matchAll(/<link\b[^>]*>/g)){if(!/rel="alternate"/.test(tag[0]))continue;const href=tag[0].match(/href="([^"]+)"/)?.[1];if(!href)continue;const target=new URL(href,url);assert.equal(target.origin,origin);assert.ok(fs.existsSync(resolveUrl(target)),'Broken language alternate: '+href);}
  for(const match of html.matchAll(/<a\b[^>]*href="([^"]+)"/g)){const raw=match[1].replaceAll('&amp;','&');if(raw.startsWith('mailto:')){assert.equal(raw,'mailto:niziyu0430@gmail.com');continue}const target=new URL(raw,url);if(target.origin!==origin)continue;const targetFile=resolveUrl(target);assert.ok(fs.existsSync(targetFile),'Broken internal link: '+raw+' on '+entry);if(target.hash){const targetHtml=fs.readFileSync(targetFile,'utf8');assert.ok(targetHtml.includes('id="'+target.hash.slice(1)+'"'),'Missing anchor: '+raw)}links++;}
- for(const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"#]+)"[^>]*>/g)){const target=new URL(match[1].replaceAll('&amp;','&'),url);if(target.origin!==origin||!target.pathname.startsWith('/_next/'))continue;assert.ok(fs.existsSync(resolveUrl(target)),'Missing runtime asset: '+target.pathname);assets++;}
+ for(const match of html.matchAll(/<(?:script|link|img)\b[^>]*(?:src|href)="([^"#]+)"[^>]*>/g)){const target=new URL(match[1].replaceAll('&amp;','&'),url);if(target.origin!==origin||!(target.pathname.startsWith('/_next/')||target.pathname.startsWith('/images/')))continue;assert.ok(fs.existsSync(resolveUrl(target)),'Missing runtime asset: '+target.pathname);assets++;}
 }
 assert.equal(read('CNAME').trim(),'life-counter.cn','Wrong CNAME');
 assert.equal(read('ads.txt').trim(),'google.com, pub-9460160226236788, DIRECT, f08c47fec0942fa0','Unexpected publisher');
@@ -30,4 +30,5 @@ assert.ok(read('robots.txt').includes('Sitemap: '+origin+'/sitemap.xml'),'Wrong 
 assert.ok(fs.existsSync(path.join(docs,'.nojekyll')),'GitHub Pages must retain underscored assets');
 assert.ok(fs.existsSync(path.join(docs,'404.html')),'Missing static 404 page');
 console.log(JSON.stringify({result:'passed',pages:entries.length,internalLinksChecked:links,runtimeAssetReferencesChecked:assets,origin,checks:['canonical','language alternates','document language','sitemap targets','internal links and anchors','runtime assets','CNAME','ads.txt','robots','GitHub Pages assets','404 document']},null,2));
+
 

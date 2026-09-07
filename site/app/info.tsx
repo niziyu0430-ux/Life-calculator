@@ -41,6 +41,11 @@ export default function Info({
             <h2>{en ? 'How we maintain the content' : '内容与纠错'}</h2>
             <p>
               {en
+                ? 'This independent project is maintained through the contact address below. AI tools assist with software, illustration and bilingual drafts. The worked date examples are checked against the calculation code; we do not claim expert medical, financial or scientific review.'
+                : '本独立项目通过下方联系邮箱维护。开发、插画和双语文稿使用 AI 辅助制作，日期示例与计算代码交叉核对；本站不宣称经过医学、财务或科研专家审核。'}
+            </p>
+            <p>
+              {en
                 ? 'The notes explain the actual conventions used by the tools, with examples you can reproduce. They do not claim to be scientific studies. Chinese and English pages are maintained as paired versions. If a translation or calculation disagrees, please send an example so we can investigate and correct it.'
                 : '手记围绕工具实际采用的计算约定展开，并提供可复算的例子，不将生活建议包装成科学研究。中英文页面成对维护。如果发现翻译或计算结果不一致，欢迎发送示例，帮助我们核对和修正。'}
             </p>
@@ -69,6 +74,11 @@ export default function Info({
         <>
           <section>
             <h2>{en ? 'Dates you enter' : '你输入的日期'}</h2>
+            <p>
+              {en
+                ? 'Weekly schedules and project names also stay in the current page. Downloads may contain the information shown in the tools. An exported calendar milestone includes a date and day count from which a birthday could be inferred; importing it shares that event with your chosen calendar service.'
+                : '每周安排和项目名称同样只保留在当前页面。下载文件可能包含工具中显示的信息。导出的纪念日包含日期和天数，仍可能用于推算生日；导入时会把事件交给你选择的日历服务。'}
+            </p>
             <p>
               {en
                 ? 'The calculators process your dates inside the current browser page. The application does not send those inputs to a server or write them into cookies or local storage. Refreshing restores the example birthday. A calendar download is generated locally and contains your week count and reference date.'

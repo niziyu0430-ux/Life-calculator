@@ -10,6 +10,8 @@ import {
   DAY,
 } from '../lib/time';
 import { guides } from './content';
+import WeekExplorer from './week-explorer';
+import { calendarEvent } from '../lib/planning';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -34,6 +36,9 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
     [notice, setNotice] = useState('');
   useEffect(() => {
     setAsOf(localToday());
+    const tool = new URLSearchParams(location.search).get('tool');
+    if (tool && ['weeks', 'milestone', 'difference'].includes(tool))
+      setTab(tool);
   }, []);
   useEffect(() => {
     const ctx = (
@@ -99,6 +104,23 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
       customDate = iso(parseDay(birthday) + custom * DAY);
   } catch {}
   const number = (n: number) => n.toLocaleString(en ? 'en-US' : 'zh-CN');
+  const downloadMilestone = (date: string, count: number) => {
+    const file = calendarEvent(date, count);
+    const url = URL.createObjectURL(
+      new Blob([file], { type: 'text/calendar;charset=utf-8' }),
+    );
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'life-milestone.ics';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setNotice(
+      t(
+        '已生成日历文件。导入你的日历后，可自行设置提醒。',
+        'Calendar file generated. Import it into your calendar and choose a reminder.',
+      ),
+    );
+  };
   const exportCalendar = () => {
     if (!stats) return;
     const width = 1100,
@@ -169,6 +191,9 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
           <small>TIME LAB</small>
         </a>
         <nav>
+          <a href={base + '/week-planner/'}>
+            {t('168 小时实验室', '168-hour lab')}
+          </a>
           <a href="#calendar">{t('人生周历', 'Your calendar')}</a>
           <a href="#reading">{t('时间手记', 'Field notes')}</a>
           <a className="language" href={en ? '/' : '/en'}>
@@ -178,6 +203,16 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
       </header>
       <main>
         <div className="intro">
+          <img
+            className="intro-illustration"
+            src="/images/time-hourglass.webp"
+            width="600"
+            height="400"
+            alt={t(
+              '沙漏与留白日历的纸艺静物',
+              'A sculptural hourglass and blank calendar',
+            )}
+          />
           <p className="eyebrow">
             01 / {t('换个尺度，看见生活', 'A LITTLE PERSPECTIVE')}
           </p>
@@ -345,36 +380,14 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
                               {span} {t('年跨度', 'year span')}
                             </span>
                           </div>
-                          <div
-                            className="weekgrid"
-                            role="img"
-                            aria-label={
-                              t('人生周历：已走过', 'Life calendar: ') +
-                              stats.weeks +
-                              t(
-                                '个完整周，展示',
-                                ' complete weeks lived across a ',
-                              ) +
-                              span +
-                              t('年跨度', ' year display span')
-                            }
-                          >
-                            {Array.from(
-                              { length: stats.totalWeeks },
-                              (_, i) => (
-                                <i
-                                  key={i}
-                                  className={
-                                    i < stats.weeks
-                                      ? 'past'
-                                      : i === stats.weeks
-                                        ? 'current'
-                                        : ''
-                                  }
-                                />
-                              ),
-                            )}
-                          </div>
+                          <WeekExplorer
+                            key={birthday + span}
+                            birthday={birthday}
+                            weeks={stats.weeks}
+                            totalWeeks={stats.totalWeeks}
+                            span={span}
+                            en={en}
+                          />
                           <div className="legend">
                             <span>
                               <b />
@@ -435,6 +448,17 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
                               ' days after your reference date. Your birth date is day 0.',
                             )}
                           </p>
+                          <button
+                            className="quiet"
+                            onClick={() =>
+                              downloadMilestone(
+                                stats.milestoneDate,
+                                stats.nextThousand,
+                              )
+                            }
+                          >
+                            {t('添加到我的日历', 'Add to my calendar')} ↗
+                          </button>
                           <label htmlFor="custom">
                             {t(
                               '也可以找一个特别的天数',
@@ -457,6 +481,16 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
                                 'Enter a whole number from 1 to 100000',
                               )}
                           </output>
+                          {customDate && (
+                            <button
+                              className="quiet"
+                              onClick={() =>
+                                downloadMilestone(customDate, custom)
+                              }
+                            >
+                              {t('导出这个纪念日', 'Export this milestone')} ↓
+                            </button>
+                          )}
                           <p className="hint">
                             {t(
                               '例如 10000 天：出生日期加上整整 10000 个日历日，而不是“出生第 10000 天”的包含首日口径。',
@@ -560,6 +594,39 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
             {t('了解计算方式', 'How the calculations work')} ↗
           </a>
         </div>
+        <section className="lab-feature">
+          <img
+            src="/images/time-garden.webp"
+            alt={t(
+              '纸艺花园与蜿蜒步道',
+              'A sculptural paper garden with a winding path',
+            )}
+            width="768"
+            height="512"
+            loading="lazy"
+          />
+          <div>
+            <p className="eyebrow">NEW / THE 168-HOUR LAB</p>
+            <h2>
+              {t('把时间，留给想做的事。', 'Make room for what matters.')}
+            </h2>
+            <p>
+              {t(
+                '拖动你的每周安排，看看时间去了哪里。再试试：每周五次、每次二十分钟，十二周能留给一件小事多少时间？',
+                'Adjust your weekly schedule and see where time goes. Then explore what twenty minutes, five times a week, adds up to over twelve weeks.',
+              )}
+            </p>
+            <a className="button-link" href={base + '/week-planner/'}>
+              {t('开始我的时间实验', 'Explore my week')} ↗
+            </a>
+            <span className="hint">
+              {t(
+                '无需登录 · 可保存草稿 · 数据留在当前页面',
+                'No sign-in · Download your draft · Inputs stay in this page',
+              )}
+            </span>
+          </div>
+        </section>
         <section id="reading" className="reading">
           <div className="section-heading">
             <div>
@@ -569,7 +636,10 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
               </h2>
             </div>
             <span>
-              {t('关于时间的三份实用手记', 'Three practical notes on time')}
+              {t(
+                '工具背后的方法、案例与小实验',
+                'Methods, examples and small experiments',
+              )}
             </span>
           </div>
           <div className="article-grid">
@@ -580,17 +650,7 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
                 href={base + '/guides/' + g.slug}
               >
                 <div className="article-art" aria-hidden="true">
-                  {i === 0 ? (
-                    <div className="mini-weeks">
-                      {Array.from({ length: 70 }, (_, n) => (
-                        <i key={n} style={{ opacity: n < 28 ? 1 : 0.18 }} />
-                      ))}
-                    </div>
-                  ) : i === 1 ? (
-                    <span className="art-number">
-                      10,000<span>DAYS</span>
-                    </span>
-                  ) : (
+                  {i === 2 ? (
                     <span className="art-number">
                       01 — 07
                       <span>
@@ -600,6 +660,18 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
                         )}
                       </span>
                     </span>
+                  ) : (
+                    <img
+                      src={
+                        i === 1 || i === 5
+                          ? '/images/time-hourglass.webp'
+                          : '/images/time-garden.webp'
+                      }
+                      alt=""
+                      loading="lazy"
+                      width="768"
+                      height="512"
+                    />
                   )}
                 </div>
                 <p className="eyebrow">

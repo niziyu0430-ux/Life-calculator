@@ -11,7 +11,7 @@
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",
     "format": "oxfmt",
-    "test": "node --experimental-strip-types --test tests/time.test.ts",
+    "test": "node --experimental-strip-types --test tests/time.test.ts tests/planning.test.ts",
     "typecheck": "tsc --noEmit",
     "prebuild": "node scripts/prepare-static.mjs",
     "postbuild": "node scripts/finalize-static.mjs"

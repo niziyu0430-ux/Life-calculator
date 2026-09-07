@@ -1,3 +1,4 @@
+import Experiment from './article-experiment';
 import { guides } from './content';
 import { notFound } from 'next/navigation';
 export function PageShell({
@@ -59,8 +60,34 @@ export default function Article({
         </a>
       </p>
       <p className="lead">{data.description}</p>
-      {data.sections.map((s) => (
-        <section key={s.heading}>
+      <img
+        className="article-cover"
+        src={
+          slug.includes('milestone')
+            ? '/images/time-hourglass.webp'
+            : '/images/time-garden.webp'
+        }
+        alt={
+          en
+            ? 'An original paper-sculpture illustration about time'
+            : '关于时间的原创纸艺风格插画'
+        }
+        width="1536"
+        height="1024"
+      />
+      <nav
+        className="article-toc"
+        aria-label={en ? 'In this note' : '本篇目录'}
+      >
+        {data.sections.map((s, i) => (
+          <a key={s.heading} href={'#section-' + i}>
+            {String(i + 1).padStart(2, '0')} {s.heading}
+          </a>
+        ))}
+      </nav>
+      <Experiment slug={slug} en={en} />
+      {data.sections.map((s, i) => (
+        <section key={s.heading} id={'section-' + i}>
           <h2>{s.heading}</h2>
           {s.paragraphs.map((p) => (
             <p key={p}>{p}</p>
@@ -83,6 +110,13 @@ export default function Article({
             </li>
           </ul>
         </section>
+      )}
+      {slug === 'milestone-calendar' && (
+        <p>
+          <a href="https://www.rfc-editor.org/rfc/rfc5545#section-3.6.1">
+            iCalendar RFC 5545 · All-day event format
+          </a>
+        </p>
       )}
       <div className="article-cta">
         <h2>{en ? 'Try it with your own dates' : '换成你的日期，试一试'}</h2>

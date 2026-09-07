@@ -1,3 +1,4 @@
+import { extraGuides } from './content-extra';
 type Note = {
   title: string;
   description: string;
@@ -244,4 +245,5 @@ export const guides: { slug: string; zh: Note; en: Note }[] = [
       ],
     },
   },
+  ...extraGuides,
 ];

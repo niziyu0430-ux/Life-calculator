@@ -6,55 +6,93 @@
       "_rolldown-runtime-hePW80VL.js"
     ]
   },
+  "_resolveAriaLabelledBy-cFjJ-l40.js": {
+    "file": "_next/static/chunks/resolveAriaLabelledBy-cFjJ-l40.js",
+    "name": "resolveAriaLabelledBy",
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js"
+    ]
+  },
   "_rolldown-runtime-hePW80VL.js": {
     "file": "_next/static/chunks/rolldown-runtime-hePW80VL.js",
     "name": "rolldown-runtime"
   },
-  "_vinext-DFCFrdFe.js": {
-    "file": "_next/static/chunks/vinext-DFCFrdFe.js",
+  "_time-BIy8eBn4.js": {
+    "file": "_next/static/chunks/time-BIy8eBn4.js",
+    "name": "time"
+  },
+  "_vinext-BUQ7-Cnm.js": {
+    "file": "_next/static/chunks/vinext-BUQ7-Cnm.js",
     "name": "vinext",
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js"
     ],
     "dynamicImports": [
-      "_vinext-DFCFrdFe.js"
+      "_vinext-BUQ7-Cnm.js"
+    ]
+  },
+  "app/article-experiment.tsx": {
+    "file": "_next/static/chunks/article-experiment-BMNrg6Vs.js",
+    "name": "article-experiment",
+    "src": "app/article-experiment.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js",
+      "_time-BIy8eBn4.js"
     ]
   },
   "app/calculator.tsx": {
-    "file": "_next/static/chunks/calculator-CyfE2iYg.js",
+    "file": "_next/static/chunks/calculator-DsN3THtA.js",
     "name": "calculator",
     "src": "app/calculator.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
-      "_framework-DTZGTDtF.js"
+      "_framework-DTZGTDtF.js",
+      "_time-BIy8eBn4.js",
+      "_resolveAriaLabelledBy-cFjJ-l40.js"
+    ]
+  },
+  "app/week-planner.tsx": {
+    "file": "_next/static/chunks/week-planner-Pd1VK-SD.js",
+    "name": "week-planner",
+    "src": "app/week-planner.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js",
+      "_resolveAriaLabelledBy-cFjJ-l40.js"
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-BuFIbzZm.js",
+    "file": "_next/static/chunks/layout-segment-context-vYmvz0pl.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-DFCFrdFe.js"
+      "_vinext-BUQ7-Cnm.js"
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-CJ3PIVcw.js",
+    "file": "_next/static/chunks/index-B0HaBuvK.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-DFCFrdFe.js"
+      "_vinext-BUQ7-Cnm.js"
     ],
     "dynamicImports": [
-      "_vinext-DFCFrdFe.js",
+      "_vinext-BUQ7-Cnm.js",
       "node_modules/vinext/dist/shims/layout-segment-context.js",
+      "app/week-planner.tsx",
+      "app/article-experiment.tsx",
       "app/calculator.tsx"
     ]
   }
