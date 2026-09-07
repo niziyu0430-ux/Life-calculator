@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './game.css';
 export const metadata: Metadata = {
   icons: { icon: '/favicon.svg' },
   other: { 'google-adsense-account': 'ca-pub-9460160226236788' },

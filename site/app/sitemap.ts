@@ -7,6 +7,7 @@ export default function sitemap() {
       '/about',
       '/privacy',
       '/week-planner',
+      '/play',
       ...guides.map((g) => '/guides/' + g.slug),
     ].map((path) => ({ url: origin + (base + path || '/') })),
   );

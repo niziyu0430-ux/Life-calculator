@@ -1,31 +1,52 @@
 export const photoRegistry = {
-  'weekly-time-budget': {
-    src: '/images/balance.webp',
-    width: 1200,
-    height: 675,
-    zh: '海边的平衡石，提醒我们给不同活动留出空间。',
-    en: 'Balanced stones by the sea: make room for different parts of your week.',
-  },
-  'small-time-projects': {
-    src: '/images/effort.webp',
-    width: 830,
-    height: 498,
-    zh: '推石上坡的意象：遇到阻力时，缩小下一步，而不是一味增加投入。',
-    en: 'Pushing a stone uphill: when progress is hard, make the next step smaller.',
-  },
-  'planner-priorities': {
-    src: '/images/compass.webp',
-    width: 678,
-    height: 452,
-    zh: '先选方向，再安排时间。写下一件你真正想留时间做的事。',
-    en: 'Choose a direction before allocating time. Name one thing you want to make room for.',
-  },
-  'day-milestones': {
-    src: '/images/time-hourglass.webp',
+  'life-in-weeks': {
+    src: '/images/life-in-weeks.webp',
     width: 1536,
     height: 1024,
-    zh: '沙漏与空白日历：为普通日子找到一个值得记住的坐标。',
-    en: 'An hourglass and a blank calendar: a way to mark an otherwise ordinary day.',
+    zh: '七个容器盛放阅读、相聚与休息，让一周成为生活片段的集合。',
+    en: 'Seven vessels hold reading, company and rest: a week made of lived moments.',
+  },
+  'day-milestones': {
+    src: '/images/day-milestones.webp',
+    width: 1536,
+    height: 1024,
+    zh: '日历、沙漏与一份小小的庆祝，为普通日子留下纪念。',
+    en: 'A calendar, hourglass and small celebration mark an ordinary day.',
+  },
+  'date-math': {
+    src: '/images/date-math.webp',
+    width: 1536,
+    height: 1024,
+    zh: '连续的日历页连接两个标记；准确的计数规则请看下方示例。',
+    en: 'Calendar pages connect two markers. See the examples below for exact counting rules.',
+  },
+  'weekly-time-budget': {
+    src: '/images/weekly-time-budget.webp',
+    width: 1536,
+    height: 1024,
+    zh: '休息、工作、照护与兴趣，在有限的时间里寻找平衡。',
+    en: 'Rest, work, care and interests find balance within a finite week.',
+  },
+  'small-time-projects': {
+    src: '/images/small-time-projects.webp',
+    width: 1536,
+    height: 1024,
+    zh: '把难以推动的大石头，拆解成今天可以迈出的小台阶。',
+    en: 'Turn a difficult climb into a small step you can take today.',
+  },
+  'milestone-calendar': {
+    src: '/images/milestone-calendar.webp',
+    width: 1536,
+    height: 1024,
+    zh: '从桌面日历到手机，让一个值得记住的日子有处安放。',
+    en: 'From desk calendar to phone: give a memorable day a place to live.',
+  },
+  'planner-priorities': {
+    src: '/images/planner-priorities.webp',
+    width: 1536,
+    height: 1024,
+    zh: '在不同的小路之间，先选择真正想去的方向。',
+    en: 'Among possible paths, first choose the direction that matters to you.',
   },
 };
 export default function Photo({

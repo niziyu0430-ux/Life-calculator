@@ -86,6 +86,14 @@ export default function Info({
             </p>
           </section>
           <section>
+            <h2>{en ? 'Your game save' : '人生游戏的本地存档'}</h2>
+            <p>
+              {en
+                ? 'Another Chapter stores its fictional character, random seed, choices and progress in this browser only. It does not collect a real birthday or upload your save. Switching languages preserves progress. You can download a text recap or clear the save from the game. Private browsing, cleared site data or blocked storage may remove or prevent saving; in that case the game continues in memory until you leave the page.'
+                : '人生另一页仅在当前浏览器中保存虚构人物、随机种子、选择和进度，不收集真实生日，也不上传存档。切换语言会保留进度。你可以在游戏中下载文字回顾或清除存档。无痕浏览、清除站点数据或阻止本地存储可能使保存失效；此时仍能游玩，但离开页面后会失去进度。'}
+            </p>
+          </section>
+          <section>
             <h2>{en ? 'Website delivery' : '访问网站时'}</h2>
             <p>
               {en

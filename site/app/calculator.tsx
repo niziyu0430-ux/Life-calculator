@@ -13,6 +13,7 @@ import { guides } from './content';
 import NumberField from './number-field';
 import { downloadText } from '../lib/download';
 import WeekExplorer from './week-explorer';
+import AgeScene from './age-scene';
 import { calendarEvent } from '../lib/planning';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -205,6 +206,7 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
           <small>TIME LAB</small>
         </a>
         <nav>
+          <a href={base + '/play/'}>{t('人生另一页', 'Play a life')}</a>
           <a href={base + '/week-planner/'}>
             {t('168 小时实验室', '168-hour lab')}
           </a>
@@ -599,6 +601,28 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
             {t('了解计算方式', 'How the calculations work')} ↗
           </a>
         </div>
+        <section className="aging-feature" id="growing">
+          <div>
+            <p className="eyebrow">{t('生命的形状', 'The shape of a life')}</p>
+            <h2>{t('慢慢长大，慢慢看见。', 'Growing older. Seeing more.')}</h2>
+            <p>
+              {t(
+                '转动人物，拖动年龄，看看时间怎样改变一个身影。也可以翻开一局虚构的人生，亲手选择下一页。',
+                'Rotate a character and explore the years. Or begin a fictional life and choose what comes on the next page.',
+              )}
+            </p>
+            <a className="button-link" href={base + '/play/'}>
+              {t('进入人生另一页', 'Play Another Chapter')} →
+            </a>
+            <p className="hint">
+              {t(
+                '原创人生模拟 · 无需注册 · 本地存档',
+                'Original life simulation · no account · local save',
+              )}
+            </p>
+          </div>
+          <AgeScene en={en} />
+        </section>
         <section className="lab-feature">
           <img
             src="/images/time-garden.webp"

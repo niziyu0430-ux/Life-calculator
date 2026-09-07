@@ -1,4 +1,12 @@
 {
+  "_addEventListener-Cf9m-g9P.js": {
+    "file": "_next/static/chunks/addEventListener-Cf9m-g9P.js",
+    "name": "addEventListener",
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js"
+    ]
+  },
   "_framework-DTZGTDtF.js": {
     "file": "_next/static/chunks/framework-DTZGTDtF.js",
     "name": "framework",
@@ -14,12 +22,13 @@
       "_framework-DTZGTDtF.js"
     ]
   },
-  "_resolveAriaLabelledBy-H6bUA7hY.js": {
-    "file": "_next/static/chunks/resolveAriaLabelledBy-H6bUA7hY.js",
+  "_resolveAriaLabelledBy-daGBxB8M.js": {
+    "file": "_next/static/chunks/resolveAriaLabelledBy-daGBxB8M.js",
     "name": "resolveAriaLabelledBy",
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
-      "_framework-DTZGTDtF.js"
+      "_framework-DTZGTDtF.js",
+      "_addEventListener-Cf9m-g9P.js"
     ]
   },
   "_rolldown-runtime-hePW80VL.js": {
@@ -30,15 +39,30 @@
     "file": "_next/static/chunks/time-BIy8eBn4.js",
     "name": "time"
   },
-  "_vinext-Dz01zrqA.js": {
-    "file": "_next/static/chunks/vinext-Dz01zrqA.js",
+  "_useScrollLock-355tYdha.js": {
+    "file": "_next/static/chunks/useScrollLock-355tYdha.js",
+    "name": "useScrollLock",
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js",
+      "_vinext-XA3nPCSv.js",
+      "_addEventListener-Cf9m-g9P.js"
+    ],
+    "dynamicImports": [
+      "node_modules/three/build/three.module.js",
+      "node_modules/three/examples/jsm/loaders/GLTFLoader.js",
+      "node_modules/three/examples/jsm/controls/OrbitControls.js"
+    ]
+  },
+  "_vinext-XA3nPCSv.js": {
+    "file": "_next/static/chunks/vinext-XA3nPCSv.js",
     "name": "vinext",
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js"
     ],
     "dynamicImports": [
-      "_vinext-Dz01zrqA.js"
+      "_vinext-XA3nPCSv.js"
     ]
   },
   "app/article-experiment.tsx": {
@@ -54,7 +78,7 @@
     ]
   },
   "app/calculator.tsx": {
-    "file": "_next/static/chunks/calculator-C0ChSheG.js",
+    "file": "_next/static/chunks/calculator-BLJkarrt.js",
     "name": "calculator",
     "src": "app/calculator.tsx",
     "isDynamicEntry": true,
@@ -63,11 +87,25 @@
       "_framework-DTZGTDtF.js",
       "_time-BIy8eBn4.js",
       "_number-field-DKBdBt89.js",
-      "_resolveAriaLabelledBy-H6bUA7hY.js"
+      "_addEventListener-Cf9m-g9P.js",
+      "_useScrollLock-355tYdha.js",
+      "_resolveAriaLabelledBy-daGBxB8M.js"
+    ]
+  },
+  "app/life-game.tsx": {
+    "file": "_next/static/chunks/life-game-CCYHYcer.js",
+    "name": "life-game",
+    "src": "app/life-game.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js",
+      "_addEventListener-Cf9m-g9P.js",
+      "_useScrollLock-355tYdha.js"
     ]
   },
   "app/week-planner.tsx": {
-    "file": "_next/static/chunks/week-planner-RocMyvqE.js",
+    "file": "_next/static/chunks/week-planner-D51ZTunh.js",
     "name": "week-planner",
     "src": "app/week-planner.tsx",
     "isDynamicEntry": true,
@@ -75,34 +113,60 @@
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
       "_number-field-DKBdBt89.js",
-      "_resolveAriaLabelledBy-H6bUA7hY.js"
+      "_addEventListener-Cf9m-g9P.js",
+      "_resolveAriaLabelledBy-daGBxB8M.js"
+    ]
+  },
+  "node_modules/three/build/three.module.js": {
+    "file": "_next/static/chunks/three.module-kRnP-91l.js",
+    "name": "three.module",
+    "src": "node_modules/three/build/three.module.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/three/examples/jsm/controls/OrbitControls.js": {
+    "file": "_next/static/chunks/OrbitControls-D4KrOPDg.js",
+    "name": "OrbitControls",
+    "src": "node_modules/three/examples/jsm/controls/OrbitControls.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "node_modules/three/build/three.module.js"
+    ]
+  },
+  "node_modules/three/examples/jsm/loaders/GLTFLoader.js": {
+    "file": "_next/static/chunks/GLTFLoader-DpWLDkIG.js",
+    "name": "GLTFLoader",
+    "src": "node_modules/three/examples/jsm/loaders/GLTFLoader.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "node_modules/three/build/three.module.js"
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-C1hbesXS.js",
+    "file": "_next/static/chunks/layout-segment-context-COwm60h7.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-Dz01zrqA.js"
+      "_vinext-XA3nPCSv.js"
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-B1SX36Fg.js",
+    "file": "_next/static/chunks/index-iMq5DggM.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-Dz01zrqA.js"
+      "_vinext-XA3nPCSv.js"
     ],
     "dynamicImports": [
-      "_vinext-Dz01zrqA.js",
+      "_vinext-XA3nPCSv.js",
       "node_modules/vinext/dist/shims/layout-segment-context.js",
       "app/week-planner.tsx",
+      "app/life-game.tsx",
       "app/article-experiment.tsx",
       "app/calculator.tsx"
     ]

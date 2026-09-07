@@ -1,0 +1,66 @@
+{
+  "generator": "Blender 4.5 / original parametric sculpt",
+  "characters": [
+    {
+      "id": "life-character-a",
+      "vertices": 10922,
+      "faces": 9972,
+      "heightMeters": 1.72,
+      "bytes": 1933204
+    },
+    {
+      "id": "life-character-b",
+      "vertices": 11637,
+      "faces": 10658,
+      "heightMeters": 1.6598,
+      "bytes": 2078608
+    }
+  ],
+  "ageAnchors": [
+    1,
+    8,
+    16,
+    25,
+    45,
+    65,
+    85
+  ],
+  "ageLabels": [
+    "toddler",
+    "child",
+    "teen",
+    "young",
+    "middle",
+    "senior",
+    "elder"
+  ],
+  "morphTargets": [
+    "age_1",
+    "age_8",
+    "age_16",
+    "age_25",
+    "age_45",
+    "age_65",
+    "age_85"
+  ],
+  "basisAge": 25,
+  "blendRule": "Set exactly the two bracketing age targets; weights sum to 1. Basis is age 25. All target values 0 also produces age 25.",
+  "animation": "Idle_Breathe",
+  "durationSeconds": 4,
+  "upAxis": "GLB +Y",
+  "frontAxis": "GLB +Z",
+  "hairMaterials": [
+    "Hair",
+    "HairRidge"
+  ],
+  "hairColorsByAge": [
+    "#6c4835",
+    "#6c4835",
+    "#6c4835",
+    "#6c4835",
+    "#806454",
+    "#aaa297",
+    "#d4d0c6"
+  ],
+  "appearanceOnly": true
+}
