@@ -1,14 +1,17 @@
 'use client';
 import { useState } from 'react';
+import NumberField from './number-field';
+import { downloadText } from '../lib/download';
+import Photo from './photo';
 import { Slider } from '@/components/ui/slider';
 import { weeklyBudget, projectTime } from '../lib/planning';
 const palette = [
-  '#173e32',
-  '#347455',
-  '#659071',
-  '#94b89c',
-  '#b4c9b0',
-  '#d9f47c',
+  '#74442f',
+  '#96543e',
+  '#ad7556',
+  '#c49572',
+  '#d5b18f',
+  '#f2e5d8',
 ];
 export default function WeekPlanner({ en = false }: { en?: boolean }) {
   const t = (a: string, b: string) => (en ? b : a);
@@ -18,6 +21,11 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
     [weeks, setWeeks] = useState(12),
     [project, setProject] = useState(''),
     [status, setStatus] = useState('');
+  const [valid, setValid] = useState(Array(8).fill(true));
+  const [resetKey, setResetKey] = useState(0);
+  const allValid = valid.every(Boolean);
+  const mark = (i: number, v: boolean) =>
+    setValid((old) => old.map((x, j) => (i === j ? v : x)));
   const budget = weeklyBudget(hours),
     plan = projectTime(minutes, days, weeks);
   const labels = [
@@ -30,6 +38,7 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
   const f = (n: number) =>
     Number(n.toFixed(1)).toLocaleString(en ? 'en-US' : 'zh-CN');
   const download = () => {
+    if (!allValid) return;
     const lines = [
       t('我的一周时间草稿', 'My week, a working draft'),
       ...hours.map(
@@ -45,14 +54,17 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
         'A schedule estimate, not a promise of results.',
       ),
     ];
-    const url = URL.createObjectURL(
-      new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' }),
-    );
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'my-week.txt';
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    if (
+      !downloadText(lines.join('\n'), 'my-week.txt', 'text/plain;charset=utf-8')
+    ) {
+      setStatus(
+        t(
+          '未能生成文件，请重试。',
+          'Could not generate the file. Please retry.',
+        ),
+      );
+      return;
+    }
     setStatus(
       t(
         '已生成计划文本，可保存或继续编辑。',
@@ -76,15 +88,6 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
             )}
           </p>
         </div>
-        <img
-          src="/images/time-garden.webp"
-          width="768"
-          height="512"
-          alt={t(
-            '层层纸艺花园中的步道，象征逐周展开的生活',
-            'A layered paper garden with a winding path, a metaphor for weeks unfolding',
-          )}
-        />
       </div>
       <div className="planner-layout">
         <div className="planner-inputs">
@@ -97,6 +100,12 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
               className="quiet"
               onClick={() => {
                 setHours([56, 40, 5, 14, 14]);
+                setMinutes(20);
+                setDays(5);
+                setWeeks(12);
+                setProject('');
+                setValid(Array(8).fill(true));
+                setResetKey((k) => k + 1);
                 setStatus('');
               }}
             >
@@ -116,18 +125,18 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
                   <b style={{ background: palette[i] }} />
                   {label}
                 </label>
-                <input
+                <NumberField
+                  key={resetKey}
                   id={'budget-' + i}
-                  type="number"
-                  min="0"
-                  max="168"
-                  step="0.5"
                   value={hours[i]}
-                  onChange={(e) => {
-                    const v = Number(e.target.value);
-                    if (Number.isFinite(v) && v >= 0 && v <= 168)
-                      setHours((h) => h.map((x, j) => (i === j ? v : x)));
-                  }}
+                  onValue={(v) =>
+                    setHours((h) => h.map((x, j) => (i === j ? v : x)))
+                  }
+                  onValidity={(v) => mark(i, v)}
+                  min={0}
+                  max={168}
+                  step={0.5}
+                  en={en}
                 />
                 <span>{t('小时', 'hours')}</span>
               </div>
@@ -147,6 +156,14 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
           ))}
         </div>
         <aside className="budget-result">
+          {!allValid && (
+            <p className="paused" role="status">
+              {t(
+                '请修正输入；以下保留最近一次有效数值，下载已暂停。',
+                'Correct the inputs. Last valid values are shown; download is paused.',
+              )}
+            </p>
+          )}
           <p className="eyebrow">YOUR WEEK, IN VIEW</p>
           <div
             className={'budget-total ' + (budget.over ? 'over' : '')}
@@ -204,6 +221,7 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
           </dl>
         </aside>
       </div>
+      <Photo placement="planner-priorities" en={en} />
       <div className="project-lab">
         <div>
           <p className="eyebrow">
@@ -238,21 +256,15 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
             ].map(([label, value, min, max, set], i) => (
               <label key={i}>
                 {label as string}
-                <input
-                  type="number"
+                <NumberField
+                  key={resetKey}
+                  value={value as number}
+                  onValue={set as (n: number) => void}
+                  onValidity={(v) => mark(i + 5, v)}
                   min={min as number}
                   max={max as number}
-                  step={1}
-                  value={value as number}
-                  onChange={(e) => {
-                    const n = Number(e.target.value);
-                    if (
-                      Number.isInteger(n) &&
-                      n >= Number(min) &&
-                      n <= Number(max)
-                    )
-                      (set as (n: number) => void)(n);
-                  }}
+                  integer
+                  en={en}
                 />
               </label>
             ))}
@@ -288,7 +300,7 @@ export default function WeekPlanner({ en = false }: { en?: boolean }) {
               'Counts time invested, not skill, health or learning outcomes.',
             )}
           </p>
-          <button onClick={download}>
+          <button onClick={download} disabled={!allValid}>
             {t('保存我的一周草稿', 'Save my weekly draft')} ↓
           </button>
           <p role="status" className="hint">

@@ -1,5 +1,7 @@
 'use client';
 import { useState } from 'react';
+import ContextExperiment from './context-experiment';
+import NumberField from './number-field';
 import { dateDifference, parseDay, iso, DAY } from '../lib/time';
 export default function Experiment({
   slug,
@@ -8,7 +10,8 @@ export default function Experiment({
   slug: string;
   en: boolean;
 }) {
-  const [value, setValue] = useState(slug.includes("milestone") ? 10000 : 20);
+  const [value, setValue] = useState(slug === 'day-milestones' ? 10000 : 20);
+  const [valid, setValid] = useState(true);
   const [example, setExample] = useState(0);
   const t = (a: string, b: string) => (en ? b : a);
   const dateCases = [
@@ -16,6 +19,10 @@ export default function Experiment({
     ['2023-02-28', '2023-03-01'],
     ['2026-09-07', '2026-09-07'],
   ];
+  if (
+    ['life-in-weeks', 'weekly-time-budget', 'milestone-calendar'].includes(slug)
+  )
+    return <ContextExperiment slug={slug} en={en} />;
   return (
     <aside className="article-experiment">
       <p className="eyebrow">
@@ -89,18 +96,17 @@ export default function Experiment({
           </h2>
           <label>
             {t('每次投入多少分钟？', 'Minutes per session?')}
-            <input
-              type="number"
+            <NumberField
+              value={value}
+              onValue={setValue}
+              onValidity={setValid}
               min={5}
               max={120}
-              value={value}
-              onChange={(e) => {
-                const n = Number(e.target.value);
-                if (Number.isFinite(n) && n >= 5 && n <= 120) setValue(n);
-              }}
+              integer
+              en={en}
             />
           </label>
-          <p aria-live="polite">
+          <p aria-live="polite" hidden={!valid}>
             {value}{' '}
             {t(
               '分钟 × 每周 5 次 × 12 周 = ',

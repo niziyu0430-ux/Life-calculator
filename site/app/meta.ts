@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 export const origin =
-  process.env.SITE_ORIGIN ||
-  'https://life-counter-lab.niziyu0430.chatgpt.site';
+  process.env.SITE_ORIGIN || 'https://life-counter-lab.niziyu0430.chatgpt.site';
 export function pageMeta(
   path: string,
   title: string,

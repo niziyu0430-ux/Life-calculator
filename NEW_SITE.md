@@ -13,3 +13,9 @@
 Sites 私有预览：https://life-counter-lab.niziyu0430.chatgpt.site 。正式站：https://life-counter.cn 。是否已上线需以实际 HTTP 检查和部署状态为准。
 
 本站不保证 AdSense 通过或流量收益。重新申请前应核对账户要求；实际启用广告时需相应更新隐私及适用同意管理。
+
+## Warm edition update
+
+Cream, apricot and terracotta theme; local Noto Sans/Serif WOFF2 fonts and license files. Five unique image placements shared only by language equivalents. Three supplied photos were adjusted with Adobe; two existing illustrations were recolored with built-in image generation. Editable numeric drafts now show nearby validation, and file exports report failures. Each guide has a topic-specific exercise.
+
+12 automated tests, typecheck, static build and warm asset/contrast checks passed. Browser visual and click tests were not performed.

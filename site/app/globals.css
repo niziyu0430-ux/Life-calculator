@@ -1,11 +1,11 @@
 @import 'tailwindcss';
 :root {
-  --ink: #16382f;
-  --muted: #536b62;
-  --line: #d5ded6;
-  --green: #32694b;
-  --paper: #f7f9f4;
-  --accent: #d9f47c;
+  --ink: #352d28;
+  --muted: #74665d;
+  --line: #e5d7ca;
+  --green: #96543e;
+  --paper: #fbf7f2;
+  --accent: #f2e5d8;
 }
 * {
   box-sizing: border-box;
@@ -17,9 +17,9 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
+  font-family: 'Life Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 18px;
+  line-height: 1.85;
 }
 a {
   color: inherit;
@@ -38,7 +38,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 3px solid #55852f;
+  outline: 3px solid #96543e;
   outline-offset: 4px;
 }
 header {
@@ -94,7 +94,7 @@ main {
 h1 {
   font-size: clamp(32px, 4vw, 56px);
   line-height: 1.3;
-  letter-spacing: -2px;
+  letter-spacing: 0;
   margin: 12px 0 16px;
 }
 h1 br {
@@ -119,11 +119,11 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
-  background: #fff;
-  box-shadow: 0 12px 40px #18392f06;
+  background: #fffcf8;
+  box-shadow: 0 12px 40px #65402c09;
 }
 .workbench aside {
-  background: #edf2e8;
+  background: #f2e5d8;
   padding: 32px 26px;
   display: flex;
   flex-direction: column;
@@ -138,8 +138,8 @@ input,
 select {
   width: 100%;
   min-height: 46px;
-  background: #fff;
-  border: 1px solid #a7b8aa;
+  background: #fffcf8;
+  border: 1px solid #ac8e79;
   border-radius: 7px;
   padding: 9px 12px;
   color: var(--ink);
@@ -152,7 +152,7 @@ select {
 .aside-note {
   white-space: pre-line;
   font-size: 14px;
-  border-top: 1px solid #cbd8c7;
+  border-top: 1px solid #e5d7ca;
   margin-top: auto;
   padding-top: 30px;
 }
@@ -183,13 +183,13 @@ select {
 .weekgrid i {
   height: 4px;
   border-radius: 1px;
-  background: #e4ebe2;
+  background: #eaddcf;
 }
 .weekgrid .past {
   background: var(--green);
 }
 .weekgrid .current {
-  background: #b87724;
+  background: #7c4735;
 }
 .legend {
   display: flex;
@@ -210,7 +210,7 @@ select {
   margin-right: 6px;
 }
 .legend .future {
-  background: #e4ebe2;
+  background: #eaddcf;
 }
 .reading {
   padding: 60px 0;
@@ -318,7 +318,7 @@ button:hover {
 .stats strong {
   display: block;
   font-size: 34px;
-  letter-spacing: -1px;
+  letter-spacing: 0;
   line-height: 1.4;
   font-weight: 500;
 }
@@ -347,7 +347,7 @@ button:hover {
   white-space: nowrap;
 }
 .quiet:hover {
-  background: #edf2e8;
+  background: #f2e5d8;
 }
 .under-note {
   display: flex;
@@ -393,7 +393,7 @@ button:hover {
 }
 .article-art {
   height: 180px;
-  background: #e5eee0;
+  background: #f2e5d8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -401,10 +401,10 @@ button:hover {
   border-radius: 8px;
 }
 .article-card:nth-child(2) .article-art {
-  background: #e8efc9;
+  background: #efdbc8;
 }
 .article-card:nth-child(3) .article-art {
-  background: #dce9e5;
+  background: #f0e3d7;
 }
 .mini-weeks {
   width: 190px;
@@ -418,7 +418,7 @@ button:hover {
   border-radius: 2px;
 }
 .art-number {
-  font-family: Georgia, serif;
+  font-family: 'Life Serif', 'Songti SC', serif;
   font-size: 52px;
   color: var(--ink);
 }
@@ -462,14 +462,14 @@ button:hover {
   max-width: 760px;
 }
 .milestone-number {
-  font-family: Georgia, serif;
+  font-family: 'Life Serif', 'Songti SC', serif;
   font-size: clamp(54px, 7vw, 90px);
   line-height: 1.2;
   margin: 20px 0;
   overflow-wrap: anywhere;
 }
 .milestone-number small {
-  font-family: Arial, sans-serif;
+  font-family: 'Life Sans', sans-serif;
   font-size: 20px;
   margin-left: 10px;
 }
@@ -511,7 +511,7 @@ footer > div {
 .prose h1 {
   font-size: clamp(30px, 4vw, 44px);
   line-height: 1.45;
-  letter-spacing: -1px;
+  letter-spacing: 0;
 }
 .prose h2 {
   font-size: 23px;
@@ -537,7 +537,7 @@ footer > div {
 }
 .article-cta {
   padding: 24px;
-  background: #e5eee0;
+  background: #f2e5d8;
   border-radius: 12px;
   margin: 40px 0;
 }
@@ -638,7 +638,7 @@ footer > div {
   height: 46px;
   background: white;
   color: var(--ink);
-  border: 1px solid #a7b8aa;
+  border: 1px solid #ac8e79;
   padding: 9px 12px;
 }
 .span-select:hover {
@@ -655,7 +655,7 @@ footer > div {
   padding: 8px 12px;
 }
 [data-slot='select-item'][data-highlighted] {
-  background: #edf2e8;
+  background: #f2e5d8;
 }
 .include-check {
   padding: 0;
@@ -663,7 +663,7 @@ footer > div {
   height: 20px;
   background: white;
   color: var(--ink);
-  border: 1px solid #a7b8aa;
+  border: 1px solid #ac8e79;
 }
 .include-check[data-checked] {
   background: var(--ink);
@@ -706,7 +706,7 @@ footer > div {
   padding: 0;
   border: 0;
   border-radius: 1px;
-  background: #e4ebe2;
+  background: #eaddcf;
   line-height: 0;
   box-shadow: none;
 }
@@ -714,20 +714,20 @@ footer > div {
   background: var(--green);
 }
 .interactive-weeks .current {
-  background: #b87724;
+  background: #7c4735;
 }
 .interactive-weeks .week-cell:hover {
-  background: #b87724;
+  background: #7c4735;
   transform: scale(1.5);
 }
 .interactive-weeks .selected {
-  outline: 2px solid #152f25;
+  outline: 2px solid #352d28;
   outline-offset: 1px;
   position: relative;
   z-index: 2;
 }
 .interactive-weeks .week-cell:focus-visible {
-  outline: 3px solid #b87724;
+  outline: 3px solid #7c4735;
   outline-offset: 2px;
 }
 .week-inspector {
@@ -773,7 +773,7 @@ footer > div {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border: 1px solid var(--line);
-  background: #fff;
+  background: #fffcf8;
   border-radius: 16px;
   overflow: hidden;
   margin: 50px 0 20px;
@@ -838,13 +838,13 @@ footer > div {
   display: flex;
   flex-direction: column;
   gap: 9px;
-  background: #edf2e8;
+  background: #f2e5d8;
   padding: 22px;
   border-radius: 10px;
   font-size: 14px;
 }
 .article-experiment {
-  background: #e8efc9;
+  background: #efdbc8;
   border-radius: 12px;
   padding: 26px;
   margin: 30px 0;
@@ -875,7 +875,7 @@ footer > div {
 .planner-intro h1 {
   font-size: clamp(30px, 3.4vw, 48px);
   line-height: 1.35;
-  letter-spacing: -1px;
+  letter-spacing: 0;
 }
 .planner-intro h1 em {
   display: block;
@@ -891,7 +891,7 @@ footer > div {
   grid-template-columns: 1.5fr 1fr;
   border: 1px solid var(--line);
   border-radius: 16px;
-  background: #fff;
+  background: #fffcf8;
   overflow: hidden;
 }
 .planner-inputs {
@@ -932,11 +932,11 @@ footer > div {
 }
 .budget-slider [data-slot='slider-track'] {
   height: 6px;
-  background: #e4ebe2;
+  background: #eaddcf;
   border-radius: 5px;
 }
 .budget-slider [data-slot='slider-range'] {
-  background: #32694b;
+  background: #96543e;
 }
 .budget-slider [data-slot='slider-thumb'] {
   width: 20px;
@@ -946,12 +946,12 @@ footer > div {
   border-radius: 50%;
 }
 .budget-slider [data-slot='slider-thumb']:focus-visible {
-  outline: 3px solid #b87724;
+  outline: 3px solid #7c4735;
   outline-offset: 3px;
 }
 .budget-result {
   padding: 35px;
-  background: #edf2e8;
+  background: #f2e5d8;
 }
 .budget-total strong {
   display: block;
@@ -987,7 +987,7 @@ footer > div {
   display: flex;
   justify-content: space-between;
   padding: 9px 0;
-  border-bottom: 1px solid #d0ddcc;
+  border-bottom: 1px solid #e5d7ca;
   font-size: 14px;
 }
 .budget-result dd {
@@ -1000,7 +1000,7 @@ footer > div {
   margin: 35px 0;
   padding: 35px;
   border-radius: 16px;
-  background: #fff;
+  background: #fffcf8;
   border: 1px solid var(--line);
 }
 .project-inputs {
@@ -1010,7 +1010,7 @@ footer > div {
 }
 .project-result {
   padding: 20px;
-  background: #e8efc9;
+  background: #efdbc8;
   border-radius: 12px;
 }
 .project-result > strong {
@@ -1114,3 +1114,173 @@ footer > div {
     transform: none;
   }
 }
+
+/* Warm paper, quiet typography, clear controls. */
+@font-face {
+  font-family: 'Life Sans';
+  src: url('/fonts/sans-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Life Sans';
+  src: url('/fonts/sans-500.woff2') format('woff2');
+  font-weight: 500 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Life Serif';
+  src: url('/fonts/serif-600.woff2') format('woff2');
+  font-weight: 600 900;
+  font-display: swap;
+}
+h1,
+h2,
+.brand {
+  font-family: 'Life Serif', 'Songti SC', serif;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.eyebrow {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+button,
+input,
+select,
+.button-link {
+  font-size: 16px;
+}
+button,
+.button-link {
+  min-height: 44px;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.stats strong,
+.milestone-number,
+.budget-total,
+.project-result strong,
+input[type='number'],
+.week-inspector strong {
+  font-family: 'Life Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.prose {
+  max-width: 860px;
+}
+.prose section p {
+  margin: 1.1em 0;
+}
+.prose .lead {
+  line-height: 1.85;
+}
+.number-field {
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 4px;
+}
+.number-field input {
+  width: 100%;
+}
+.field-error {
+  color: #8d342b;
+  font-size: 14px;
+  line-height: 1.6;
+  display: block;
+}
+input[aria-invalid='true'] {
+  border-color: #8d342b;
+}
+.budget-control > div .number-field {
+  width: 110px;
+}
+.photo-note {
+  max-width: 680px;
+  margin: 32px auto;
+}
+.photo-note img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+.photo-note figcaption {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-top: 12px;
+}
+.article-card {
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+.article-card h3 {
+  font-family: 'Life Serif', serif;
+  font-size: 23px;
+  line-height: 1.65;
+}
+.planner-intro {
+  display: block;
+}
+.planner-intro > div {
+  max-width: 760px;
+}
+.intro-art {
+  display: none;
+}
+.lab-feature img {
+  object-fit: contain;
+}
+.project-inputs .number-field {
+  width: 100%;
+}
+.week-jump .number-field {
+  max-width: 200px;
+}
+.week-jump input {
+  width: 100%;
+}
+.paused {
+  color: #8d342b;
+  font-size: 16px;
+}
+.article-experiment label .number-field {
+  display: flex;
+  max-width: 220px;
+}
+@media (max-width: 700px) {
+  body {
+    font-size: 17px;
+  }
+  .prose {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+  .prose h1 {
+    font-size: 32px;
+  }
+  .lab-feature {
+    display: flex;
+    flex-direction: column;
+  }
+  .lab-feature > div {
+    order: -1;
+  }
+  .photo-note {
+    margin: 24px 0;
+  }
+  .budget-control > div {
+    flex-wrap: wrap;
+  }
+  .project-inputs {
+    gap: 12px;
+  }
+  .week-controls button {
+    min-width: 44px;
+  }
+}
+

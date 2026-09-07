@@ -1,4 +1,5 @@
 'use client';
+import NumberField from './number-field';
 import { useRef, useState } from 'react';
 import { parseDay, iso, DAY, anniversary } from '../lib/time';
 export default function WeekExplorer({
@@ -111,15 +112,13 @@ export default function WeekExplorer({
       </div>
       <label className="week-jump">
         {en ? 'Jump to week' : '跳转到第几周'}
-        <input
-          type="number"
+        <NumberField
+          value={index + 1}
+          onValue={(n) => select(n - 1)}
           min={1}
           max={totalWeeks}
-          value={index + 1}
-          onChange={(e) => {
-            const n = Number(e.target.value);
-            if (Number.isInteger(n) && n >= 1 && n <= totalWeeks) select(n - 1);
-          }}
+          integer
+          en={en}
         />
       </label>
       <p className="hint">

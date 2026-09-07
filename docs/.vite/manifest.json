@@ -6,8 +6,16 @@
       "_rolldown-runtime-hePW80VL.js"
     ]
   },
-  "_resolveAriaLabelledBy-cFjJ-l40.js": {
-    "file": "_next/static/chunks/resolveAriaLabelledBy-cFjJ-l40.js",
+  "_number-field-DKBdBt89.js": {
+    "file": "_next/static/chunks/number-field-DKBdBt89.js",
+    "name": "number-field",
+    "imports": [
+      "_rolldown-runtime-hePW80VL.js",
+      "_framework-DTZGTDtF.js"
+    ]
+  },
+  "_resolveAriaLabelledBy-H6bUA7hY.js": {
+    "file": "_next/static/chunks/resolveAriaLabelledBy-H6bUA7hY.js",
     "name": "resolveAriaLabelledBy",
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
@@ -22,30 +30,31 @@
     "file": "_next/static/chunks/time-BIy8eBn4.js",
     "name": "time"
   },
-  "_vinext-BUQ7-Cnm.js": {
-    "file": "_next/static/chunks/vinext-BUQ7-Cnm.js",
+  "_vinext-Dz01zrqA.js": {
+    "file": "_next/static/chunks/vinext-Dz01zrqA.js",
     "name": "vinext",
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js"
     ],
     "dynamicImports": [
-      "_vinext-BUQ7-Cnm.js"
+      "_vinext-Dz01zrqA.js"
     ]
   },
   "app/article-experiment.tsx": {
-    "file": "_next/static/chunks/article-experiment-BMNrg6Vs.js",
+    "file": "_next/static/chunks/article-experiment-C2ahjpl-.js",
     "name": "article-experiment",
     "src": "app/article-experiment.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_time-BIy8eBn4.js"
+      "_time-BIy8eBn4.js",
+      "_number-field-DKBdBt89.js"
     ]
   },
   "app/calculator.tsx": {
-    "file": "_next/static/chunks/calculator-DsN3THtA.js",
+    "file": "_next/static/chunks/calculator-C0ChSheG.js",
     "name": "calculator",
     "src": "app/calculator.tsx",
     "isDynamicEntry": true,
@@ -53,43 +62,45 @@
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
       "_time-BIy8eBn4.js",
-      "_resolveAriaLabelledBy-cFjJ-l40.js"
+      "_number-field-DKBdBt89.js",
+      "_resolveAriaLabelledBy-H6bUA7hY.js"
     ]
   },
   "app/week-planner.tsx": {
-    "file": "_next/static/chunks/week-planner-Pd1VK-SD.js",
+    "file": "_next/static/chunks/week-planner-RocMyvqE.js",
     "name": "week-planner",
     "src": "app/week-planner.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_resolveAriaLabelledBy-cFjJ-l40.js"
+      "_number-field-DKBdBt89.js",
+      "_resolveAriaLabelledBy-H6bUA7hY.js"
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-vYmvz0pl.js",
+    "file": "_next/static/chunks/layout-segment-context-C1hbesXS.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-BUQ7-Cnm.js"
+      "_vinext-Dz01zrqA.js"
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-B0HaBuvK.js",
+    "file": "_next/static/chunks/index-B1SX36Fg.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-hePW80VL.js",
       "_framework-DTZGTDtF.js",
-      "_vinext-BUQ7-Cnm.js"
+      "_vinext-Dz01zrqA.js"
     ],
     "dynamicImports": [
-      "_vinext-BUQ7-Cnm.js",
+      "_vinext-Dz01zrqA.js",
       "node_modules/vinext/dist/shims/layout-segment-context.js",
       "app/week-planner.tsx",
       "app/article-experiment.tsx",

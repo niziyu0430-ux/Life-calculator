@@ -10,6 +10,8 @@ import {
   DAY,
 } from '../lib/time';
 import { guides } from './content';
+import NumberField from './number-field';
+import { downloadText } from '../lib/download';
 import WeekExplorer from './week-explorer';
 import { calendarEvent } from '../lib/planning';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -34,6 +36,7 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
     [inclusive, setInclusive] = useState(false),
     [custom, setCustom] = useState(10000),
     [notice, setNotice] = useState('');
+  const [customValid, setCustomValid] = useState(true);
   useEffect(() => {
     setAsOf(localToday());
     const tool = new URLSearchParams(location.search).get('tool');
@@ -100,20 +103,28 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
   } catch {}
   let customDate = '';
   try {
-    if (Number.isInteger(custom) && custom >= 1 && custom <= 100000)
+    if (
+      customValid &&
+      Number.isInteger(custom) &&
+      custom >= 1 &&
+      custom <= 100000
+    )
       customDate = iso(parseDay(birthday) + custom * DAY);
   } catch {}
   const number = (n: number) => n.toLocaleString(en ? 'en-US' : 'zh-CN');
   const downloadMilestone = (date: string, count: number) => {
     const file = calendarEvent(date, count);
-    const url = URL.createObjectURL(
-      new Blob([file], { type: 'text/calendar;charset=utf-8' }),
-    );
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'life-milestone.ics';
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    if (
+      !downloadText(file, 'life-milestone.ics', 'text/calendar;charset=utf-8')
+    ) {
+      setNotice(
+        t(
+          '未能生成文件，请重试。',
+          'Could not generate the file. Please retry.',
+        ),
+      );
+      return;
+    }
     setNotice(
       t(
         '已生成日历文件。导入你的日历后，可自行设置提醒。',
@@ -134,10 +145,10 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
         (170 + Math.floor(i / 52) * 12) +
         '" width="14" height="7" rx="1" fill="' +
         (i < stats.weeks
-          ? '#32694b'
+          ? '#96543e'
           : i === stats.weeks
-            ? '#b87724'
-            : '#e4ebe2') +
+            ? '#7c4735'
+            : '#eaddcf') +
         '"/>',
     ).join('');
     const svg =
@@ -149,7 +160,7 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
       width +
       ' ' +
       height +
-      '"><rect width="100%" height="100%" fill="#f7f9f4"/><g fill="#16382f" font-family="Arial,sans-serif"><text x="32" y="58" font-size="30">' +
+      '"><rect width="100%" height="100%" fill="#fbf7f2"/><g fill="#352d28" font-family="Arial,sans-serif"><text x="32" y="58" font-size="30">' +
       t('我的人生周历', 'My life in weeks') +
       '</text><text x="32" y="102" font-size="19">' +
       number(stats.weeks) +
@@ -166,12 +177,15 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
       '" font-size="16">Life Counter · ' +
       t('日子很小，生活很大。', 'A little perspective, every day.') +
       '</text></g></svg>';
-    const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'life-calendar.svg';
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    if (!downloadText(svg, 'life-calendar.svg', 'image/svg+xml')) {
+      setNotice(
+        t(
+          '未能生成文件，请重试。',
+          'Could not generate the file. Please retry.',
+        ),
+      );
+      return;
+    }
     setNotice(
       t(
         '周历已生成，文件包含周数和参考日期，不含生日。',
@@ -203,16 +217,6 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
       </header>
       <main>
         <div className="intro">
-          <img
-            className="intro-illustration"
-            src="/images/time-hourglass.webp"
-            width="600"
-            height="400"
-            alt={t(
-              '沙漏与留白日历的纸艺静物',
-              'A sculptural hourglass and blank calendar',
-            )}
-          />
           <p className="eyebrow">
             01 / {t('换个尺度，看见生活', 'A LITTLE PERSPECTIVE')}
           </p>
@@ -394,7 +398,7 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
                               {t('已经走过', 'Weeks lived')}
                             </span>
                             <span>
-                              <b style={{ background: '#b87724' }} />
+                              <b style={{ background: '#7c4735' }} />
                               {t('正在经历', 'Current week')}
                             </span>
                             <span>
@@ -465,14 +469,15 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
                               'Or choose a meaningful day count',
                             )}
                           </label>
-                          <input
+                          <NumberField
                             id="custom"
-                            type="number"
-                            min="1"
-                            max="100000"
-                            step="1"
-                            value={custom || ''}
-                            onChange={(e) => setCustom(Number(e.target.value))}
+                            value={custom}
+                            onValue={setCustom}
+                            onValidity={setCustomValid}
+                            min={1}
+                            max={100000}
+                            integer
+                            en={en}
                           />
                           <output className="custom-result" aria-live="polite">
                             {customDate ||
@@ -649,31 +654,6 @@ export default function Calculator({ lang }: { lang: 'zh' | 'en' }) {
                 key={g.slug}
                 href={base + '/guides/' + g.slug}
               >
-                <div className="article-art" aria-hidden="true">
-                  {i === 2 ? (
-                    <span className="art-number">
-                      01 — 07
-                      <span>
-                        {t(
-                          '相隔 6 天 · 包含首尾 7 天',
-                          '6 DAYS APART · 7 DATES',
-                        )}
-                      </span>
-                    </span>
-                  ) : (
-                    <img
-                      src={
-                        i === 1 || i === 5
-                          ? '/images/time-hourglass.webp'
-                          : '/images/time-garden.webp'
-                      }
-                      alt=""
-                      loading="lazy"
-                      width="768"
-                      height="512"
-                    />
-                  )}
-                </div>
                 <p className="eyebrow">
                   0{i + 1} / {en ? g.en.category : g.zh.category}
                 </p>

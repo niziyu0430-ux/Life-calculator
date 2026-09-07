@@ -1,3 +1,4 @@
+import Photo from './photo';
 import Experiment from './article-experiment';
 import { guides } from './content';
 import { notFound } from 'next/navigation';
@@ -60,21 +61,7 @@ export default function Article({
         </a>
       </p>
       <p className="lead">{data.description}</p>
-      <img
-        className="article-cover"
-        src={
-          slug.includes('milestone')
-            ? '/images/time-hourglass.webp'
-            : '/images/time-garden.webp'
-        }
-        alt={
-          en
-            ? 'An original paper-sculpture illustration about time'
-            : '关于时间的原创纸艺风格插画'
-        }
-        width="1536"
-        height="1024"
-      />
+      <Photo placement={slug} en={en} />
       <nav
         className="article-toc"
         aria-label={en ? 'In this note' : '本篇目录'}
